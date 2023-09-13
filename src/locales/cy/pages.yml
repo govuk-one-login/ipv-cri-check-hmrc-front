@@ -2,3 +2,8 @@ intro:
   h1: Intro
   content:
     - Cynnwys
+
+national-insurance-number:
+  h1: National Insurance Number
+  content:
+    - content

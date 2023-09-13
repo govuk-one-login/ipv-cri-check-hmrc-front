@@ -6,6 +6,6 @@ Feature: Happy path
   Scenario: Happy Path
     Given Happy Harriet is using the system
     When they have started the journey
-    Then they should see the intro page
-    And they continue from intro
+    Then they should see the national insurance number page
+    And they continue from national insurance number
     Then they should be redirected as a success

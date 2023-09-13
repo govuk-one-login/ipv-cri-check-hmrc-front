@@ -3,9 +3,9 @@ module.exports = {
     resetJourney: true,
     entryPoint: true,
     skip: true,
-    next: "intro",
+    next: "national-insurance-number",
   },
-  "/intro": {
+  "/national-insurance-number": {
     next: "/oauth2/callback",
   },
 };
