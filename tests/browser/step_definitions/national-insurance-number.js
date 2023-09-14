@@ -12,3 +12,9 @@ Then("they continue from national insurance number", async function () {
   const ninoPage = new NinoPage(this.page);
   await ninoPage.continue();
 });
+
+When(/^they enter their national insurance number$/, async function () {
+  const ninoPage = new NinoPage(this.page);
+
+  await ninoPage.enterNINO("AA123455D");
+});

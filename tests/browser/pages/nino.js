@@ -16,4 +16,8 @@ module.exports = class PlaywrightDevPage {
 
     return pathname === this.path;
   }
+
+  async enterNINO(value) {
+    await this.page.fill("#nationalInsuranceNumber", value);
+  }
 };
