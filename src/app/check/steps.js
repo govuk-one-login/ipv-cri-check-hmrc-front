@@ -1,3 +1,5 @@
+const ninoController = require("./controllers/national-insurance-number");
+
 module.exports = {
   "/": {
     resetJourney: true,
@@ -6,6 +8,7 @@ module.exports = {
     next: "national-insurance-number",
   },
   "/national-insurance-number": {
+    controller: ninoController,
     fields: ["nationalInsuranceNumber"],
     next: "/oauth2/callback",
   },
