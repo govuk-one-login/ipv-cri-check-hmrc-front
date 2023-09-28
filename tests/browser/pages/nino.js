@@ -4,7 +4,7 @@ module.exports = class PlaywrightDevPage {
    */
   constructor(page) {
     this.page = page;
-    this.path = "/check/intro";
+    this.path = "/check/national-insurance-number";
   }
 
   async continue() {
@@ -15,5 +15,9 @@ module.exports = class PlaywrightDevPage {
     const { pathname } = new URL(this.page.url());
 
     return pathname === this.path;
+  }
+
+  async enterNINO(value) {
+    await this.page.fill("#nationalInsuranceNumber", value);
   }
 };
