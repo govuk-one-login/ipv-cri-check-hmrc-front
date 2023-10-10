@@ -38,16 +38,16 @@ Conditions:
   IsCSLSDisabled: !And
     - !Not
       - !Or
-        - !Equals [ !Ref CriIdentifier, "di-ipv-cri-hmrc-check-api" ]
-        - !Equals [ !Ref CriIdentifier, "di-ipv-cri-check-hmrc-api" ]
-        - !Equals [ !Ref CriIdentifier, "di-ipv-cri-hmrc-kbv-api" ]
+        - !Equals [!Ref CriIdentifier, "di-ipv-cri-hmrc-check-api"]
+        - !Equals [!Ref CriIdentifier, "di-ipv-cri-check-hmrc-api"]
+        - !Equals [!Ref CriIdentifier, "di-ipv-cri-hmrc-kbv-api"]
     - !Not
       - !Or
-        - !Equals [ !Ref Environment, "dev" ]
-        - !Equals [ !Ref Environment, "build" ]
-        - !Equals [ !Ref Environment, "staging" ]
-        - !Equals [ !Ref Environment, "integration" ]
-        - !Equals [ !Ref Environment, "production" ]
+        - !Equals [!Ref Environment, "dev"]
+        - !Equals [!Ref Environment, "build"]
+        - !Equals [!Ref Environment, "staging"]
+        - !Equals [!Ref Environment, "integration"]
+        - !Equals [!Ref Environment, "production"]
 
   IsNotDevelopment: !Or
     - !Equals [!Ref Environment, build]
