@@ -29,7 +29,26 @@ Parameters:
     Type: String
     Default: "none"
 
+  CriIdentifier:
+    Description: "The unique credential issuer identifier"
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: "/common-cri-parameters/CriIdentifier"
+
 Conditions:
+  IsCSLSDisabled: !And
+    - !Not
+      - !Or
+        - !Equals [!Ref CriIdentifier, "di-ipv-cri-hmrc-check-api"]
+        - !Equals [!Ref CriIdentifier, "di-ipv-cri-check-hmrc-api"]
+        - !Equals [!Ref CriIdentifier, "di-ipv-cri-hmrc-kbv-api"]
+    - !Not
+      - !Or
+        - !Equals [!Ref Environment, "dev"]
+        - !Equals [!Ref Environment, "build"]
+        - !Equals [!Ref Environment, "staging"]
+        - !Equals [!Ref Environment, "integration"]
+        - !Equals [!Ref Environment, "production"]
+
   IsNotDevelopment: !Or
     - !Equals [!Ref Environment, build]
     - !Equals [!Ref Environment, staging]
@@ -255,7 +274,7 @@ Resources:
 
   ECSAccessLogsGroupSubscriptionFilterCSLS:
     Type: AWS::Logs::SubscriptionFilter
-    Condition: IsNotDevelopment
+    Condition: IsCSLSDisabled
     Properties:
       DestinationArn: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
       FilterPattern: ""
@@ -453,7 +472,7 @@ Resources:
 
   APIGWAccessLogsGroupSubscriptionFilterCSLS:
     Type: AWS::Logs::SubscriptionFilter
-    Condition: IsNotDevelopment
+    Condition: IsCSLSDisabled
     Properties:
       DestinationArn: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
       FilterPattern: ""
