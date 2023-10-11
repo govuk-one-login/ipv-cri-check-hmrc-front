@@ -13,8 +13,7 @@ class NationalInsuranceNumberController extends BaseController {
         await req.axios.post(
           CHECK,
           {
-            key: "nino",
-            value: req.sessionModel.get("nationalInsuranceNumber"),
+            nino: req.sessionModel.get("nationalInsuranceNumber"),
           },
           {
             headers: {

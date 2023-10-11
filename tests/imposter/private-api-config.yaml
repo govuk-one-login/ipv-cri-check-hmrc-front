@@ -54,22 +54,21 @@ resources:
     path: /session
     requestBody:
       jsonPath: $.client_id
-      value: "session-400"
-    response:
-      statusCode: 400
-      template: true
-      content: "{}"
-
-  - method: POST
-    path: /session
-    requestBody:
-      jsonPath: $.client_id
       value: "session-500"
     response:
       statusCode: 500
       template: true
       content: |
         {}
+
+  - method: POST
+    path: /session
+    requestBody:
+      jsonPath: $.client_id
+    response:
+      statusCode: 400
+      template: true
+      content: "{}"
 
   - method: GET
     path: /authorization
@@ -89,26 +88,8 @@ resources:
 
   - method: GET
     path: /authorization
-    requestHeaders:
-      session-id: "authorization-error"
     response:
-      statusCode: 500
-      content: |
-        {
-          "redirect_uri": "http://example.net",
-          "oauth_error": {
-            "error_description": "gateway",
-            "error": "server_error"
-          }
-        }
-
-  - method: POST
-    path: /favourite
-    requestHeaders:
-      session-id: "authorization-error"
-    response:
-      template: true
-      statusCode: 500
+      statusCode: 400
       content: |
         {
           "redirect_uri": "http://example.net",
@@ -124,9 +105,7 @@ resources:
       session-id: "success"
     requestBody:
       allOf:
-        - jsonPath: $.key
-          value: "nino"
-        - jsonPath: $.value
+        - jsonPath: $.nino
           value: "AA123455D"
     response:
       statusCode: 200
@@ -139,9 +118,7 @@ resources:
       session-id: "success"
     requestBody:
       allOf:
-        - jsonPath: $.key
-          value: "nino"
-        - jsonPath: $.value
+        - jsonPath: $.nino
           value: "RT123456A"
     response:
       statusCode: 422
@@ -156,3 +133,16 @@ resources:
       statusCode: 500
       content: |
         {}
+
+  - method: POST
+    path: /check
+    response:
+      statusCode: 500
+      content: |
+        {
+          "redirect_uri": "http://example.net",
+          "oauth_error": {
+            "error_description": "gateway",
+            "error": "server_error"
+          }
+        }

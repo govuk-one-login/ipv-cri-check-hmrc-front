@@ -32,7 +32,7 @@ describe("national insurance number", () => {
 
       expect(req.axios.post).toHaveBeenCalledWith(
         CHECK,
-        { key: "nino", value: "AA12" },
+        { nino: "AA12" },
         {
           headers: {
             "session-id": req.session.tokenId,
