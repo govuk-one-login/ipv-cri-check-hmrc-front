@@ -290,7 +290,7 @@ Resources:
           Environment:
             - Name: API_BASE_URL
               Value: !Sub
-                - "https://${APIGatewayId}-${VpceId},.execute-api.${AWS::Region}.amazonaws.com/${Environment}"
+                - "https://${APIGatewayId}-${VpceId}.execute-api.${AWS::Region}.amazonaws.com/${Environment}"
                 - APIGatewayId:
                     Fn::ImportValue: check-hmrc-cri-api-PrivateApiGatewayId
                   VpceId:
