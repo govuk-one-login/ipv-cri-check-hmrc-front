@@ -1,7 +1,7 @@
 nationalInsuranceNumber:
   content: " "
-  label: Beth yw eich rhif yswiriant gwladol? (WIP)
-  hint: Mae ar eich cerdyn Yswiriant Gwladol, llythyr budd-dal, slip cyflog neu P60. Er enghraifft, 'QQ123456C' (WIP)
+  label: Beth yw eich rhif Yswiriant Gwladol?
+  hint: Mae ar eich cerdyn Yswiriant Gwladol, llythyr budd-dal, slip cyflog neu P60. Er enghraifft, 'QQ123456C'
   validation:
-    required: Rhowch eich Rhif Yswiriant Gwladol (WIP)
+    required: Rhowch eich Rhif Yswiriant Gwladol
     nino: Rhowch Rif Yswiriant Gwladol dilys (WIP)
