@@ -1,3 +1,5 @@
+const { isValidNino } = require("../../lib/validator");
+
 module.exports = {
   nationalInsuranceNumber: {
     type: "text",
@@ -6,9 +8,8 @@ module.exports = {
         type: "required",
       },
       {
-        type: "maxlength",
-        fn: "maxlength",
-        arguments: [30],
+        type: "nino",
+        fn: isValidNino,
       },
     ],
   },

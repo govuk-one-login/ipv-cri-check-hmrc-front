@@ -20,4 +20,8 @@ module.exports = class PlaywrightDevPage {
   async enterNINO(value) {
     await this.page.fill("#nationalInsuranceNumber", value);
   }
+
+  hasErrorSummary() {
+    return this.page.locator(".govuk-error-summary");
+  }
 };

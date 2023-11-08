@@ -1,6 +1,7 @@
 nationalInsuranceNumber:
   content: " "
-  label: What is your national insurance number?
-  hint: It's on your National Insurance card, benefit letter, payslip or P60. For example, 'QQ123456C'
+  label: Beth yw eich rhif yswiriant gwladol? (WIP)
+  hint: Mae ar eich cerdyn Yswiriant Gwladol, llythyr budd-dal, slip cyflog neu P60. Er enghraifft, 'QQ123456C' (WIP)
   validation:
-    required: Enter your National Insurance Number
+    required: Rhowch eich Rhif Yswiriant Gwladol (WIP)
+    nino: Rhowch Rif Yswiriant Gwladol dilys (WIP)

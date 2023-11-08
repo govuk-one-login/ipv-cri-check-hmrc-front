@@ -4,3 +4,4 @@ nationalInsuranceNumber:
   hint: It's on your National Insurance card, benefit letter, payslip or P60. For example, 'QQ123456C'
   validation:
     required: Enter your National Insurance Number
+    nino: Enter a valid National Insurance Number
