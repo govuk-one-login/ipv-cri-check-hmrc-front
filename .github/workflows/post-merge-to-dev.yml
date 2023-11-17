@@ -1,0 +1,29 @@
+name: DEV Post merge, deploy Docker build, ECR push, template copy to S3
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Deploy Manually
+
+jobs:
+  development:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        include:
+          - environment: DEV
+    name: ${{ matrix.environment }} docker build and push
+    env:
+      AWS_REGION: eu-west-2
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: "Push signed image to ECR, updated SAM template with image then upload it to the S3 Artifact Bucket"
+        uses: govuk-one-login/devplatform-upload-action-ecr@1.0.5
+        with:
+          artifact-bucket-name: ${{ secrets[format('{0}_{1}', matrix.environment, 'ARTIFACT_BUCKET_NAME')] }}
+          template-file: deploy/template.yaml
+          role-to-assume-arn: ${{ secrets[format('{0}_{1}', matrix.environment, 'GH_ACTIONS_ROLE_ARN')] }}
+          ecr-repo-name: ${{ secrets[format('{0}_{1}', matrix.environment, 'ECR_NAME_FRONT')] }}
