@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - bau-add-deploy-to-dev
   workflow_dispatch: # Deploy Manually
 
 jobs:
