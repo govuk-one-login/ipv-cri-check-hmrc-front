@@ -14,6 +14,9 @@ module.exports = {
     PATHS: {
       CHECK: "/check",
     },
+    COOKIE: {
+      SECURE: process.env.COOKIE_SECURE || "true"
+    },
     ANALYTICS: {
       ID: process.env.ANALYTICS_UA_ID,
       GA4_ID: process.env.ANALYTICS_GA4_ID,

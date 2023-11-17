@@ -54,7 +54,7 @@ const dynamoDBSessionStore = new DynamoDBStore({
 const sessionConfig = {
   cookieName: "service_session",
   secret: SESSION_SECRET,
-  cookieOptions: { maxAge: SESSION_TTL },
+  cookieOptions: { maxAge: SESSION_TTL, secure: APP.COOKIE === "true" },
   ...(SESSION_TABLE_NAME && { sessionStore: dynamoDBSessionStore }),
 };
 
