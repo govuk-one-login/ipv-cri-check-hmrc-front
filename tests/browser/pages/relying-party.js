@@ -14,7 +14,7 @@ module.exports = class PlaywrightDevPage {
     this.startingURL = new URL(this.oauthPath, this.baseURL);
 
     // Relying Party Return URL
-    this.relyingPartyURL = new URL("http://example.net");
+    this.relyingPartyURL = new URL(process.env.API_HOST || "http://localhost:8080");
   }
 
   async goto() {

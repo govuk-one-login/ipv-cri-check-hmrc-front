@@ -17,7 +17,7 @@ resources:
         {
           "session_id": "success",
           "state": "sT@t3",
-          "redirect_uri": "http://example.net/return"
+          "redirect_uri": "${system.server.url}/system/status"
         }
 
   - method: POST
@@ -32,7 +32,7 @@ resources:
         {
           "session_id": "authorization-error",
           "state": "sT@t3",
-          "redirect_uri": "http://example.net/return"
+          "redirect_uri": "${system.server.url}/system/status"
         }
 
   - method: POST
@@ -47,7 +47,7 @@ resources:
         {
           "session_id": "check-error",
           "state": "sT@t3",
-          "redirect_uri": "http://example.net/return"
+          "redirect_uri": "${system.server.url}/system/status"
         }
 
   - method: POST
@@ -83,16 +83,17 @@ resources:
             "value":"auth-code-${random.uuid()}"
           },
           "state":"sT@t3",
-          "redirect_uri":"http://example.net/return"
+          "redirect_uri":"${system.server.url}/system/status"
         }
 
   - method: GET
     path: /authorization
     response:
       statusCode: 400
+      template: true
       content: |
         {
-          "redirect_uri": "http://example.net",
+          "redirect_uri": "${system.server.url}/system/status",
           "oauth_error": {
             "error_description": "gateway",
             "error": "server_error"
@@ -108,6 +109,9 @@ resources:
         - jsonPath: $.nino
           value: "AA123455D"
     response:
+      delay:
+        min: 100
+        max: 900
       statusCode: 200
       content: |
         {}
@@ -137,10 +141,11 @@ resources:
   - method: POST
     path: /check
     response:
+      template: true
       statusCode: 500
       content: |
         {
-          "redirect_uri": "http://example.net",
+          "redirect_uri": "${system.server.url}/system/status",
           "oauth_error": {
             "error_description": "gateway",
             "error": "server_error"
