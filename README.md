@@ -129,6 +129,39 @@ They use Jest as the test runner, which is configured using [jest.config.js](./j
 
 Browser tests are run from the [tests/browser](./tests/browser/) folder, with appropriate quick start documentation located there.subfolder of this project, with more details available there.
 
+### Running the application in Docker
+
+Docker allows performance testing to be performed locally against the Node system, we can containerise the frontend application and configure it to point to a
+deployed API or mock API enabling us to test the application locally with similar performance limits to production for memory and CPU.
+
+#### Create the Docker image
+
+```
+docker build -t check-front:latest .
+```
+
+#### Run the Docker image setting memory and CPU limits
+
+Once the image is created, we can use this to spin up a container of the front end using variables to set the
+amount of memory and CPUs
+
+```
+docker run --memory 1024m --cpus 2 --publish 9050:8080 --env API_BASE_URL=http://localhost:8080 ipv-cri-check-hmrc-front-frontend
+```
+
+#### Deployed API or Mock
+
+For the front end to work correctly, you will need to use a mock API so for this Imposter has been used. Imposter can be ran locally using:
+
+```
+imposter up
+```
+
+#### Dynatrace
+
+With the inclusion of dynatrace in the repository, local testing errors due to authentication. A possible solution to this is to use
+a local.Dockerfile without the dynatrace layer.
+
 ## Licence
 
 The codebase is released under the [MIT License](./LICENSE).
