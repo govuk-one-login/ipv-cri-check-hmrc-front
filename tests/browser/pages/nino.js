@@ -24,4 +24,9 @@ module.exports = class PlaywrightDevPage {
   hasErrorSummary() {
     return this.page.locator(".govuk-error-summary");
   }
+
+  async hasErrorBanner() {
+    const banner = await this.page.locator(".govuk-notification-banner");
+    return banner.isVisible();
+  }
 };
