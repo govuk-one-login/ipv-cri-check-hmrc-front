@@ -37,3 +37,11 @@ Given('they enter a national insurance number that requires a retry', async func
 
   await ninoPage.enterNINO("RT123456A");
 })
+
+Then('they should see the national insurance number not found error box', async function () {
+  const ninoPage = new NinoPage(this.page);
+  const errorBanner = await ninoPage.hasErrorBanner();
+
+  expect(errorBanner).to.be.true;
+
+})
