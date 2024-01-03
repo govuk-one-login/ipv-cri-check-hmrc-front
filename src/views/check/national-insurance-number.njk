@@ -4,6 +4,31 @@
 {% set hmpoPageContent = "national-insurance-number" %}
 {% set gtmJourney = "check - middle" %}
 
+{% block mainContent %}
+
+ {% if showRetryErrorSummary == true %}
+
+    {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+    {% set html %}
+
+    <p class="govuk-notification-banner__heading">We could not find your National Insurance number</p>
+    <p>Check your National Insurance number is entered correctly and try again.</p>
+
+    {% endset %}
+
+    {{ govukNotificationBanner({
+      classes: 'di-error-state',
+      titleText: 'Error',
+      html: html
+      }) }}
+
+  {% endif %}
+
+  {{ super() }}
+
+{% endblock %}
+
 {% block submitButton %}
   {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
 {% endblock %}

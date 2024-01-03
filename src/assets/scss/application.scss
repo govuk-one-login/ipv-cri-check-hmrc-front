@@ -2,3 +2,9 @@ $govuk-assets-path: "/public/";
 
 @import "../../../node_modules/govuk-frontend/govuk/all";
 @import "../../../node_modules/hmpo-components/all";
+
+.di-error-state,
+.govuk-notification-banner__header.di-error-state {
+  border-color: $govuk-error-colour;
+  background-color: $govuk-error-colour;
+}
