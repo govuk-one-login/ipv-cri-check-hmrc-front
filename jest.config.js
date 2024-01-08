@@ -14,7 +14,7 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.{js,ts}", "!**/tests/**"],
   coverageDirectory: "coverage",
-  coverageProvider: "v8",
+  coverageProvider: "babel",
   coveragePathIgnorePatterns: [
     "node_modules",
     ".*.test.js",
