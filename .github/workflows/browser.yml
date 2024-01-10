@@ -26,12 +26,18 @@ jobs:
           password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
 
       - name: Start Docker
+        id: start-docker
         run: docker compose up web mocks --detach
         working-directory: tests/docker
 
       - name: Run Cucumber tests
+        id: run-cucumber
         run: docker compose up cucumber --exit-code-from cucumber
         working-directory: tests/docker
+
+      - name: Show logs
+        run: docker logs docker-web-1
+        if: ${{ steps.run-cucumber.outcome != 'success'}}
 
       - name: Stop Docker
         run: docker compose down
