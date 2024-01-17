@@ -30,6 +30,11 @@ AfterAll(async function () {
 });
 
 Before(async function ({ pickle } = {}) {
+  console.log(process.env.MOCK_API);
+  console.log(process.env.WEBSITE_HOST);
+
+  console.log(pickle);
+
   // Only if MOCK_API do we use the @mock-api -> client_id mapping
   if (!(process.env.MOCK_API === "true")) {
     return;
@@ -38,11 +43,15 @@ Before(async function ({ pickle } = {}) {
   const tags = pickle.tags || [];
   const tag = tags.find((tag) => tag.name.startsWith("@mock-api:"));
 
+  console.log(tag);
+
   if (!tag) {
     return;
   }
 
   const header = tag?.name.substring(10);
+
+  console.log(`client id header: ${header}`);
 
   this.TESTING_CLIENT_ID = header;
 });

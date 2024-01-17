@@ -13,6 +13,8 @@ module.exports = class PlaywrightDevPage {
     this.oauthPath = `/oauth2/authorize?request=lorem&client_id=${this.clientId}`;
     this.startingURL = new URL(this.oauthPath, this.baseURL);
 
+    console.log(this.startingURL);
+
     // Relying Party Return URL
     this.relyingPartyURL = new URL("http://example.net");
   }
