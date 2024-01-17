@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "NODE_ENV=development nodemon src/app.js",
-    "lint": "eslint",
+    "lint:eslint": "eslint .",
+    "lint:prettier": "prettier --check .",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "lint:fix": "npm run lint:eslint -- --fix && npm run lint:prettier -- --write",
     "build": "npm run build:sass && npm run build:js && npm run copy-assets",
     "build:js": "npm run build:js:application && npm run build:js:cookies && npm run build:js:all",
     "build:js:all": "mkdir -p dist/public/javascripts; uglifyjs node_modules/govuk-frontend/govuk/all.js node_modules/hmpo-components/all.js --beautify -o dist/public/javascripts/all.js",
