@@ -4,7 +4,7 @@ module.exports = {
     node: true,
     es6: true,
     es2020: true,
-    mocha: true,
+    jest: true,
   },
   globals: {
     sinon: true,
@@ -26,4 +26,20 @@ module.exports = {
       { blankLine: "any", prev: "*", next: "*" },
     ],
   },
+  overrides: [
+    {
+      files: "tests/unit/**/*",
+      plugins: ["jest"],
+      extends: ["plugin:jest/style", "plugin:jest/recommended"],
+    },
+    {
+      files: "tests/**/*",
+      rules: {
+        "no-unused-vars": [
+          "error",
+          { varsIgnorePattern: "^_", argsIgnorePattern: "^_" },
+        ],
+      },
+    },
+  ],
 };
