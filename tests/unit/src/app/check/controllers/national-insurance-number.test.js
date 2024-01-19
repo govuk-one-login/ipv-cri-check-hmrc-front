@@ -54,7 +54,7 @@ describe("national insurance number", () => {
 
     describe("on API failure", () => {
       it("should call next with error", async () => {
-        let error = new Error("Async error message");
+        const error = new Error("Async error message");
         req.axios.post = jest.fn().mockRejectedValue(error);
 
         await controller.saveValues(req, res, next);

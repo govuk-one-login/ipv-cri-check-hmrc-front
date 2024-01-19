@@ -1,4 +1,7 @@
 require("dotenv").config();
+require("axios");
+
+const { chromium } = require("playwright");
 
 const {
   Before,
@@ -7,8 +10,6 @@ const {
   After,
   setDefaultTimeout,
 } = require("@cucumber/cucumber");
-const { chromium } = require("playwright");
-const axios = require("axios");
 
 // FIXME This is large due to cold starts
 setDefaultTimeout(30 * 1000);
