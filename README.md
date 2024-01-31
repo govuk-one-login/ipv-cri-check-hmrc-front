@@ -1,7 +1,7 @@
-# di-ipv-cri-check-hmrc-front
+# ipv-cri-check-hmrc-front
 
-[![Github Action: Unit Tests](https://github.com/alphagov/di-ipv-cri-check-hmrc-front/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/alphagov/di-ipv-cri-check-hmrc-front/actions/workflows/unit-tests.yml?query=branch%3Amain)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=alphagov_di-ipv-cri-check-hmrc-front&metric=coverage)](https://sonarcloud.io/summary/new_code?id=alphagov_di-ipv-cri-check-hmrc-front)
+[![GitHub Action: Scan repository](https://github.com/govuk-one-login/ipv-cri-check-hmrc-front/actions/workflows/scan-repo.yml/badge.svg?branch=main)](https://github.com/govuk-one-login/ipv-cri-check-hmrc-front/actions/workflows/scan-repo.yml?query=branch%3Amain)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ipv-cri-check-hmrc-front&metric=coverage)](https://sonarcloud.io/summary/overall?id=ipv-cri-check-hmrc-front)
 
 > Note: This repository is templated as part of [di-ipv-cri-templates](https://github.com/alphagov/di-ipv-cri-templates), and any substational changes that can be shared should be included back into that repository for re-use elsewhere
 
