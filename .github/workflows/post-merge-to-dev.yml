@@ -26,10 +26,16 @@ jobs:
           registry: khw46367.live.dynatrace.com
           username: khw46367
           password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
+
+      - name: SAM Validate
+        run: sam validate --region ${{ env.AWS_REGION }} -t deploy/template.yaml
+
       - name: "Push signed image to ECR, updated SAM template with image then upload it to the S3 Artifact Bucket"
-        uses: govuk-one-login/devplatform-upload-action-ecr@1.0.5
+        uses: govuk-one-login/devplatform-upload-action-ecr@1.2.0
         with:
           artifact-bucket-name: ${{ secrets[format('{0}_{1}', matrix.environment, 'ARTIFACT_BUCKET_NAME')] }}
           template-file: deploy/template.yaml
+          working-directory: .
+          docker-build-path: .
           role-to-assume-arn: ${{ secrets[format('{0}_{1}', matrix.environment, 'GH_ACTIONS_ROLE_ARN')] }}
           ecr-repo-name: ${{ secrets[format('{0}_{1}', matrix.environment, 'ECR_NAME_FRONT')] }}
