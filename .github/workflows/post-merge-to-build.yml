@@ -1,4 +1,4 @@
-name: Post merge, deploy Docker build, ECR push, template copy to S3
+name: BUILD Post merge, deploy Docker build, ECR push, template copy to S3
 on:
   push:
     branches:
@@ -6,18 +6,17 @@ on:
 jobs:
   development:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 1
-      matrix:
-        include:
-          - environment: BUILD
-    name: ${{ matrix.environment }} docker build and push
+    name: Build docker build and push
     env:
       AWS_REGION: eu-west-2
     permissions:
       id-token: write
       contents: read
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: "0"
+
       - name: Login to GDS Dev Dynatrace Container Registry
         uses: docker/login-action@v3
         with:
@@ -31,10 +30,10 @@ jobs:
       - name: "Push signed image to ECR, updated SAM template with image then upload it to the S3 Artifact Bucket"
         uses: govuk-one-login/devplatform-upload-action-ecr@1.2.0
         with:
-          artifact-bucket-name: ${{ secrets[format('{0}_{1}', matrix.environment, 'ARTIFACT_BUCKET_NAME')] }}
-          container-sign-kms-key-arn: ${{ secrets[format('{0}_{1}', matrix.environment, 'CONTAINER_SIGN_KMS_KEY')] }}
+          artifact-bucket-name: ${{ secrets.BUILD_ARTIFACT_BUCKET_NAME }}
+          container-sign-kms-key-arn: ${{ secrets.BUILD_CONTAINER_SIGN_KMS_KEY }}
           working-directory: .
           template-file: deploy/template.yaml
           docker-build-path: .
-          role-to-assume-arn: ${{ secrets[format('{0}_{1}', matrix.environment, 'GH_ACTIONS_ROLE_ARN')] }}
-          ecr-repo-name: ${{ secrets[format('{0}_{1}', matrix.environment, 'ECR_NAME_FRONT')] }}
+          role-to-assume-arn: ${{ secrets.BUILD_GH_ACTIONS_ROLE_ARN }}
+          ecr-repo-name: ${{ secrets.BUILD_ECR_NAME_FRONT }}
