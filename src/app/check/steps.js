@@ -10,6 +10,23 @@ module.exports = {
   "/national-insurance-number": {
     controller: ninoController,
     fields: ["nationalInsuranceNumber"],
-    next: "/oauth2/callback",
+    next: [
+      {
+        fn: ninoController.prototype.hasRedirectToRetryShowing,
+        next: "could-not-match-national-insurance",
+      },
+      "/oauth2/callback",
+    ],
+  },
+  "/could-not-match-national-insurance": {
+    fields: ["retryNationalInsuranceRadio"],
+    next: [
+      {
+        field: "retryNationalInsuranceRadio",
+        value: "retryNationalInsurance",
+        next: "national-insurance-number",
+      },
+      "/oauth2/callback",
+    ],
   },
 };
