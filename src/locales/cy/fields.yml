@@ -4,4 +4,23 @@ nationalInsuranceNumber:
   hint: Mae ar eich cerdyn Yswiriant Gwladol, llythyr budd-dal, slip cyflog neu P60. Er enghraifft, 'QQ123456C'
   validation:
     required: Rhowch eich Rhif Yswiriant Gwladol
-    nino: Rhowch Rif Yswiriant Gwladol dilys (WIP)
+    nino: Rhowch Rif Yswiriant Gwladol dilys
+
+retryNationalInsuranceRadio:
+  label: Beth hoffech chi ei wneud?
+  legend: Beth hoffech chi ei wneud?
+  hint: ""
+  content: ""
+  validation:
+    required: Mae'n rhaid i chi ddewis opsiwn i barhau
+  items:
+    retryNationalInsurance:
+      label: Gwirio eich rhif Yswiriant Gwladol a cheisio eto
+      value: continue
+      hint: ""
+      reveal: ""
+    findAnotherWay:
+      label: Dod o hyd i ffordd arall o brofi eich hunaniaeth
+      value: stop
+      hint: Ewch yn ôl i'r gwasanaeth rydych angen ei ddefnyddio neu ddefnyddiwch ID gyda llun
+      reveal: ""

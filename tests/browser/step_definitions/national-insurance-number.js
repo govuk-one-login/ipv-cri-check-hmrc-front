@@ -31,3 +31,12 @@ When(/^they enter a bad national insurance number$/, async function () {
 
   await ninoPage.enterNINO("QQ123456Q");
 });
+
+When(
+  "they enter a national insurance number that requires a retry",
+  async function () {
+    const ninoPage = new NinoPage(this.page);
+
+    await ninoPage.enterNINO("RT123456A");
+  }
+);

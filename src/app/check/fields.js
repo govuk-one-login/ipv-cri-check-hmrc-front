@@ -13,4 +13,9 @@ module.exports = {
       },
     ],
   },
+  retryNationalInsuranceRadio: {
+    type: "radios",
+    items: ["retryNationalInsurance", "findAnotherWay"],
+    validate: ["required"],
+  },
 };

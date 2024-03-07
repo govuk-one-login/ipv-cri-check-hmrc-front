@@ -1,0 +1,9 @@
+{% extends "base-form.njk" %}
+
+{% set hmpoPageKey = "could-not-match-national-insurance" %}
+{% set hmpoPageContent = "could-not-match-national-insurance" %}
+{% set gtmJourney = "check - retry" %}
+
+{% block submitButton %}
+  {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
+{% endblock %}
