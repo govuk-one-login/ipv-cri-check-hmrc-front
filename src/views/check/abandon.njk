@@ -1,0 +1,9 @@
+{% extends "base-form.njk" %}
+
+{% set hmpoPageKey = "abandon" %}
+{% set hmpoPageContent = "abandon" %}
+{% set gtmJourney = "abandon" %}
+
+{% block submitButton %}
+  {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
+{% endblock %}

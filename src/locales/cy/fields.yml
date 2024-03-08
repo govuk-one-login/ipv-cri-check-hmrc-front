@@ -24,3 +24,25 @@ retryNationalInsuranceRadio:
       value: stop
       hint: Ewch yn ôl i'r gwasanaeth rydych angen ei ddefnyddio neu ddefnyddiwch ID gyda llun
       reveal: ""
+
+abandonRadio:
+  label: Beth hoffech chi ei wneud?
+  legend: Beth hoffech chi ei wneud?
+  hint: ""
+  content: ""
+  validation:
+    required: Mae'n rhaid i chi ddewis opsiwn i barhau
+  items:
+    abandon:
+      label: Dod o hyd i ffordd arall o brofi eich hunaniaeth
+      value: stop
+      hint: Ewch yn ôl i'r gwasanaeth rydych angen ei ddefnyddio neu ddefnyddiwch ID gyda llun
+      reveal: ""
+    findAnotherWay:
+      label: Rhowch eich rhif Yswiriant Gwladol a pharhau i brofi eich hunaniaeth
+      value: continue
+      hint: ""
+      reveal: ""
+
+abandonWarning:
+  content: "Ni allwch ddychwelyd i'r sgrin hon os ydych yn chwilio am ffordd arall o brofi eich hunaniaeth."
