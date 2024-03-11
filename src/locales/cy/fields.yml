@@ -38,7 +38,7 @@ abandonRadio:
       value: stop
       hint: Ewch yn ôl i'r gwasanaeth rydych angen ei ddefnyddio neu ddefnyddiwch ID gyda llun
       reveal: ""
-    findAnotherWay:
+    retryNationalInsurance:
       label: Rhowch eich rhif Yswiriant Gwladol a pharhau i brofi eich hunaniaeth
       value: continue
       hint: ""
@@ -46,3 +46,6 @@ abandonRadio:
 
 abandonWarning:
   content: "Ni allwch ddychwelyd i'r sgrin hon os ydych yn chwilio am ffordd arall o brofi eich hunaniaeth."
+
+abandonLink:
+  content: "<a href='/check/abandon' class='govuk-link' id='abandon-link' data-id='abandon'> I do not have my NINO </a>"

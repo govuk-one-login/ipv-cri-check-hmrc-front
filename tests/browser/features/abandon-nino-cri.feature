@@ -5,7 +5,7 @@ Feature: Abandon NINO CRI
     Given Happy Harriet is using the system
     And they have started the journey
     And they should see the national insurance number page
-    When they click on the abandon link
+    When they click on the abandon link from enter national insurance page
     Then they should see the abandon page
 
   Scenario: Validation on abandon page

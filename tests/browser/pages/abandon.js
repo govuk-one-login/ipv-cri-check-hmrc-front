@@ -30,8 +30,22 @@ module.exports = class PlaywrightDevPage {
 
   async selectReturn() {
     await this.page
-      .locator(`input[type="radio"][value="findAnotherWay"]`)
+      .locator(`input[type="radio"][value="retryNationalInsurance"]`)
       .first()
       .check();
+  }
+
+  hasErrorQueryParams() {
+    const { searchParams } = new URL(this.page.url());
+    return (
+      searchParams.get("error") === "access_denied" &&
+      searchParams.get("error_description") === 403
+    );
+  }
+
+  isErrorCode() {
+    const { searchParams } = new URL(this.page.url());
+
+    return searchParams.get("error") && searchParams.get("error") === 403;
   }
 };

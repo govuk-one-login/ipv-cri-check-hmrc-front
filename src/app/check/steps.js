@@ -31,6 +31,7 @@ module.exports = {
     ],
   },
   "/abandon": {
+    prereqs: ["/check"],
     fields: ["abandonRadio"],
     controller: AbandonController,
     next: [

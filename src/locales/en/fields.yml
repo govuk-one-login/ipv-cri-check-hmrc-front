@@ -48,4 +48,4 @@ abandonWarning:
   content: "You cannot return to this screen if you look for another way to prove your identity."
 
 abandonLink:
-  content: "<a href='/check/abandon' class='govuk-link' data-id='abandon'> I cannot answer this question </a>"
+  content: "<a href='/check/abandon' class='govuk-link' id='abandon-link' data-id='abandon'> I do not have my NINO </a>"

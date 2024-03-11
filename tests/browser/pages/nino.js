@@ -24,4 +24,8 @@ module.exports = class PlaywrightDevPage {
   hasErrorSummary() {
     return this.page.locator(".govuk-error-summary");
   }
+
+  async selectAbandon() {
+    await this.page.click("#abandon-link");
+  }
 };

@@ -7,6 +7,5 @@ could-not-match-national-insurance:
     - We could not find a match for your National Insurance number when we checked with HMRC.
     - You can check your National Insurance number and try again. You’ll only be able to do this once.
 abandon:
-  abandonLink: "<a href='/check/abandon' class='govuk-link' data-id='abandonlink'>I cannot answer this question</a>"
   content: " "
   h1: "What would you like to do?"
