@@ -8,47 +8,23 @@ resources:
   - method: POST
     path: /session
     requestBody:
-      jsonPath: $.client_id
-      value: "success"
+      anyOf:
+        - jsonPath: $.client_id
+          value: "success"
+        - jsonPath: $.client_id
+          value: "authorization-error"
+        - jsonPath: $.client_id
+          value: "check-error"
+        - jsonPath: $.client_id
+          value: "access-denied"
+    capture:
+      cid:
+        jsonPath: $.client_id
+        store: testStore
     response:
       statusCode: 201
       template: true
-      content: |
-        {
-          "session_id": "success",
-          "state": "sT@t3",
-          "redirect_uri": "http://example.net/return"
-        }
-
-  - method: POST
-    path: /session
-    requestBody:
-      jsonPath: $.client_id
-      value: "authorization-error"
-    response:
-      statusCode: 201
-      template: true
-      content: |
-        {
-          "session_id": "authorization-error",
-          "state": "sT@t3",
-          "redirect_uri": "http://example.net/return"
-        }
-
-  - method: POST
-    path: /session
-    requestBody:
-      jsonPath: $.client_id
-      value: "check-error"
-    response:
-      statusCode: 201
-      template: true
-      content: |
-        {
-          "session_id": "check-error",
-          "state": "sT@t3",
-          "redirect_uri": "http://example.net/return"
-        }
+      content: '{"session_id": "${stores.testStore.cid}","state": "sT@t3","liam": "yes","redirect_uri": "http://example.net/return"}'
 
   - method: POST
     path: /session
@@ -88,6 +64,22 @@ resources:
 
   - method: GET
     path: /authorization
+    requestHeaders:
+      session-id: "access-denied"
+    response:
+      template: true
+      statusCode: 403
+      content: |
+        {
+          "redirect_uri": "http://example.net",
+          "oauth_error": {
+            "error_description": "gateway",
+            "error": "access_denied"
+          }
+        }
+
+  - method: GET
+    path: /authorization
     response:
       statusCode: 400
       content: |
@@ -103,6 +95,19 @@ resources:
     path: /check
     requestHeaders:
       session-id: "success"
+    requestBody:
+      allOf:
+        - jsonPath: $.nino
+          value: "AA123455D"
+    response:
+      statusCode: 200
+      content: |
+        {}
+
+  - method: POST
+    path: /check
+    requestHeaders:
+      session-id: "access-denied"
     requestBody:
       allOf:
         - jsonPath: $.nino
@@ -146,3 +151,10 @@ resources:
             "error": "server_error"
           }
         }
+
+  - method: POST
+    path: /abandon
+    response:
+      statusCode: 200
+      content: |
+        {}

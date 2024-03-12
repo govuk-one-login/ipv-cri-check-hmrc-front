@@ -34,18 +34,4 @@ module.exports = class PlaywrightDevPage {
       .first()
       .check();
   }
-
-  hasErrorQueryParams() {
-    const { searchParams } = new URL(this.page.url());
-    return (
-      searchParams.get("error") === "access_denied" &&
-      searchParams.get("error_description") === 403
-    );
-  }
-
-  isErrorCode() {
-    const { searchParams } = new URL(this.page.url());
-
-    return searchParams.get("error") && searchParams.get("error") === 403;
-  }
 };

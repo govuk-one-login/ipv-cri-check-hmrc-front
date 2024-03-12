@@ -1,4 +1,4 @@
-@mock-api:success @abandon
+@mock-api:access-denied @abandon
 Feature: Abandon NINO CRI
 
   Background:
