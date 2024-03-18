@@ -36,3 +36,11 @@ Then("they should be redirected as access denied", function () {
   const { searchParams } = new URL(rpPage.page.url());
   assert.equal(searchParams.get("error"), "access_denied");
 });
+
+Then("they should be redirected as an error", function () {
+  const rpPage = new RelyingPartyPage(this.page);
+
+  expect(rpPage.isRelyingPartyServer()).to.be.true;
+  const { searchParams } = new URL(rpPage.page.url());
+  assert.equal(searchParams.get("error"), "server_error");
+});

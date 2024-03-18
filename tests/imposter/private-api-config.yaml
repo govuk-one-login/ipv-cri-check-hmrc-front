@@ -17,6 +17,8 @@ resources:
           value: "check-error"
         - jsonPath: $.client_id
           value: "access-denied"
+        - jsonPath: $.client_id
+          value: "abandon-fail"
     capture:
       cid:
         jsonPath: $.client_id
@@ -156,5 +158,14 @@ resources:
     path: /abandon
     response:
       statusCode: 200
+      content: |
+        {}
+
+  - method: POST
+    path: /abandon
+    requestHeaders:
+      session-id: "abandon-fail"
+    response:
+      statusCode: 400
       content: |
         {}
