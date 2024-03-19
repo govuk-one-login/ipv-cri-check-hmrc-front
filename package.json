@@ -21,7 +21,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@govuk-one-login/di-ipv-cri-common-express": "5.1.0",
+    "@govuk-one-login/di-ipv-cri-common-express": "6.1.0",
+    "@govuk-one-login/one-login-analytics": "0.0.9",
     "aws-sdk": "2.1376.0",
     "axios": "1.6.7",
     "cfenv": "1.2.4",
