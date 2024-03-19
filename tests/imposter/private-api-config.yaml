@@ -26,7 +26,7 @@ resources:
     response:
       statusCode: 201
       template: true
-      content: '{"session_id": "${stores.testStore.cid}","state": "sT@t3","liam": "yes","redirect_uri": "http://example.net/return"}'
+      content: '{"session_id": "${stores.testStore.cid}","state": "sT@t3","redirect_uri": "http://example.net/return"}'
 
   - method: POST
     path: /session

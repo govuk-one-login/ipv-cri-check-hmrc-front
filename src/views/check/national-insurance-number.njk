@@ -1,11 +1,25 @@
 {% extends "base-form.njk" %}
+{% from "hmpo-text/macro.njk" import hmpoText %}
+{% from "hmpo-form/macro.njk" import hmpoForm %}
 
 {% set hmpoPageKey = "national-insurance-number" %}
 {% set hmpoPageContent = "national-insurance-number" %}
 {% set gtmJourney = "check - middle" %}
 
-{% block submitButton %}
-  {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
+{% block mainContent %}
+  {% call hmpoForm(ctx) %}
+      {{ hmpoText(ctx, {
+            id: "nationalInsuranceNumber",
+            namePrefix: "nationalInsuranceNumber",
+            label: {
+                isPageHeading: true,
+                classes: "govuk-label--m"
+            }
+
+        }) }}
+
+    {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
+  {% endcall %}
 
   {{ hmpoHtml(translate("fields.abandonLink")) }}
 {% endblock %}

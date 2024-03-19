@@ -1,9 +1,26 @@
 {% extends "base-form.njk" %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "hmpo-radios/macro.njk" import hmpoRadios %}
+{% from "hmpo-form/macro.njk" import hmpoForm %}
 
 {% set hmpoPageKey = "abandon" %}
 {% set hmpoPageContent = "abandon" %}
 {% set gtmJourney = "abandon - start" %}
 
-{% block submitButton %}
-  {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
+{% block mainContent %}
+  {% call hmpoForm(ctx) %}
+      {{ hmpoRadios(ctx, {
+            id: "abandonRadio",
+            namePrefix: "abandonRadio",
+            fieldset: {
+                legend: {
+                    isPageHeading: true,
+                    classes: "govuk-fieldset__legend--l"
+                }
+            }
+        }) }}
+
+    {{ govukWarningText({text: translate("abandonWarning.content")}) }}
+    {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
+  {% endcall %}
 {% endblock %}

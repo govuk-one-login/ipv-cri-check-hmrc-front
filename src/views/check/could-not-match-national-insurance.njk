@@ -1,9 +1,24 @@
 {% extends "base-form.njk" %}
+{% from "hmpo-radios/macro.njk" import hmpoRadios %}
+{% from "hmpo-form/macro.njk" import hmpoForm %}
 
 {% set hmpoPageKey = "could-not-match-national-insurance" %}
 {% set hmpoPageContent = "could-not-match-national-insurance" %}
 {% set gtmJourney = "check - retry" %}
 
-{% block submitButton %}
-  {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
+{% block mainContent %}
+  {% call hmpoForm(ctx) %}
+      {{ hmpoRadios(ctx, {
+            id: "retryNationalInsuranceRadio",
+            namePrefix: "retryNationalInsuranceRadio",
+            fieldset: {
+                legend: {
+                    isPageHeading: true,
+                    classes: "govuk-fieldset__legend--l"
+                }
+            }
+        }) }}
+
+    {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
+  {% endcall %}
 {% endblock %}

@@ -1,14 +1,8 @@
 national-insurance-number:
-  content: " "
-  h1: " "
   title: "Beth yw eich rhif Yswiriant Gwladol - Welcome to GOV.UK  One Login"
 could-not-match-national-insurance:
-  title: "Beth hoffech chi ei wneud - Welcome to GOV.UK  One Login"
-  h1: "Nid oeddem yn gallu dod o hyd i wybodaeth sy'n cyfateb â'ch rhif Yswiriant Gwladol"
   content:
     - Nid oeddem yn gallu dod o hyd i wybodaeth sy'n cyfateb i'ch rhif Yswiriant Gwladol pan wnaethom wirio gyda CThEF.
     - Gallwch wirio eich rhif Yswiriant Gwladol a cheisio eto. Dim ond unwaith y gallwch wneud hyn.
 abandon:
-  content: " "
-  h1: " "
   title: "Beth hoffech chi ei wneud - Welcome to GOV.UK  One Login"

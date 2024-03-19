@@ -41,7 +41,7 @@ abandonRadio:
     retryNationalInsurance:
       label: Enter your National Insurance number and continue to prove your identity
       value: continue
-      hint: ""
+      hint: "You can find it on your payslip, P60 or benefit letters."
       reveal: ""
 
 abandonWarning:
