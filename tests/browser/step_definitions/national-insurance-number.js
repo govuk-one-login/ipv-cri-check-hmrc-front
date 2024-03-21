@@ -40,3 +40,11 @@ When(
     await ninoPage.enterNINO("RT123456A");
   }
 );
+
+When(
+  "they click on the abandon link from enter national insurance page",
+  async function () {
+    const ninoPage = new NinoPage(this.page);
+    await ninoPage.selectAbandon();
+  }
+);

@@ -24,3 +24,28 @@ retryNationalInsuranceRadio:
       value: stop
       hint: Ewch yn ôl i'r gwasanaeth rydych angen ei ddefnyddio neu ddefnyddiwch ID gyda llun
       reveal: ""
+
+abandonRadio:
+  label: Beth hoffech chi ei wneud?
+  legend: Beth hoffech chi ei wneud?
+  hint: ""
+  content: ""
+  validation:
+    required: Mae'n rhaid i chi ddewis opsiwn i barhau
+  items:
+    abandon:
+      label: Dod o hyd i ffordd arall o brofi eich hunaniaeth
+      value: stop
+      hint: Ewch yn ôl i'r gwasanaeth rydych angen ei ddefnyddio neu ddefnyddiwch ID gyda llun
+      reveal: ""
+    retryNationalInsurance:
+      label: Rhowch eich rhif Yswiriant Gwladol a pharhau i brofi eich hunaniaeth
+      value: continue
+      hint: "Gallwch ddod o hyd i'ch rhif Yswiriant Gwladol ar eich slip cyflog, P60 neu lythyr budd-dal."
+      reveal: ""
+
+abandonWarning:
+  content: "Ni allwch ddychwelyd i'r sgrin hon os ydych yn chwilio am ffordd arall o brofi eich hunaniaeth."
+
+abandonLink:
+  content: "<a href='/check/abandon' class='govuk-link' id='abandon-link' data-id='abandon'> I do not have my NINO </a>"

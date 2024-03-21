@@ -1,16 +1,17 @@
 {% extends "base-form.njk" %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "hmpo-radios/macro.njk" import hmpoRadios %}
 {% from "hmpo-form/macro.njk" import hmpoForm %}
 
-{% set hmpoPageKey = "could-not-match-national-insurance" %}
-{% set hmpoPageContent = "could-not-match-national-insurance" %}
-{% set gtmJourney = "check - retry" %}
+{% set hmpoPageKey = "abandon" %}
+{% set hmpoPageContent = "abandon" %}
+{% set gtmJourney = "abandon - start" %}
 
 {% block mainContent %}
   {% call hmpoForm(ctx) %}
       {{ hmpoRadios(ctx, {
-            id: "retryNationalInsuranceRadio",
-            namePrefix: "retryNationalInsuranceRadio",
+            id: "abandonRadio",
+            namePrefix: "abandonRadio",
             fieldset: {
                 legend: {
                     isPageHeading: true,
@@ -19,6 +20,7 @@
             }
         }) }}
 
+    {{ govukWarningText({text: translate("abandonWarning.content")}) }}
     {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
   {% endcall %}
 {% endblock %}

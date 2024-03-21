@@ -4,7 +4,7 @@ module.exports = class PlaywrightDevPage {
    */
   constructor(page) {
     this.page = page;
-    this.path = "/check/national-insurance-number";
+    this.path = "/check/abandon";
   }
 
   async continue() {
@@ -17,15 +17,21 @@ module.exports = class PlaywrightDevPage {
     return pathname === this.path;
   }
 
-  async enterNINO(value) {
-    await this.page.fill("#nationalInsuranceNumber", value);
-  }
-
   hasErrorSummary() {
     return this.page.locator(".govuk-error-summary");
   }
 
   async selectAbandon() {
-    await this.page.click("#abandon-link");
+    await this.page
+      .locator(`input[type="radio"][value="abandon"]`)
+      .first()
+      .check();
+  }
+
+  async selectReturn() {
+    await this.page
+      .locator(`input[type="radio"][value="retryNationalInsurance"]`)
+      .first()
+      .check();
   }
 };

@@ -2,7 +2,7 @@ Feature: Happy path
 
   Successful journey through the system and back to the RP
 
-  @mock-api:success
+  @mock-api:success @happy
   Scenario: Happy Path
     Given Happy Harriet is using the system
     And they have started the journey

@@ -1,4 +1,5 @@
 const ninoController = require("./controllers/national-insurance-number");
+const AbandonController = require("./controllers/abandon");
 
 module.exports = {
   "/": {
@@ -23,6 +24,19 @@ module.exports = {
     next: [
       {
         field: "retryNationalInsuranceRadio",
+        value: "retryNationalInsurance",
+        next: "national-insurance-number",
+      },
+      "/oauth2/callback",
+    ],
+  },
+  "/abandon": {
+    prereqs: ["/check"],
+    fields: ["abandonRadio"],
+    controller: AbandonController,
+    next: [
+      {
+        field: "abandonRadio",
         value: "retryNationalInsurance",
         next: "national-insurance-number",
       },
