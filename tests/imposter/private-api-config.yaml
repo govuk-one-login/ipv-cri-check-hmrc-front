@@ -117,7 +117,7 @@ resources:
     requestBody:
       allOf:
         - jsonPath: $.nino
-          value: "EE123456A"
+          value: "AA123455D"
     response:
       statusCode: 200
       content: |
