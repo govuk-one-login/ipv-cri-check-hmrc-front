@@ -1,6 +1,7 @@
 national-insurance-number:
   title: "What is your national insurance number - Welcome to GOV.UK  One Login"
 could-not-match-national-insurance:
+  title: "What would you like to do? - Welcome to GOV.UK  One Login"
   content:
     - We could not find a match for your National Insurance number when we checked with HMRC.
     - You can check your National Insurance number and try again. You’ll only be able to do this once.

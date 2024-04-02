@@ -12,7 +12,7 @@ retryNationalInsuranceRadio:
   hint: ""
   content: ""
   validation:
-    required: Mae'n rhaid i chi ddewis opsiwn i barhau
+    required: Dewiswch beth hoffech chi ei wneud
   items:
     retryNationalInsurance:
       label: Gwirio eich rhif Yswiriant Gwladol a cheisio eto
@@ -31,7 +31,7 @@ abandonRadio:
   hint: ""
   content: ""
   validation:
-    required: Mae'n rhaid i chi ddewis opsiwn i barhau
+    required: Dewiswch beth hoffech chi ei wneud
   items:
     abandon:
       label: Dod o hyd i ffordd arall o brofi eich hunaniaeth

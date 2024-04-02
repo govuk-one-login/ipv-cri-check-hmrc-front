@@ -12,7 +12,7 @@ retryNationalInsuranceRadio:
   hint: ""
   content: ""
   validation:
-    required: You must choose an option to continue
+    required: Select what you would like to do
   items:
     retryNationalInsurance:
       label: Check your National Insurance number and try again
@@ -31,7 +31,7 @@ abandonRadio:
   hint: ""
   content: ""
   validation:
-    required: You must choose an option to continue
+    required: Select what you would like to do
   items:
     abandon:
       label: Find another way to prove your identity
