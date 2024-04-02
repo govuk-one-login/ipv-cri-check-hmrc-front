@@ -38,3 +38,7 @@ npm run test:browser
 ### Cucumber
 
 The browser tests are written as [Cucumber Gherkin Features](https://cucumber.io/docs/gherkin/) with the [cucumber-js](https://cucumber.io/docs/installation/javascript/) test runner integrated with [Playwright](https://playwright.dev/)
+
+### Test Data
+
+When invoking error scenarios, use a valid NINO beginning with `RT` with the exception of `RT123456A` which is the retry scenario.
