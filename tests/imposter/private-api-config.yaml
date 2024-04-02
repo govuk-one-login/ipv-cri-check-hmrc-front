@@ -100,7 +100,10 @@ resources:
     requestBody:
       allOf:
         - jsonPath: $.nino
-          operation: Matches
+          operator: NotEqualTo
+          value: "RT123456A"
+        - jsonPath: $.nino
+          operator: Matches
           value: ^(?!BG|GB|KN|NK|NT|TN|ZZ)[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[ABCD]$
     response:
       statusCode: 200
@@ -114,8 +117,7 @@ resources:
     requestBody:
       allOf:
         - jsonPath: $.nino
-          operation: Matches
-          value: ^(?!BG|GB|KN|NK|NT|TN|ZZ)[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[ABCD]$
+          value: "EE123456A"
     response:
       statusCode: 200
       content: |
