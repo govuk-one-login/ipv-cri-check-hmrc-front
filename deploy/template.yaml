@@ -29,26 +29,7 @@ Parameters:
     Type: String
     Default: "none"
 
-  CriIdentifier:
-    Description: "The unique credential issuer identifier"
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: "/common-cri-parameters/CriIdentifier"
-
 Conditions:
-  IsCSLSDisabled: !And
-    - !Not
-      - !Or
-        - !Equals [!Ref CriIdentifier, "di-ipv-cri-hmrc-check-api"]
-        - !Equals [!Ref CriIdentifier, "di-ipv-cri-check-hmrc-api"]
-        - !Equals [!Ref CriIdentifier, "di-ipv-cri-hmrc-kbv-api"]
-    - !Not
-      - !Or
-        - !Equals [!Ref Environment, "dev"]
-        - !Equals [!Ref Environment, "build"]
-        - !Equals [!Ref Environment, "staging"]
-        - !Equals [!Ref Environment, "integration"]
-        - !Equals [!Ref Environment, "production"]
-
   IsNotDevelopment: !Or
     - !Equals [!Ref Environment, build]
     - !Equals [!Ref Environment, staging]
@@ -83,6 +64,18 @@ Mappings:
   ElasticLoadBalancerAccountIds:
     eu-west-2:
       AccountId: 652711504416
+
+  PlatformConfiguration:
+    dev:
+      CSLSEGRESS: arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2
+    build:
+      CSLSEGRESS: arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2
+    staging:
+      CSLSEGRESS: arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2
+    integration:
+      CSLSEGRESS: arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2
+    production:
+      CSLSEGRESS: arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2
 
 Resources:
   # Security Groups for the ECS service and load balancer
@@ -292,11 +285,12 @@ Resources:
       LogGroupName: !Sub /aws/ecs/${AWS::StackName}-Front-ECS
       RetentionInDays: 14
 
-  ECSAccessLogsGroupSubscriptionFilterCSLS:
+  ECSLogsSubscriptionFilterCSLS:
     Type: AWS::Logs::SubscriptionFilter
-    Condition: IsCSLSDisabled
+    Condition: IsNotDevelopment
     Properties:
-      DestinationArn: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
+      DestinationArn:
+        !FindInMap [PlatformConfiguration, !Ref Environment, CSLSEGRESS]
       FilterPattern: ""
       LogGroupName: !Ref ECSAccessLogsGroup
 
@@ -558,11 +552,12 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/apigateway/${AWS::StackName}-API-GW-AccessLogs
 
-  APIGWAccessLogsGroupSubscriptionFilterCSLS:
+  APIGWLogsSubscriptionFilterCSLS:
     Type: AWS::Logs::SubscriptionFilter
-    Condition: IsCSLSDisabled
+    Condition: IsNotDevelopment
     Properties:
-      DestinationArn: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
+      DestinationArn:
+        !FindInMap [PlatformConfiguration, !Ref Environment, CSLSEGRESS]
       FilterPattern: ""
       LogGroupName: !Ref APIGWAccessLogsGroup
 
