@@ -1,10 +1,11 @@
 nationalInsuranceNumber:
   content: " "
-  label: What is your national insurance number?
-  hint: It's on your National Insurance card, benefit letter, payslip or P60. For example, 'QQ123456C'
+  label: "National Insurance number"
+  hint: "For example, ‘QQ 12 34 56 C’."
+
   validation:
     required: Enter your National Insurance Number
-    nino: Enter a valid National Insurance Number
+    nino: Enter your National Insurance number in the correct format
 
 retryNationalInsuranceRadio:
   label: What would you like to do?
@@ -48,7 +49,10 @@ abandonWarning:
   content: "You cannot return to this screen if you look for another way to prove your identity."
 
 abandonLink:
-  content: "<a href='/check/abandon' class='govuk-link' id='abandon-link' data-id='abandon'> I do not have my NINO </a>"
+  content: "<a href='/check/abandon' class='govuk-link' id='abandon-link' data-id='abandon'> I do not have my National Insurance number </a>"
+
+continueButton:
+  content: "Check and continue"
 
 govuk:
   languageToggle:

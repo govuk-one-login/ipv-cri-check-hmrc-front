@@ -24,6 +24,9 @@ const good_edge_case_ninos = [
   "AA283902B",
   "AA283902C",
   "AA283902D",
+  "AA 28 39 02 D",
+  "aa 28 39 02 d",
+  "aa283902d",
 ];
 const bad_prefixes_ninos = [
   "DA283902A",
@@ -104,6 +107,6 @@ describe("should fail all the bad ninos", () => {
 describe("should return all the good ninos", () => {
   test.each(good_edge_case_ninos)("returns the given nino of %p", (ninoArg) => {
     const result = isValidNino(ninoArg)[0];
-    expect(result).toEqual(ninoArg);
+    expect(result).toEqual(ninoArg.replaceAll(" ", "").toUpperCase());
   });
 });

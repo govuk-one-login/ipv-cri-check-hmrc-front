@@ -7,21 +7,13 @@
 {% set gtmJourney = "check - middle" %}
 
 {% block mainContent %}
-  {% call hmpoForm(ctx) %}
-      {{ hmpoText(ctx, {
-            id: "nationalInsuranceNumber",
-            namePrefix: "nationalInsuranceNumber",
-            label: {
-                isPageHeading: true,
-                classes: "govuk-label--m"
-            }
-
-        }) }}
-
-    {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
-  {% endcall %}
+  {{ super() }}
 
   {{ hmpoHtml(translate("fields.abandonLink")) }}
+{% endblock %}
+
+{% block submitButton %}
+  {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
 
   <script nonce="{{ cspNonce }}">
 

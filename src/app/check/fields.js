@@ -3,6 +3,9 @@ const { isValidNino } = require("../../lib/validator");
 module.exports = {
   nationalInsuranceNumber: {
     type: "text",
+    label: {
+      classes: [],
+    },
     validate: [
       {
         type: "required",
