@@ -23,7 +23,7 @@ $govuk-button-shadow-colour: govuk-shade($govuk-button-colour, 60%);
     content: "";
     position: absolute;
     top: 5px;
-    left: 4rem;
+    left: 8px;
     height: $spinner-icon-size;
     width: $spinner-icon-size;
     margin-right: calc($spinner-icon-size / 6);
@@ -78,7 +78,6 @@ $govuk-button-shadow-colour: govuk-shade($govuk-button-colour, 60%);
 
   &[disabled],
   &[disabled]:hover {
-    opacity: 1;
     background-color: $govuk-button-hover-colour;
     box-shadow: 0 2px 0 $govuk-button-shadow-colour;
   }
