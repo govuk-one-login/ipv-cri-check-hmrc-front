@@ -29,6 +29,16 @@ Parameters:
     Type: String
     Default: "none"
 
+  MaxContainerCount:
+    Description: Maximum number of FE node/express container tasks to allow autoscaling to reach
+    Type: Number
+    Default: 12
+
+  SupportManualURL:
+    Type: String
+    Default: "https://govukverify.atlassian.net/wiki/spaces/OJ/pages/4090790413/NINO+Check+Credential+Issuer+support+runbook"
+    Description: The support manual URL to be provided in alarm messages.
+
 Conditions:
   IsNotDevelopment: !Or
     - !Equals [!Ref Environment, build]
@@ -293,6 +303,42 @@ Resources:
         !FindInMap [PlatformConfiguration, !Ref Environment, CSLSEGRESS]
       FilterPattern: ""
       LogGroupName: !Ref ECSAccessLogsGroup
+
+  ECSFatalErorMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref ECSAccessLogsGroup
+      FilterPattern: '{ $.level = "FATAL" || $.message = "Unhandled Exception:*" }'
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: !Sub "${AWS::StackName}/LogMessages"
+          MetricName: "ECSFatalerror-message"
+
+  ECSFatalErrorAlarm:
+    DependsOn:
+      - "ECSFatalErorMetricFilter"
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-${Environment}-ECSFatalErrorAlarm"
+      AlarmDescription: !Sub "Trigger an alarm when Fatal Error occurs. ${SupportManualURL}"
+      ActionsEnabled: true
+      OKActions:
+        - !ImportValue platform-alarm-critical-alert-topic
+      AlarmActions:
+        - !ImportValue platform-alarm-critical-alert-topic
+      InsufficientDataActions: []
+      MetricName: ECSFatalerror-message
+      Namespace: !Sub "${AWS::StackName}/LogMessages"
+      Statistic: Sum
+      Dimensions: []
+      Period: 60
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+
+  # Fargate tasks
 
   ECSServiceTaskDefinition:
     Type: "AWS::ECS::TaskDefinition"
@@ -561,6 +607,40 @@ Resources:
       FilterPattern: ""
       LogGroupName: !Ref APIGWAccessLogsGroup
 
+  APIGWFatalErorMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref APIGWAccessLogsGroup
+      FilterPattern: '{ $.level = "FATAL" || $.message = "Unhandled Exception:*" }'
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: !Sub "${AWS::StackName}/LogMessages"
+          MetricName: "APIGWFatalerror-message"
+
+  APIGWFatalErrorAlarm:
+    DependsOn:
+      - "APIGWFatalErorMetricFilter"
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-${Environment}-APIGWFatalErrorAlarm"
+      AlarmDescription: !Sub "Trigger an alarm when Fatal Error occurs. ${SupportManualURL}"
+      ActionsEnabled: true
+      OKActions:
+        - !ImportValue platform-alarm-critical-alert-topic
+      AlarmActions:
+        - !ImportValue platform-alarm-critical-alert-topic
+      InsufficientDataActions: []
+      MetricName: APIGWFatalerror-message
+      Namespace: !Sub "${AWS::StackName}/LogMessages"
+      Statistic: Sum
+      Dimensions: []
+      Period: 60
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+
   # ECS Autoscaling
   # The number of pods will increase when the configured CPU utilization is breached for more than 3 minutes.
   # Scaling down will occur after 15 minutes of 90% utilization of the configured CPU utilization.
@@ -658,7 +738,7 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !Ref StepScaleOutPolicy
-      AlarmDescription: "FrontClusterOver60PercentCPU"
+      AlarmDescription: !Sub "FrontClusterOver60PercentCPU. ${SupportManualURL}"
       ComparisonOperator: "GreaterThanThreshold"
       DatapointsToAlarm: "2"
       Dimensions:
@@ -718,15 +798,205 @@ Resources:
         SSEEnabled: true
         SSEType: KMS
 
+  FE5XXErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-${Environment}-FE5XXErrorAlarm"
+      AlarmDescription: !Sub "Threshold exceeds 10% with a minimum of 150 invocations and a minimum of 5 errors in 5 out of the last 5 minutes. ${SupportManualURL}"
+      ActionsEnabled: true
+      OKActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      AlarmActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      InsufficientDataActions: []
+      Dimensions: []
+      EvaluationPeriods: 5
+      DatapointsToAlarm: 5
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      Metrics:
+        - Id: errorThreshold
+          Label: errorThreshold
+          ReturnData: true
+          Expression: IF(invocations<150 || error<5,0,errorPercentage)
+        - Id: invocations
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: Count
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 60
+            Stat: Sum
+        - Id: error
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: 5xx
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 60
+            Stat: Sum
+        - Id: errorPercentage
+          Label: errorPercentage
+          ReturnData: false
+          Expression: (error/invocations) * 100
+
+  FE4XXErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-${Environment}-FE4XXErrorAlarm"
+      AlarmDescription: !Sub "Error threshold exceeds 5% with a minimum of 150 invocations and a minimum of 2 errors in 2 out of the last 5 minutes. ${SupportManualURL}"
+      ActionsEnabled: true
+      OKActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      AlarmActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      InsufficientDataActions: []
+      Dimensions: []
+      EvaluationPeriods: 5
+      DatapointsToAlarm: 2
+      Threshold: 5
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      Metrics:
+        - Id: errorThreshold
+          Label: errorThreshold
+          ReturnData: true
+          Expression: IF(invocations<150 || error<2,0,errorPercentage)
+        - Id: invocations
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: Count
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 60
+            Stat: Sum
+        - Id: error
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: 4xx
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 60
+            Stat: Sum
+        - Id: errorPercentage
+          Label: errorPercentage
+          ReturnData: false
+          Expression: (error/invocations) * 100
+
+  FELatencyAlarmP95:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-${Environment}-FELatencyAlarmP95"
+      AlarmDescription: !Sub "Trigger the alarm if less than 95% of requests has a latency of less than 1 second with a minimum of 25 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
+      ActionsEnabled: false
+      OKActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      AlarmActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      InsufficientDataActions: []
+      Dimensions: []
+      EvaluationPeriods: 5
+      DatapointsToAlarm: 2
+      Threshold: 1000
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      Metrics:
+        - Id: latencyThreshold
+          Label: latencyThreshold
+          ReturnData: true
+          Expression: IF(invocations<25,0,latency95Percentile)
+        - Id: invocations
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: Count
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 60
+            Stat: Sum
+        - Id: latency95Percentile
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: Latency
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 60
+            Stat: p95
+
+  FELatencyAlarmP99:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-${Environment}-FELatencyAlarmP99"
+      AlarmDescription: !Sub "Trigger the alarm if less than 99% of requests has a latency of less than 2.5 second with a minimum of 150 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
+      ActionsEnabled: false
+      OKActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      AlarmActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      InsufficientDataActions: []
+      Dimensions: []
+      EvaluationPeriods: 5
+      DatapointsToAlarm: 2
+      Threshold: 2500
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      Metrics:
+        - Id: latencyThreshold
+          Label: latencyThreshold
+          ReturnData: true
+          Expression: IF(invocations<150,0,latency99Percentile)
+        - Id: invocations
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: Count
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 60
+            Stat: Sum
+        - Id: latency99Percentile
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: Latency
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 60
+            Stat: p99
+
   NoTaskCountAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: !Sub Check HMRC ${Environment} frontend no ECS service tasks
+      AlarmDescription: !Sub "Check HMRC ${Environment} frontend no ECS service tasks. ${SupportManualURL}"
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
-      OKActions: []
-      InsufficientDataActions: []
+      OKActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      InsufficientDataActions:
+        - !ImportValue platform-alarm-warning-alert-topic
       MetricName: TaskCount
       Namespace: ECS/ContainerInsights
       Statistic: Average
@@ -743,7 +1013,7 @@ Resources:
   OnlyOneTaskCountAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: !Sub Check ${Environment} frontend below desired ECS service tasks
+      AlarmDescription: !Sub "Check ${Environment} frontend below desired ECS service tasks. ${SupportManualURL}"
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
@@ -765,7 +1035,7 @@ Resources:
   5XXOnELB:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: !Sub Check HRMC ${Environment} frontend 5XX count
+      AlarmDescription: !Sub "Check HRMC ${Environment} frontend 5XX count. ${SupportManualURL}"
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
@@ -785,6 +1055,225 @@ Resources:
       Threshold: 1
       ComparisonOperator: GreaterThanThreshold
       TreatMissingData: notBreaching
+
+  FELowContainerTaskCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-${Environment}-FELowContainerTaskCountAlarm"
+      AlarmDescription: !Sub "Trigger a warning if the running container task count drops below 2. ${SupportManualURL}"
+      ActionsEnabled: true
+      AlarmActions:
+        - !ImportValue platform-alarm-topic-critical-alert
+      InsufficientDataActions: []
+      Dimensions: []
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 1
+      ComparisonOperator: LessThanOrEqualToThreshold
+      TreatMissingData: breaching
+      Metrics:
+        - Id: containerTaskCount
+          ReturnData: true
+          MetricStat:
+            Metric:
+              Namespace: ECS/ContainerInsights
+              MetricName: RunningTaskCount
+              Dimensions:
+                - Name: ClusterName
+                  Value: !Ref EcsCluster
+                - Name: ServiceName
+                  Value: !GetAtt EcsService.Name
+            Period: 60
+            Stat: Minimum
+
+  FEHighContainerTaskCountWarning:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-${Environment}-FEHighContainerTaskCountWarning"
+      AlarmDescription: !Sub "Task count reached the auto-scaling maximum for 5 minutes. ${SupportManualURL}"
+      ActionsEnabled: true
+      OKActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      AlarmActions:
+        - !ImportValue platform-alarm-warning-alert-topic
+      InsufficientDataActions: []
+      Dimensions: []
+      EvaluationPeriods: 5
+      DatapointsToAlarm: 5
+      Threshold: !Ref MaxContainerCount
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      Metrics:
+        - Id: containerTaskCount
+          ReturnData: true
+          MetricStat:
+            Metric:
+              Namespace: ECS/ContainerInsights
+              MetricName: RunningTaskCount
+              Dimensions:
+                - Name: ClusterName
+                  Value: !Ref EcsCluster
+                - Name: ServiceName
+                  Value: !GetAtt EcsService.Name
+            Period: 60
+            Stat: Minimum
+
+  FELowContainerTaskCountCriticalAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-FELowContainerTaskCountCriticalAlarm"
+      AlarmDescription: !Sub "Critical alert, running container task count droped below 1. ${SupportManualURL}"
+      ActionsEnabled: false # to be enabled once proved stable in production
+      AlarmActions:
+        - !ImportValue platform-alarm-topic-critical-alert
+      InsufficientDataActions: []
+      Dimensions: []
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: LessThanOrEqualToThreshold
+      TreatMissingData: breaching
+      Metrics:
+        - Id: containerTaskCount
+          ReturnData: true
+          MetricStat:
+            Metric:
+              Namespace: ECS/ContainerInsights
+              MetricName: RunningTaskCount
+              Dimensions:
+                - Name: ClusterName
+                  Value: !Ref EcsCluster
+                - Name: ServiceName
+                  Value: !GetAtt EcsService.Name
+            Period: 60
+            Stat: Maximum
+
+  WarningAlarmDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: !Sub "${AWS::StackName}-Warning-Alarm-Overview"
+      DashboardBody:
+        Fn::Sub: >
+          {
+            "widgets": [
+              {
+                "height": 6,
+                "width": 12,
+                "y": 0,
+                "x": 0,
+                "type": "metric",
+                "properties": {
+                  "title": "F2F Front 5XX Error Alarm - ${AWS::StackName}",
+                  "annotations": {
+                    "alarms": ["${FE5XXErrorAlarm.Arn}"]
+                  },
+                  "view": "timeSeries",
+                  "stacked": false
+                }
+              },
+              {
+                "height": 6,
+                "width": 12,
+                "y": 0,
+                "x": 12,
+                "type": "metric",
+                "properties": {
+                  "title": "Check HMRC Front 4XX Error Alarm - ${AWS::StackName}",
+                  "annotations": {
+                    "alarms": ["${FE4XXErrorAlarm.Arn}"]
+                  },
+                  "view": "timeSeries",
+                  "stacked": false
+                }
+              },
+              {
+                "height": 6,
+                "width": 12,
+                "y": 6,
+                "x": 0,
+                "type": "metric",
+                "properties": {
+                  "title": "Check HMRC Front Latency Alarm P95 - ${AWS::StackName}",
+                  "annotations": {
+                    "alarms": ["${FELatencyAlarmP95.Arn}"]
+                  },
+                  "view": "timeSeries",
+                  "stacked": false
+                }
+              },
+              {
+                "height": 6,
+                "width": 12,
+                "y": 6,
+                "x": 12,
+                "type": "metric",
+                "properties": {
+                  "title": "Check HMRC Front Latency Alarm P99 - ${AWS::StackName}",
+                  "annotations": {
+                    "alarms": ["${FELatencyAlarmP99.Arn}"]
+                  },
+                  "view": "timeSeries",
+                  "stacked": false
+                }
+              },
+              {
+                "height": 6,
+                "width": 12,
+                "y": 12,
+                "x": 12,
+                "type": "metric",
+                "properties": {
+                  "title": "Check HMRC Front Low Container Task Count Warning - ${AWS::StackName}",
+                  "annotations": {
+                    "alarms": ["${FELowContainerTaskCountAlarm.Arn}"]
+                  },
+                  "view": "timeSeries",
+                  "stacked": false
+                }
+              },
+              {
+                "height": 6,
+                "width": 12,
+                "y": 18,
+                "x": 12,
+                "type": "metric",
+                "properties": {
+                  "title": "Check HMRC Front High Container Task Count Warning - ${AWS::StackName}",
+                  "annotations": {
+                    "alarms": ["${FEHighContainerTaskCountWarning.Arn}"]
+                  },
+                  "view": "timeSeries",
+                  "stacked": false
+                }
+              }
+            ]
+          }
+
+  CriticalAlarmDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: !Sub "${AWS::StackName}-Critical-Alarm-Overview"
+      DashboardBody:
+        Fn::Sub: >
+          {
+            "widgets": [
+              {
+                "height": 6,
+                "width": 12,
+                "y": 0,
+                "x": 0,
+                "type": "metric",
+                "properties": {
+                  "title": "Check HMRC Front Low Container Task Count Critical - ${AWS::StackName}",
+                  "annotations": {
+                    "alarms": ["${FELowContainerTaskCountCriticalAlarm.Arn}"]
+                  },
+                  "view": "timeSeries",
+                  "stacked": false
+                }
+              }
+            ]
+          }
 
 Outputs:
   StackName:
