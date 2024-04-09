@@ -740,6 +740,9 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !Ref StepScaleOutPolicy
+        - !ImportValue platform-alarm-warning-alert-topic
+      OKActions:
+        - !ImportValue platform-alarm-warning-alert-topic
       AlarmDescription: !Sub "FrontClusterOver60PercentCPU. ${SupportManualURL}"
       ComparisonOperator: "GreaterThanThreshold"
       DatapointsToAlarm: "2"
@@ -764,6 +767,9 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !Ref StepScaleInPolicy
+        - !ImportValue platform-alarm-warning-alert-topic
+      OKActions:
+        - !ImportValue platform-alarm-warning-alert-topic
       AlarmDescription: "FrontClusterUnder60PercentCPU"
       ComparisonOperator: "LessThanThreshold"
       DatapointsToAlarm: "5"
