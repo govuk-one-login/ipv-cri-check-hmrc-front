@@ -19,7 +19,10 @@ class NationalInsuranceNumberController extends BaseController {
         const response = await req.axios.post(
           CHECK,
           {
-            nino: req.sessionModel.get("nationalInsuranceNumber"),
+            nino: req.sessionModel
+              .get("nationalInsuranceNumber")
+              .replaceAll(" ", "")
+              .toUpperCase(),
           },
           {
             headers: {

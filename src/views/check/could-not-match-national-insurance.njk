@@ -6,19 +6,6 @@
 {% set hmpoPageContent = "could-not-match-national-insurance" %}
 {% set gtmJourney = "check - retry" %}
 
-{% block mainContent %}
-  {% call hmpoForm(ctx) %}
-      {{ hmpoRadios(ctx, {
-            id: "retryNationalInsuranceRadio",
-            namePrefix: "retryNationalInsuranceRadio",
-            fieldset: {
-                legend: {
-                    isPageHeading: true,
-                    classes: "govuk-fieldset__legend--l"
-                }
-            }
-        }) }}
-
+{% block submitButton %}
     {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
-  {% endcall %}
 {% endblock %}

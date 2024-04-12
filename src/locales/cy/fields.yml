@@ -1,10 +1,11 @@
 nationalInsuranceNumber:
   content: " "
-  label: Beth yw eich rhif Yswiriant Gwladol?
-  hint: Mae ar eich cerdyn Yswiriant Gwladol, llythyr budd-dal, slip cyflog neu P60. Er enghraifft, 'QQ123456C'
+  label: "Yswiriant Gwladol"
+  hint: "Er enghraifft, 'QQ 12 34 56 C'."
+
   validation:
     required: Rhowch eich Rhif Yswiriant Gwladol
-    nino: Rhowch Rif Yswiriant Gwladol dilys
+    nino: Rhowch eich rhif Yswiriant Gwladol yn y ffurf cywir
 
 retryNationalInsuranceRadio:
   label: Beth hoffech chi ei wneud?
@@ -48,7 +49,10 @@ abandonWarning:
   content: "Ni allwch ddychwelyd i'r sgrin hon os ydych yn chwilio am ffordd arall o brofi eich hunaniaeth."
 
 abandonLink:
-  content: "<a href='/check/abandon' class='govuk-link' id='abandon-link' data-id='abandon'> I do not have my NINO </a>"
+  content: "<a href='/check/abandon' class='govuk-link' id='abandon-link' data-id='abandon'> Nid yw fy rhif Yswiriant Gwladol gennyf </a>"
+
+continueButton:
+  content: "Gwirio a pharhau"
 
 govuk:
   languageToggle:

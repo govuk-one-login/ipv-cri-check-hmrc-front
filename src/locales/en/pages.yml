@@ -1,7 +1,12 @@
 national-insurance-number:
-  title: "What is your national insurance number - Welcome to GOV.UK  One Login"
+  title: "Enter your National Insurance Number - Welcome to GOV.UK  One Login"
+  h1: "Enter your National Insurance number"
+  content:
+    - We’ll check your National Insurance number with HM Revenue and Customs (HMRC) as part of proving your identity.
+    - You can find your National Insurance number on your payslip, P60 or benefit letter.
 could-not-match-national-insurance:
-  title: "What would you like to do? - Welcome to GOV.UK  One Login"
+  title: "We could not match your National Insurance number - GOV.UK One Login"
+  h1: We could  not match your National Insurance number
   content:
     - We could not find a match for your National Insurance number when we checked with HMRC.
     - You can check your National Insurance number and try again. You’ll only be able to do this once.

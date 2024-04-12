@@ -1,7 +1,12 @@
 national-insurance-number:
-  title: "Beth yw eich rhif Yswiriant Gwladol - Welcome to GOV.UK  One Login"
+  title: "Rhowch eich Rhif Yswiriant Gwladol - GOV.UK One Login"
+  h1: "Rhowch eich Rhif Yswiriant Gwladol"
+  content:
+    - Byddwn yn gwirio eich rhif Yswiriant Gwladol gyda Chyllid a Thollau EF (CThEF) fel rhan o brofi eich hunaniaeth.
+    - Gallwch ddod o hyd i'ch rhif Yswiriant Gwladol ar eich slip cyflog, P60 neu lythyr budd-dal.
 could-not-match-national-insurance:
-  title: "Beth hoffech chi ei wneud? - Welcome to GOV.UK  One Login"
+  title: "Nid oeddem yn gallu dod o hyd i wybodaeth sy'n cyfateb â'ch rhif Yswiriant Gwladol - GOV.UK One Login"
+  h1: Nid oeddem yn gallu dod o hyd i wybodaeth sy'n cyfateb â'ch rhif Yswiriant Gwladol
   content:
     - Nid oeddem yn gallu dod o hyd i wybodaeth sy'n cyfateb i'ch rhif Yswiriant Gwladol pan wnaethom wirio gyda CThEF.
     - Gallwch wirio eich rhif Yswiriant Gwladol a cheisio eto. Dim ond unwaith y gallwch wneud hyn.
