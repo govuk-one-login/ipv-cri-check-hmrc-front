@@ -35,6 +35,7 @@ describe("abandon", () => {
           "session-id": req.session.tokenId,
           "Content-Type": "application/json",
         },
+        data: {},
       });
     });
 

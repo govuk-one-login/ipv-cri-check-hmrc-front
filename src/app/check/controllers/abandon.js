@@ -14,6 +14,7 @@ class AbandonController extends BaseController {
           "session-id": req.session.tokenId,
           "Content-Type": "application/json",
         },
+        data: {},
       });
       super.saveValues(req, res, async () => callback());
     } catch (err) {
