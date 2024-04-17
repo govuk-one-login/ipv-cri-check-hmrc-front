@@ -12,6 +12,7 @@ class AbandonController extends BaseController {
       await req.axios.post(ABANDON, undefined, {
         headers: {
           "session-id": req.session.tokenId,
+          "Content-Type": "application/json",
         },
       });
       super.saveValues(req, res, async () => callback());

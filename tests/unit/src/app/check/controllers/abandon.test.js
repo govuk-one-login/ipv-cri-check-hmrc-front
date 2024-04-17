@@ -27,12 +27,13 @@ describe("abandon", () => {
       req.form.values.nationalInsuranceNumber = "AA12";
     });
 
-    it("should call check endpoint", async () => {
+    it("should call abandon endpoint", async () => {
       await controller.saveValues(req, res, next);
 
       expect(req.axios.post).toHaveBeenCalledWith(ABANDON, undefined, {
         headers: {
           "session-id": req.session.tokenId,
+          "Content-Type": "application/json",
         },
       });
     });
