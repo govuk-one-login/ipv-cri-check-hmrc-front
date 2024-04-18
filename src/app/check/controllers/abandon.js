@@ -9,13 +9,16 @@ const {
 class AbandonController extends BaseController {
   async saveValues(req, res, callback) {
     try {
-      await req.axios.post(ABANDON, undefined, {
-        headers: {
-          "session-id": req.session.tokenId,
-          "Content-Type": "application/json",
-        },
-        data: {},
-      });
+      await req.axios.post(
+        ABANDON,
+        {},
+        {
+          headers: {
+            "session-id": req.session.tokenId,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       super.saveValues(req, res, async () => callback());
     } catch (err) {
       if (err) {

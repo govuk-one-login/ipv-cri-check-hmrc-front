@@ -30,13 +30,16 @@ describe("abandon", () => {
     it("should call abandon endpoint", async () => {
       await controller.saveValues(req, res, next);
 
-      expect(req.axios.post).toHaveBeenCalledWith(ABANDON, undefined, {
-        headers: {
-          "session-id": req.session.tokenId,
-          "Content-Type": "application/json",
-        },
-        data: {},
-      });
+      expect(req.axios.post).toHaveBeenCalledWith(
+        ABANDON,
+        {},
+        {
+          headers: {
+            "session-id": req.session.tokenId,
+            "Content-Type": "application/json",
+          },
+        }
+      );
     });
 
     describe("on API success", () => {
