@@ -158,6 +158,8 @@ resources:
 
   - method: POST
     path: /abandon
+    requestHeaders:
+      content-type: application/json
     response:
       statusCode: 200
       content: |
