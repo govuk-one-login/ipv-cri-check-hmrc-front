@@ -260,7 +260,6 @@ Resources:
         DeploymentCircuitBreaker:
           Enable: TRUE
           Rollback: TRUE
-      DesiredCount: 2
       EnableECSManagedTags: false
       HealthCheckGracePeriodSeconds: 60
       LaunchType: FARGATE
@@ -652,7 +651,7 @@ Resources:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
       MaxCapacity: 60
-      MinCapacity: 2
+      MinCapacity: 3
       ResourceId: !Join
         - "/"
         - - "service"
@@ -661,27 +660,6 @@ Resources:
       RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
       ScalableDimension: ecs:service:DesiredCount
       ServiceNamespace: ecs
-
-  ECSAutoScalingPolicy:
-    Condition: IsProductionOrBuild
-    DependsOn: ECSAutoScalingTarget
-    Type: AWS::ApplicationAutoScaling::ScalingPolicy
-    Properties:
-      PolicyName: ECSAutoScalingPolicy
-      PolicyType: TargetTrackingScaling
-      ResourceId: !Join
-        - "/"
-        - - "service"
-          - !Ref EcsCluster
-          - !GetAtt EcsService.Name
-      ScalableDimension: ecs:service:DesiredCount
-      ServiceNamespace: ecs
-      TargetTrackingScalingPolicyConfiguration:
-        PredefinedMetricSpecification:
-          PredefinedMetricType: ECSServiceAverageCPUUtilization
-        TargetValue: 60
-        ScaleInCooldown: 420
-        ScaleOutCooldown: 60
 
   StepScaleInPolicy:
     Condition: IsProductionOrBuild
@@ -699,10 +677,17 @@ Resources:
       ServiceNamespace: ecs
       StepScalingPolicyConfiguration:
         AdjustmentType: PercentChangeInCapacity
-        Cooldown: 420
+        Cooldown: 60
+        MinAdjustmentMagnitude: 2
         StepAdjustments:
-          - MetricIntervalUpperBound: -40
-            ScalingAdjustment: -50
+          - MetricIntervalLowerBound: -10
+            MetricIntervalUpperBound: 0
+            ScalingAdjustment: -20
+          - MetricIntervalLowerBound: -20
+            MetricIntervalUpperBound: -10
+            ScalingAdjustment: -40
+          - MetricIntervalUpperBound: -20
+            ScalingAdjustment: -60
 
   StepScaleOutPolicy:
     Condition: IsProductionOrBuild
@@ -719,18 +704,26 @@ Resources:
       ScalableDimension: ecs:service:DesiredCount
       ServiceNamespace: ecs
       StepScalingPolicyConfiguration:
-        AdjustmentType: PercentChangeInCapacity
-        Cooldown: 120
-        MinAdjustmentMagnitude: 5
+        AdjustmentType: ExactCapacity
+        Cooldown: 60
         StepAdjustments:
+          - MetricIntervalLowerBound: 0
+            MetricIntervalUpperBound: 10
+            ScalingAdjustment: 10
+          - MetricIntervalLowerBound: 10
+            MetricIntervalUpperBound: 20
+            ScalingAdjustment: 20
           - MetricIntervalLowerBound: 20
             MetricIntervalUpperBound: 30
-            ScalingAdjustment: 200
+            ScalingAdjustment: 30
           - MetricIntervalLowerBound: 30
-            MetricIntervalUpperBound: 35
-            ScalingAdjustment: 300
-          - MetricIntervalLowerBound: 35
-            ScalingAdjustment: 500
+            MetricIntervalUpperBound: 40
+            ScalingAdjustment: 40
+          - MetricIntervalLowerBound: 40
+            MetricIntervalUpperBound: 50
+            ScalingAdjustment: 50
+          - MetricIntervalLowerBound: 50
+            ScalingAdjustment: 60
 
   StepScaleOutAlarm:
     Condition: IsProductionOrBuild
@@ -740,7 +733,7 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !Ref StepScaleOutPolicy
-      AlarmDescription: !Sub "FrontClusterOver60PercentCPU. ${SupportManualURL}"
+      AlarmDescription: !Sub "FrontClusterOver40PercentCPU. ${SupportManualURL}"
       ComparisonOperator: "GreaterThanThreshold"
       DatapointsToAlarm: "2"
       Dimensions:
@@ -754,7 +747,7 @@ Resources:
       Namespace: "AWS/ECS"
       Statistic: "Average"
       Period: "60"
-      Threshold: "60"
+      Threshold: "40"
 
   StepScaleInAlarm:
     Condition: IsProductionOrBuild
@@ -764,7 +757,7 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !Ref StepScaleInPolicy
-      AlarmDescription: "FrontClusterUnder60PercentCPU"
+      AlarmDescription: "FrontClusterUnder30PercentCPU"
       ComparisonOperator: "LessThanThreshold"
       DatapointsToAlarm: "5"
       Dimensions:
@@ -778,7 +771,7 @@ Resources:
       Namespace: "AWS/ECS"
       Statistic: "Average"
       Period: "60"
-      Threshold: "60"
+      Threshold: "30"
 
   SessionsTable:
     Type: AWS::DynamoDB::Table
