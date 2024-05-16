@@ -14,11 +14,7 @@
 {% endblock %}
 
 {% block submitButton %}
-  {{ hmpoSubmit(ctx, {
-    id: "continue",
-    text: translate("buttons.next"),
-    attributes: {"data-nav": true,"data-link": "/national-insurance-number"}
-  }) }}
+  {{ hmpoSubmit(ctx, {id: "continue", text: translate("continueButton.content")}) }}
 
   <script nonce="{{ cspNonce }}">
 

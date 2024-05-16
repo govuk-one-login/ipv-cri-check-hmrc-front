@@ -4,7 +4,7 @@ nationalInsuranceNumber:
   hint: "For example, ‘QQ 12 34 56 C’."
 
   validation:
-    required: Enter your National Insurance Number
+    required: Enter your National Insurance number
     nino: Enter your National Insurance number in the correct format
 
 retryNationalInsuranceRadio:

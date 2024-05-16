@@ -4,7 +4,7 @@ nationalInsuranceNumber:
   hint: "Er enghraifft, 'QQ 12 34 56 C'."
 
   validation:
-    required: Rhowch eich Rhif Yswiriant Gwladol
+    required: Rhowch eich rhif Yswiriant Gwladol
     nino: Rhowch eich rhif Yswiriant Gwladol yn y ffurf cywir
 
 retryNationalInsuranceRadio:
