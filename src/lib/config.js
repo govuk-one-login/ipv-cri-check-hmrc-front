@@ -5,9 +5,9 @@ module.exports = {
     BASE_URL: process.env.API_BASE_URL || "http://localhost:8080",
     PATHS: {
       SESSION: "/session",
-      AUTHORIZATION: "authorization",
-      CHECK: "check",
-      ABANDON: "abandon",
+      AUTHORIZATION: "/authorization",
+      CHECK: "/check",
+      ABANDON: "/abandon",
     },
   },
   APP: {

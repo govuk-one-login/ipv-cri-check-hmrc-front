@@ -16,7 +16,7 @@ class AbandonController extends BaseController {
       const headers = {
         "session-id": req.session.tokenId,
         "Content-Type": "application/json",
-        ...createPersonalDataHeaders(`${BASE_URL}/${ABANDON}`, req),
+        ...createPersonalDataHeaders(`${BASE_URL}${ABANDON}`, req),
       };
 
       await req.axios.post(ABANDON, {}, { headers });
