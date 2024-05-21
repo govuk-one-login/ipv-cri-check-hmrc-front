@@ -35,6 +35,7 @@ describe("national insurance number", () => {
         { nino: "AA12" },
         {
           headers: {
+            "txma-audit-encoded": "dummy-txma-header",
             "session-id": req.session.tokenId,
           },
           validateStatus: expect.any(Function),

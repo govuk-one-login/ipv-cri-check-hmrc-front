@@ -1,7 +1,10 @@
 const BaseController = require("hmpo-form-wizard").Controller;
-
+const {
+  createPersonalDataHeaders,
+} = require("@govuk-one-login/frontend-passthrough-headers");
 const {
   API: {
+    BASE_URL,
     PATHS: { CHECK },
   },
 } = require("../../../lib/config");
@@ -16,6 +19,11 @@ class NationalInsuranceNumberController extends BaseController {
     req.session.redirectToRetry = false;
     super.saveValues(req, res, async () => {
       try {
+        const headers = {
+          "session-id": req.session.tokenId,
+          ...createPersonalDataHeaders(`${BASE_URL}/${CHECK}`, req)
+        }
+
         const response = await req.axios.post(
           CHECK,
           {
@@ -25,9 +33,7 @@ class NationalInsuranceNumberController extends BaseController {
               .toUpperCase(),
           },
           {
-            headers: {
-              "session-id": req.session.tokenId,
-            },
+            headers,
             validateStatus,
           }
         );

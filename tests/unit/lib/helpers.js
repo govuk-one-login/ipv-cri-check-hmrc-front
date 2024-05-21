@@ -20,6 +20,9 @@ global.createDefaultReqResNext = () => {
     session: {
       "hmpo-wizard-previous": {},
     },
+    headers: {
+      "txma-audit-encoded": "dummy-txma-header",
+    },
   });
 
   req.journeyModel = new JourneyModel(null, {
