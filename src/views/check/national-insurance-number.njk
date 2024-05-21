@@ -10,10 +10,15 @@
   {{ super() }}
 
   {{ hmpoHtml(translate("fields.abandonLink")) }}
+
 {% endblock %}
 
 {% block submitButton %}
-  {{ hmpoSubmit(ctx, {id: "continue", text: translate("buttons.next")}) }}
+  {{ hmpoSubmit(ctx, {
+    id: "continue",
+    text: translate("buttons.next"),
+    attributes: {"data-nav": true,"data-link": "/national-insurance-number"}
+  }) }}
 
   <script nonce="{{ cspNonce }}">
 
@@ -41,5 +46,23 @@
         }
       })
     }
+    </script>
+{% endblock %}
+
+{% block footer %}
+   {{ super() }}
+
+    <script {% if cspNonce %} nonce="{{ cspNonce }}"{%  endif %}>
+        window.addEventListener('load', function () {
+            window.DI.analyticsGa4.pageViewTracker.trackOnPageLoad({
+                statusCode: '200', // Access status code
+                englishPageTitle: '{{ translate("pages.national-insurance-number.title") }}',
+                taxonomy_level1: 'web cri', // Access taxonomy level 1
+                taxonomy_level2: 'check hmrc', // Access taxonomy level 2
+                content_id: '093',
+                logged_in_status: true,
+                dynamic: false,
+            });
+        });
     </script>
 {% endblock %}
