@@ -12,19 +12,14 @@ const {
 
 class AbandonController extends BaseController {
   async saveValues(req, res, callback) {
-
     try {
       const headers = {
         "session-id": req.session.tokenId,
         "Content-Type": "application/json",
-        ...createPersonalDataHeaders(`${BASE_URL}/${ABANDON}`, req)
-      }
+        ...createPersonalDataHeaders(`${BASE_URL}/${ABANDON}`, req),
+      };
 
-      await req.axios.post(
-        ABANDON,
-        {},
-        { headers }
-      );
+      await req.axios.post(ABANDON, {}, { headers });
       super.saveValues(req, res, async () => callback());
     } catch (err) {
       if (err) {

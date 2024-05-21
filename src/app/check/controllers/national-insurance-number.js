@@ -21,8 +21,8 @@ class NationalInsuranceNumberController extends BaseController {
       try {
         const headers = {
           "session-id": req.session.tokenId,
-          ...createPersonalDataHeaders(`${BASE_URL}/${CHECK}`, req)
-        }
+          ...createPersonalDataHeaders(`${BASE_URL}/${CHECK}`, req),
+        };
 
         const response = await req.axios.post(
           CHECK,
