@@ -52,6 +52,10 @@ Conditions:
     - !Equals [!Ref Environment, production]
     - !Equals [!Ref Environment, build]
 
+  IsProductionOrIntegration: !Or
+    - !Equals [!Ref Environment, production]
+    - !Equals [!Ref Environment, integration]
+
   UsePermissionsBoundary:
     Fn::Not:
       - Fn::Equals:
@@ -397,7 +401,7 @@ Resources:
                   !Sub "${Environment}.account.gov.uk",
                 ]
             - Name: LANGUAGE_TOGGLE_DISABLED
-              Value: true
+              Value: !If [IsProductionOrIntegration, true, false]
           Secrets:
             - Name: DT_TENANT
               ValueFrom: !Join
