@@ -397,7 +397,7 @@ Resources:
                   !Sub "${Environment}.account.gov.uk",
                 ]
             - Name: LANGUAGE_TOGGLE_DISABLED
-              Value: true
+              Value: !If [IsProduction, true, false]
           Secrets:
             - Name: DT_TENANT
               ValueFrom: !Join
