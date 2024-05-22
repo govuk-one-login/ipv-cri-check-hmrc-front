@@ -37,6 +37,7 @@ describe("abandon", () => {
           headers: {
             "session-id": req.session.tokenId,
             "Content-Type": "application/json",
+            "txma-audit-encoded": "dummy-txma-header",
           },
         }
       );
