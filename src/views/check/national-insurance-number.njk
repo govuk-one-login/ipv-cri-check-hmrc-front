@@ -9,12 +9,16 @@
 {% block mainContent %}
   {{ super() }}
 
-  {{ hmpoHtml(translate("fields.abandonLink")) }}
+  {{ hmpoHtml(translate("abandonLink")) }}
 
 {% endblock %}
 
 {% block submitButton %}
-  {{ hmpoSubmit(ctx, {id: "continue", text: translate("continueButton.content")}) }}
+  {{ hmpoSubmit(ctx, {
+    id: "continue",
+    text: translate("buttons.checkAndContinue"),
+    attributes: {"data-nav": true,"data-link": "/national-insurance-number"}
+  }) }}
 
   <script nonce="{{ cspNonce }}">
 
