@@ -1,4 +1,5 @@
 buttons:
+  checkAndContinue: "Check and continue"
   next: Continue
   cancel: Cancel
 govuk:
@@ -51,6 +52,12 @@ govuk:
     text: "© Crown copyright"
   contentLicence:
     html: 'All content is available under the <a class="govuk-footer__link" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="licence">Open Government Licence v3.0</a>, except where otherwise stated'
+  languageToggle:
+    ariaLabel: Dewis iaith
+    englishLanguage: English
+    englishVisuallyHidden: Change to English
+    welshLanguage: Cymraeg
+    welshVisuallyHidden: Newid yr iaith ir Gymraeg
 error:
   unrecoverable:
     title: Sorry, there is a problem with the service
@@ -60,3 +67,7 @@ error:
     contactMeLink: Contact the GOV.UK One Login team (opens in a new tab)
     buttonText: Go to the GOV.UK homepage
     buttonLink: https://www.gov.uk/
+abandonWarning:
+  content: "You cannot return to this screen if you look for another way to prove your identity."
+abandonLink:
+  content: "<a href='/check/abandon' class='govuk-link' id='abandon-link' data-id='abandon'> I do not have my National Insurance number </a>"

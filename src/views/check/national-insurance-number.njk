@@ -9,14 +9,14 @@
 {% block mainContent %}
   {{ super() }}
 
-  {{ hmpoHtml(translate("fields.abandonLink")) }}
+  {{ hmpoHtml(translate("abandonLink")) }}
 
 {% endblock %}
 
 {% block submitButton %}
   {{ hmpoSubmit(ctx, {
     id: "continue",
-    text: translate("buttons.next"),
+    text: translate("buttons.checkAndContinue"),
     attributes: {"data-nav": true,"data-link": "/national-insurance-number"}
   }) }}
 

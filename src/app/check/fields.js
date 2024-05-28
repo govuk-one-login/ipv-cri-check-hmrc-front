@@ -6,6 +6,7 @@ module.exports = {
     label: {
       classes: [],
     },
+    classes: "govuk-input--extra-letter-spacing govuk-!-width-one-half",
     validate: [
       {
         type: "required",

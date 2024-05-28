@@ -4,7 +4,7 @@ nationalInsuranceNumber:
   hint: "Er enghraifft, 'QQ 12 34 56 C'."
 
   validation:
-    required: Rhowch eich Rhif Yswiriant Gwladol
+    required: Rhowch eich rhif Yswiriant Gwladol
     nino: Rhowch eich rhif Yswiriant Gwladol yn y ffurf cywir
 
 retryNationalInsuranceRadio:
@@ -44,20 +44,3 @@ abandonRadio:
       value: continue
       hint: "Gallwch ddod o hyd i'ch rhif Yswiriant Gwladol ar eich slip cyflog, P60 neu lythyr budd-dal."
       reveal: ""
-
-abandonWarning:
-  content: "Ni allwch ddychwelyd i'r sgrin hon os ydych yn chwilio am ffordd arall o brofi eich hunaniaeth."
-
-abandonLink:
-  content: "<a href='/check/abandon' class='govuk-link' id='abandon-link' data-id='abandon'> Nid yw fy rhif Yswiriant Gwladol gennyf </a>"
-
-continueButton:
-  content: "Gwirio a pharhau"
-
-govuk:
-  languageToggle:
-    ariaLabel: Dewis iaith
-    englishLanguage: English
-    englishVisuallyHidden: Change to English
-    welshLanguage: Cymraeg
-    welshVisuallyHidden: Newid yr iaith ir Gymraeg
