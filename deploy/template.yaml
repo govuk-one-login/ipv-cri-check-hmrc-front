@@ -36,7 +36,7 @@ Parameters:
 
   SupportManualURL:
     Type: String
-    Default: "https://govukverify.atlassian.net/wiki/spaces/OJ/pages/4090790413/NINO+Check+Credential+Issuer+support+runbook"
+    Default: "https://team-manual.account.gov.uk/teams/CRI-Orange-team/supporting-cri-orange/hmrc-nino-runbook/#frontend-api-alarms"
     Description: The support manual URL to be provided in alarm messages.
 
 Conditions:
@@ -790,7 +790,7 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !Ref StepScaleInPolicy
-      AlarmDescription: "FrontClusterUnder30PercentCPU"
+      AlarmDescription: !Sub "FrontClusterUnder30PercentCPU. ${SupportManualURL}"
       ComparisonOperator: "LessThanThreshold"
       DatapointsToAlarm: "5"
       Dimensions:
