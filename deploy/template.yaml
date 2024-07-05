@@ -386,6 +386,8 @@ Resources:
                   !Ref "Environment",
                   ga4Disabled,
                 ]
+            - Name: ANALYTICS_DATA_SENSITIVE
+              Value: "false"
             - Name: UA_DISABLED
               Value:
                 !FindInMap [
