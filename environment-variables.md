@@ -23,4 +23,4 @@
 | GA4_DISABLED             | Feature flag to disable GA4                                                               | false       |
 | UA_CONTAINER_ID          | Container ID for Universal Analytics, required for UA to work correctly                   | GTM-TK92W68 |
 | UA_DISABLED              | Feature flag to disable UA                                                                | true        |
-| ANALYTICS_DATA_SENSITIVE | Feature flag for isDataSensitive                                                          | false       |
+| ANALYTICS_DATA_SENSITIVE | Feature flag for analyticsDataSensitive                                                   | false       |
