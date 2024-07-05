@@ -16,10 +16,11 @@
 
 ## Metrics and Analytics
 
-| Name                    | Description                                                                               | Default     |
-| :---------------------- | :---------------------------------------------------------------------------------------- | :---------- |
-| ANALYTICS_COOKIE_DOMAIN | Cookie domain to persist values throughout the different sections of the OneLogin journey | localhost   |
-| GA4_CONTAINER_ID        | Container ID for GA4, required for analytics to work correctly                            | GTM-KD86CMZ |
-| GA4_DISABLED            | Feature flag to disable GA4                                                               | false       |
-| UA_CONTAINER_ID         | Container ID for Universal Analytics, required for UA to work correctly                   | GTM-TK92W68 |
-| UA_DISABLED             | Feature flag to disable UA                                                                | true        |
+| Name                     | Description                                                                               | Default     |
+| :----------------------- | :---------------------------------------------------------------------------------------- | :---------- |
+| ANALYTICS_COOKIE_DOMAIN  | Cookie domain to persist values throughout the different sections of the OneLogin journey | localhost   |
+| GA4_CONTAINER_ID         | Container ID for GA4, required for analytics to work correctly                            | GTM-KD86CMZ |
+| GA4_DISABLED             | Feature flag to disable GA4                                                               | false       |
+| UA_CONTAINER_ID          | Container ID for Universal Analytics, required for UA to work correctly                   | GTM-TK92W68 |
+| UA_DISABLED              | Feature flag to disable UA                                                                | true        |
+| ANALYTICS_DATA_SENSITIVE | Feature flag for isDataSensitive                                                          | false       |

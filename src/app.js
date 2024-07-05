@@ -121,6 +121,7 @@ setGTM({
   uaContainerId: APP.GTM.UA_CONTAINER_ID,
   ga4Disabled: APP.GTM.GA4_DISABLED,
   ga4ContainerId: APP.GTM.GA4_CONTAINER_ID,
+  isDataSensitive: APP.GTM.ANALYTICS_DATA_SENSITIVE,
 });
 
 router.use(getGTM);
