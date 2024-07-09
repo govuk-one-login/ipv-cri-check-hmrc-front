@@ -1,5 +1,6 @@
 nationalInsuranceNumber:
   content: " "
+  prefix: ""
   label: "Yswiriant Gwladol"
   hint: "Er enghraifft, 'QQ 12 34 56 C'."
 
