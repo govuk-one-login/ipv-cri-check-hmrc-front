@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
       time: "03:00"
     target-branch: main
     labels:
@@ -17,7 +17,7 @@ updates:
   - package-ecosystem: docker
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
       time: "03:00"
     target-branch: main
     labels:
@@ -28,7 +28,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
     target-branch: main
     labels:
       - dependabot
