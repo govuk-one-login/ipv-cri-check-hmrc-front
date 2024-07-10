@@ -1,5 +1,6 @@
 nationalInsuranceNumber:
   content: " "
+  prefix: ""
   label: "National Insurance number"
   hint: "For example, ‘QQ 12 34 56 C’."
 
