@@ -677,6 +677,12 @@ Resources:
       ComparisonOperator: GreaterThanOrEqualToThreshold
       TreatMissingData: notBreaching
 
+  CloudFrontWAFv2ACLAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn: !Ref LoadBalancer
+      WebACLArn: !ImportValue cfront-origin-distrib-CloakingOriginWebACLArn
+
   # ECS Autoscaling
   # The number of pods will increase when the configured CPU utilization is breached for more than 3 minutes.
   # Scaling down will occur after 15 minutes of 90% utilization of the configured CPU utilization.
