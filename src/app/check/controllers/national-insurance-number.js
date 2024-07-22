@@ -16,6 +16,7 @@ const validateStatus = (status) => {
 
 class NationalInsuranceNumberController extends BaseController {
   async saveValues(req, res, callback) {
+  Thread.sleep(3000)
     req.session.redirectToRetry = false;
     super.saveValues(req, res, async () => {
       try {

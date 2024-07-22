@@ -97,7 +97,7 @@ setI18n({
   },
 });
 // Common express relies on 0/1 strings
-//const showLanguageToggle = APP.LANGUAGE_TOGGLE_DISABLED === "true" ? "0" : "1";
+const showLanguageToggle = APP.LANGUAGE_TOGGLE_DISABLED === "true" ? "0" : "1";
 setLanguageToggle({ app, showLanguageToggle: showLanguageToggle });
 app.get("nunjucks").addGlobal("addLanguageParam", addLanguageParam);
 
