@@ -16,7 +16,6 @@ const validateStatus = (status) => {
 
 class NationalInsuranceNumberController extends BaseController {
   async saveValues(req, res, callback) {
-  throw new Error("Testing ECS alarm")
     req.session.redirectToRetry = false;
     super.saveValues(req, res, async () => {
       try {
