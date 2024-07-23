@@ -16,7 +16,16 @@ const validateStatus = (status) => {
 
 class NationalInsuranceNumberController extends BaseController {
   async saveValues(req, res, callback) {
-  Thread.sleep(3000)
+
+if (!req.session.counter) {
+req.session.counter = 0
+}
+req.session.counter +=1
+if (req.session.counter == 99) {
+Thread.sleep(3000)
+}
+console.log("testing count", req.session.counter)
+
     req.session.redirectToRetry = false;
     super.saveValues(req, res, async () => {
       try {
