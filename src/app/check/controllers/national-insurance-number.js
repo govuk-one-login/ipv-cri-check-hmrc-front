@@ -22,7 +22,11 @@ req.session.counter = 0
 }
 req.session.counter +=1
 if (req.session.counter == 99) {
-Thread.sleep(3000)
+const date = Date.now();
+let currentDate = null;
+do {
+  currentDate = Date.now();
+} while (currentDate - date < 5000);
 }
 console.log("testing count", req.session.counter)
 
