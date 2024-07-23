@@ -17,18 +17,15 @@ const validateStatus = (status) => {
 class NationalInsuranceNumberController extends BaseController {
   async saveValues(req, res, callback) {
 
-if (!req.session.counter) {
-req.session.counter = 0
-}
-req.session.counter +=1
-if (req.session.counter == 99) {
-const date = Date.now();
-let currentDate = null;
-do {
-  currentDate = Date.now();
-} while (currentDate - date < 5000);
-}
-console.log("testing count", req.session.counter)
+  await new Promise((resolve) => {
+    if (Math.random() < 0.1) {
+      setTimeout(() => {
+        resolve();
+      }, 2500);
+    } else {
+     resolve();
+    }
+  });
 
     req.session.redirectToRetry = false;
     super.saveValues(req, res, async () => {
