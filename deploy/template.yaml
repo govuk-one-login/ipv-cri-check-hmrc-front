@@ -39,6 +39,11 @@ Parameters:
     Default: "https://team-manual.account.gov.uk/teams/CRI-Orange-team/supporting-cri-orange/hmrc-nino-runbook/#frontend-api-alarms"
     Description: The support manual URL to be provided in alarm messages.
 
+  DeployAlarmsInDevEnvironment:
+    Description: "Set to the string value `true` to deploy alarms in a DEV environment"
+    Type: String
+    Default: false
+
 Conditions:
   IsNotDevelopment: !Or
     - !Equals [!Ref Environment, build]
@@ -51,6 +56,10 @@ Conditions:
   IsProductionOrBuild: !Or
     - !Equals [!Ref Environment, production]
     - !Equals [!Ref Environment, build]
+
+  DeployAlarms: !Or
+    - !Condition IsNotDevelopment
+    - !Equals [!Ref DeployAlarmsInDevEnvironment, "true"]
 
   UsePermissionsBoundary:
     Fn::Not:
@@ -331,6 +340,7 @@ Resources:
     DependsOn:
       - "ECSFatalErorMetricFilter"
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-ECSFatalErrorAlarm"
       AlarmDescription: !Sub "Trigger an alarm when Fatal Error occurs. ${SupportManualURL}"
@@ -657,6 +667,7 @@ Resources:
     DependsOn:
       - "APIGWFatalErorMetricFilter"
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-APIGWFatalErrorAlarm"
       AlarmDescription: !Sub "Trigger an alarm when Fatal Error occurs. ${SupportManualURL}"
@@ -836,6 +847,7 @@ Resources:
 
   FE5XXErrorAlarm:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FE5XXErrorAlarm"
       AlarmDescription: !Sub "Threshold exceeds 10% with a minimum of 150 invocations and a minimum of 5 errors in 5 out of the last 5 minutes. ${SupportManualURL}"
@@ -885,6 +897,7 @@ Resources:
 
   FE4XXErrorAlarm:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FE4XXErrorAlarm"
       AlarmDescription: !Sub "Error threshold exceeds 5% with a minimum of 150 invocations and a minimum of 2 errors in 2 out of the last 5 minutes. ${SupportManualURL}"
@@ -934,6 +947,7 @@ Resources:
 
   FELatencyAlarmP95:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FELatencyAlarmP95"
       AlarmDescription: !Sub "Trigger the alarm if less than 95% of requests has a latency of less than 1 second with a minimum of 25 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
@@ -979,6 +993,7 @@ Resources:
 
   FELatencyAlarmP99:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FELatencyAlarmP99"
       AlarmDescription: !Sub "Trigger the alarm if less than 99% of requests has a latency of less than 2.5 second with a minimum of 150 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
@@ -1024,6 +1039,7 @@ Resources:
 
   NoTaskCountAlarm:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmDescription: !Sub "Check HMRC ${Environment} frontend no ECS service tasks. ${SupportManualURL}"
       ActionsEnabled: true
@@ -1048,6 +1064,7 @@ Resources:
 
   OnlyOneTaskCountAlarm:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmDescription: !Sub "Check ${Environment} frontend below desired ECS service tasks. ${SupportManualURL}"
       ActionsEnabled: true
@@ -1070,6 +1087,7 @@ Resources:
 
   5XXOnELB:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmDescription: !Sub "Check HRMC ${Environment} frontend 5XX count. ${SupportManualURL}"
       ActionsEnabled: true
@@ -1094,6 +1112,7 @@ Resources:
 
   FELowContainerTaskCountAlarm:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FELowContainerTaskCountAlarm"
       AlarmDescription: !Sub "Trigger a warning if the running container task count drops below 2. ${SupportManualURL}"
@@ -1124,6 +1143,7 @@ Resources:
 
   FEHighContainerTaskCountWarning:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FEHighContainerTaskCountWarning"
       AlarmDescription: !Sub "Task count reached the auto-scaling maximum for 5 minutes. ${SupportManualURL}"
@@ -1156,6 +1176,7 @@ Resources:
 
   FELowContainerTaskCountCriticalAlarm:
     Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-FELowContainerTaskCountCriticalAlarm"
       AlarmDescription: !Sub "Critical alert, running container task count droped below 1. ${SupportManualURL}"
@@ -1186,6 +1207,7 @@ Resources:
 
   WarningAlarmDashboard:
     Type: AWS::CloudWatch::Dashboard
+    Condition: DeployAlarms
     Properties:
       DashboardName: !Sub "${AWS::StackName}-Warning-Alarm-Overview"
       DashboardBody:
@@ -1287,6 +1309,7 @@ Resources:
 
   CriticalAlarmDashboard:
     Type: AWS::CloudWatch::Dashboard
+    Condition: DeployAlarms
     Properties:
       DashboardName: !Sub "${AWS::StackName}-Critical-Alarm-Overview"
       DashboardBody:
