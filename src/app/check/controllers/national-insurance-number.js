@@ -16,17 +16,6 @@ const validateStatus = (status) => {
 
 class NationalInsuranceNumberController extends BaseController {
   async saveValues(req, res, callback) {
-
-  await new Promise((resolve) => {
-    if (Math.random() < 0.1) {
-      setTimeout(() => {
-        resolve();
-      }, 2500);
-    } else {
-     resolve();
-    }
-  });
-
     req.session.redirectToRetry = false;
     super.saveValues(req, res, async () => {
       try {
