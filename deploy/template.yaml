@@ -950,7 +950,7 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FELatencyAlarmP95"
-      AlarmDescription: !Sub "Trigger the alarm if less than 95% of requests has a latency of less than 1 second with a minimum of 25 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
+      AlarmDescription: !Sub "Trigger the alarm if less than 95% of requests has a latency of more than 1 second with a minimum of 25 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
       ActionsEnabled: false
       OKActions:
         - !ImportValue platform-alarm-warning-alert-topic
@@ -996,7 +996,7 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FELatencyAlarmP99"
-      AlarmDescription: !Sub "Trigger the alarm if less than 99% of requests has a latency of less than 2.5 second with a minimum of 150 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
+      AlarmDescription: !Sub "Trigger the alarm if less than 99% of requests have a latency of more than 2.5 second with a minimum of 150 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
       ActionsEnabled: false
       OKActions:
         - !ImportValue platform-alarm-warning-alert-topic
