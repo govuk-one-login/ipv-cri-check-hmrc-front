@@ -1204,12 +1204,10 @@ Resources:
           MetricStat:
             Metric:
               Namespace: ECS/ContainerInsights
-              MetricName: RunningTaskCount
+              MetricName: TaskCount
               Dimensions:
                 - Name: ClusterName
                   Value: !Ref EcsCluster
-                - Name: ServiceName
-                  Value: !GetAtt EcsService.Name
             Period: 60
             Stat: Minimum
 
@@ -1235,12 +1233,10 @@ Resources:
           MetricStat:
             Metric:
               Namespace: ECS/ContainerInsights
-              MetricName: RunningTaskCount
+              MetricName: TaskCount
               Dimensions:
                 - Name: ClusterName
                   Value: !Ref EcsCluster
-                - Name: ServiceName
-                  Value: !GetAtt EcsService.Name
             Period: 60
             Stat: Maximum
 
