@@ -325,19 +325,26 @@ Resources:
       EnableECSManagedTags: false
       HealthCheckGracePeriodSeconds: 60
       LaunchType: FARGATE
-      LoadBalancers:
-        - ContainerName: app
-          ContainerPort: 8080
-          TargetGroupArn: !Ref LoadBalancerListenerTargetGroupECS
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          AssignPublicIp: DISABLED
-          SecurityGroups:
-            - !GetAtt ECSSecurityGroup.GroupId
-          Subnets:
-            - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
-            - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdB"
-      TaskDefinition: !Ref ECSServiceTaskDefinition
+      LoadBalancers: !If
+        - UseCanaryDeployment
+        - !Ref AWS::NoValue
+        - - ContainerName: app
+            ContainerPort: 8080
+            TargetGroupArn: !Ref LoadBalancerListenerTargetGroupECS
+      NetworkConfiguration: !If
+        - UseCanaryDeployment
+        - !Ref AWS::NoValue
+        - AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+            SecurityGroups:
+              - !GetAtt ECSSecurityGroup.GroupId
+            Subnets:
+              - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
+              - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdB"
+      TaskDefinition: !If
+        - UseCanaryDeployment
+        - !Ref AWS::NoValue
+        - !Ref ECSServiceTaskDefinition
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ECS"
@@ -1171,12 +1178,10 @@ Resources:
           MetricStat:
             Metric:
               Namespace: ECS/ContainerInsights
-              MetricName: RunningTaskCount
+              MetricName: TaskCount
               Dimensions:
                 - Name: ClusterName
                   Value: !Ref EcsCluster
-                - Name: ServiceName
-                  Value: !GetAtt EcsService.Name
             Period: 60
             Stat: Minimum
 
@@ -1204,10 +1209,12 @@ Resources:
           MetricStat:
             Metric:
               Namespace: ECS/ContainerInsights
-              MetricName: TaskCount
+              MetricName: RunningTaskCount
               Dimensions:
                 - Name: ClusterName
                   Value: !Ref EcsCluster
+                - Name: ServiceName
+                  Value: !GetAtt EcsService.Name
             Period: 60
             Stat: Minimum
 
