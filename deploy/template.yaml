@@ -55,7 +55,14 @@ Parameters:
     Default: "None"
     # Allowed values: See https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
 
+  CaptureFEVitalSignsMetric:
+    Description: "Enable MetricFilter for frontend-vital-signs package"
+    Type: String
+    Default: "false"
+
 Conditions:
+  DeployFEVitalSignsMetrics: !Equals [ !Ref CaptureFEVitalSignsMetric, "true" ]
+
   IsNotDevelopment: !Or
     - !Equals [!Ref Environment, build]
     - !Equals [!Ref Environment, staging]
@@ -1447,6 +1454,7 @@ Resources:
   # Metrics for frontend-vital-signs
   EventLoopDelayMetricFilter:
     Type: AWS::Logs::MetricFilter
+    Condition: DeployFEVitalSignsMetrics
     Properties:
       LogGroupName: !Ref ECSAccessLogsGroup
       FilterPattern: "{($.eventLoopDelay = *)}"
@@ -1457,6 +1465,7 @@ Resources:
 
   EventLoopUtilizationIdleMetricFilter:
     Type: AWS::Logs::MetricFilter
+    Condition: DeployFEVitalSignsMetrics
     Properties:
       LogGroupName: !Ref ECSAccessLogsGroup
       FilterPattern: "{ $.eventLoopUtilization.utilization.idle = * }"
@@ -1467,6 +1476,7 @@ Resources:
 
   EventLoopUtilizationActiveMetricFilter:
     Type: AWS::Logs::MetricFilter
+    Condition: DeployFEVitalSignsMetrics
     Properties:
       LogGroupName: !Ref ECSAccessLogsGroup
       FilterPattern: "{ $.eventLoopUtilization.utilization.active = * }"
@@ -1477,6 +1487,7 @@ Resources:
 
   EventLoopUtilizationUtilizationMetricFilter:
     Type: AWS::Logs::MetricFilter
+    Condition: DeployFEVitalSignsMetrics
     Properties:
       LogGroupName: !Ref ECSAccessLogsGroup
       FilterPattern: "{ $.eventLoopUtilization.utilization.utilization = * }"
@@ -1487,6 +1498,7 @@ Resources:
 
   RequestsPerSecondMetricFilter:
     Type: AWS::Logs::MetricFilter
+    Condition: DeployFEVitalSignsMetrics
     Properties:
       LogGroupName: !Ref ECSAccessLogsGroup
       FilterPattern: "{ $.requestsPerSecond.dynamic = * }"
@@ -1498,6 +1510,7 @@ Resources:
 
   AvgResponseTimeMetricFilter:
     Type: AWS::Logs::MetricFilter
+    Condition: DeployFEVitalSignsMetrics
     Properties:
       LogGroupName: !Ref ECSAccessLogsGroup
       FilterPattern: "{ $.avgResponseTime.dynamic = * }"
@@ -1509,6 +1522,7 @@ Resources:
 
   MaxConcurrentConnectionsMetricFilter:
     Type: AWS::Logs::MetricFilter
+    Condition: DeployFEVitalSignsMetrics
     Properties:
       LogGroupName: !Ref ECSAccessLogsGroup
       FilterPattern: "{ $.maxConcurrentConnections = * }"
