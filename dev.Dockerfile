@@ -1,4 +1,4 @@
-FROM --platform="linux/arm64" arm64v8/node@sha256:56e8282f4392fb96c877babc93b3829e46b79c6fbcd48c92de578febffc80587 AS builder
+FROM --platform="linux/arm64" arm64v8/node@sha256:bb763effd1c4d031778c70638230622818a08a9709cd33d540d902b8b042b35e AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json ./
@@ -9,7 +9,7 @@ RUN npm run build
 
 RUN npm prune
 
-FROM --platform="linux/arm64" arm64v8/node@sha256:56e8282f4392fb96c877babc93b3829e46b79c6fbcd48c92de578febffc80587 AS final
+FROM --platform="linux/arm64" arm64v8/node@sha256:bb763effd1c4d031778c70638230622818a08a9709cd33d540d902b8b042b35e AS final
 
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "tini"]
