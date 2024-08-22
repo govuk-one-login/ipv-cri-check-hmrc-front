@@ -19,7 +19,7 @@ module.exports = class PlaywrightDevPage {
 
   async goto() {
     if (process.env.MOCK_API === "false") {
-      this.startingURL = await this.setStartingURLForStub();
+      this.startingURL = await this.getStartingURLForStub();
     }
 
     await this.page.goto(this.startingURL.toString());
@@ -31,16 +31,16 @@ module.exports = class PlaywrightDevPage {
 
   async getStartingURLForStub() {
     // needed so that the browser has the credentials set
-    await this.page.goto(process.env.RELYING_PARTY_URL);
+    await this.page.goto(this.relyingPartyURL.href);
 
     const { data } = await axios.get(
-      `${process.env.RELYING_PARTY_URL}/backend/generateInitialClaimsSet?cri=check-hmrc-staging&rowNumber=197`
+      `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-staging&rowNumber=197`
     );
 
     const {
       data: { request, client_id },
     } = await axios.post(
-      `${process.env.RELYING_PARTY_URL}/backend/createSessionRequest?cri=check-hmrc-staging&rowNumber=197`,
+      `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-staging&rowNumber=197`,
       data
     );
 
