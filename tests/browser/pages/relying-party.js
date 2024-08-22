@@ -44,11 +44,7 @@ module.exports = class PlaywrightDevPage {
 
   isRelyingPartyServer() {
     const { origin } = new URL(this.page.url());
-    const { origin: relyingPartyOrigin } = new URL(
-      process.env.RELYING_PARTY_URL
-    );
-
-    return origin === relyingPartyOrigin;
+    return origin === this.relyingPartyURL.origin;
   }
 
   hasSuccessQueryParams() {
