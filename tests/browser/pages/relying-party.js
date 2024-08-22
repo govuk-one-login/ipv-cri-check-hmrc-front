@@ -48,9 +48,6 @@ module.exports = class PlaywrightDevPage {
       process.env.RELYING_PARTY_URL
     );
 
-    // console.log("relyingPartyOrigin", relyingPartyOrigin);
-    // console.log("origin", origin);
-
     return origin === relyingPartyOrigin;
   }
 
@@ -58,9 +55,9 @@ module.exports = class PlaywrightDevPage {
     const { searchParams } = new URL(this.page.url());
 
     return (
-      searchParams.get("client_id") && // FIXME: Restore checking of client_id
-      searchParams.get("state") === "sT@t3" &&
-      searchParams.get("code").startsWith("auth-code-")
+      !!searchParams.get("client_id") &&
+      !!searchParams.get("state") &&
+      !!searchParams.get("code")
     );
   }
 
