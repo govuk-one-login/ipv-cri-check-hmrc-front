@@ -6,40 +6,46 @@ module.exports = class PlaywrightDevPage {
    */
   constructor(page, clientId) {
     this.page = page;
-    this.clientId = clientId;
 
     const websiteHost = process.env.WEBSITE_HOST || "http://localhost:5050";
     this.baseURL = new URL(websiteHost);
+    this.relyingPartyURL = new URL(process.env.RELYING_PARTY_URL);
 
-    if (process.env.MOCK_API) {
-      this.oauthPath = `/oauth2/authorize?request=lorem&client_id=${this.clientId}`;
+    if (process.env.MOCK_API === "true") {
+      this.oauthPath = this.getOauthPath("lorem", clientId);
       this.startingURL = new URL(this.oauthPath, this.baseURL);
-
-      this.relyingPartyURL = new URL(process.env.RELYING_PARTY_URL);
     }
   }
 
   async goto() {
     if (process.env.MOCK_API === "false") {
-      // for credentials
-      await this.page.goto(process.env.RELYING_PARTY_URL);
-
-      const { data } = await axios.get(
-        `${process.env.RELYING_PARTY_URL}/backend/generateInitialClaimsSet?cri=check-hmrc-staging&rowNumber=197`
-      );
-
-      const {
-        data: { request, client_id },
-      } = await axios.post(
-        `${process.env.RELYING_PARTY_URL}/backend/createSessionRequest?cri=check-hmrc-staging&rowNumber=197`,
-        data
-      );
-
-      this.oauthPath = `/oauth2/authorize?request=${request}&client_id=${client_id}`;
-      this.startingURL = new URL(this.oauthPath, this.baseURL);
+      this.startingURL = await this.setStartingURLForStub();
     }
 
     await this.page.goto(this.startingURL.toString());
+  }
+
+  getOauthPath(request, clientId) {
+    return `/oauth2/authorize?request=${request}&client_id=${clientId}`;
+  }
+
+  async getStartingURLForStub() {
+    // needed so that the browser has the credentials set
+    await this.page.goto(process.env.RELYING_PARTY_URL);
+
+    const { data } = await axios.get(
+      `${process.env.RELYING_PARTY_URL}/backend/generateInitialClaimsSet?cri=check-hmrc-staging&rowNumber=197`
+    );
+
+    const {
+      data: { request, client_id },
+    } = await axios.post(
+      `${process.env.RELYING_PARTY_URL}/backend/createSessionRequest?cri=check-hmrc-staging&rowNumber=197`,
+      data
+    );
+
+    this.oauthPath = this.getOauthPath(request, client_id);
+    return new URL(this.oauthPath, this.baseURL);
   }
 
   isRelyingPartyServer() {
