@@ -10,6 +10,7 @@ module.exports = class PlaywrightDevPage {
     const websiteHost = process.env.WEBSITE_HOST || "http://localhost:5050";
     this.baseURL = new URL(websiteHost);
     this.relyingPartyURL = new URL(process.env.RELYING_PARTY_URL);
+    this.env = process.env.ENV || "dev";
 
     if (process.env.MOCK_API === "true") {
       this.oauthPath = this.getOauthPath("lorem", clientId);
@@ -34,14 +35,13 @@ module.exports = class PlaywrightDevPage {
     await this.page.goto(this.relyingPartyURL.href);
 
     const { data } = await axios.get(
-      // TODO configure for each env
-      `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-dev&rowNumber=197`
+      `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-${this.env}&rowNumber=197`
     );
 
     const {
       data: { request, client_id },
     } = await axios.post(
-      `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-dev&rowNumber=197`,
+      `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-${this.env}&rowNumber=197`,
       data
     );
 
