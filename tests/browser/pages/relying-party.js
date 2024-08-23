@@ -34,13 +34,14 @@ module.exports = class PlaywrightDevPage {
     await this.page.goto(this.relyingPartyURL.href);
 
     const { data } = await axios.get(
-      `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-staging&rowNumber=197`
+      // TODO configure for each env
+      `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-dev&rowNumber=197`
     );
 
     const {
       data: { request, client_id },
     } = await axios.post(
-      `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-staging&rowNumber=197`,
+      `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-dev&rowNumber=197`,
       data
     );
 
