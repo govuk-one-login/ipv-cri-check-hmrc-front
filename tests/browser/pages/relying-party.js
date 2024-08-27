@@ -7,12 +7,14 @@ module.exports = class PlaywrightDevPage {
   constructor(page, clientId) {
     this.page = page;
 
-    const websiteHost = process.env.WEBSITE_HOST || "http://localhost:5050";
+    const websiteHost = process.env.WEBSITE_HOST || "http://localhost:5020";
+    const relyingPartyURL =
+      process.env.RELYING_PARTY_URL || "http://example.net";
     this.baseURL = new URL(websiteHost);
-    this.relyingPartyURL = new URL(process.env.RELYING_PARTY_URL);
+    this.relyingPartyURL = new URL(relyingPartyURL);
     this.env = process.env.ENV || "dev";
 
-    if (process.env.MOCK_API === "true") {
+    if (process.env.MOCK_API === "true" || process.env.MOCK_API === undefined) {
       this.oauthPath = this.getOauthPath("lorem", clientId);
       this.startingURL = new URL(this.oauthPath, this.baseURL);
     }
