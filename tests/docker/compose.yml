@@ -27,7 +27,8 @@ services:
   cucumber:
     build:
       context: ../browser
-      dockerfile: pre-merge.Dockerfile
+      # dockerfile: pre-merge.Dockerfile
+      dockerfile: Dockerfile
     environment:
       USE_LOCAL_API: true
       GITHUB_ACTIONS: true
