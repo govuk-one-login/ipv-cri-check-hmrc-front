@@ -101,7 +101,7 @@ resources:
       allOf:
         - jsonPath: $.nino
           operator: Matches
-          value: ^(?!RT|BG|GB|KN|NK|NT|TN|ZZ)[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[ABCD]$
+          value: ^(?!EE|BG|GB|KN|NK|NT|TN|ZZ)[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[ABCD]$
     response:
       statusCode: 200
       content: |
@@ -115,7 +115,7 @@ resources:
       allOf:
         - jsonPath: $.nino
           operator: Matches
-          value: ^(?!RT|BG|GB|KN|NK|NT|TN|ZZ)[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[ABCD]$
+          value: ^(?!EE|BG|GB|KN|NK|NT|TN|ZZ)[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[ABCD]$
     response:
       statusCode: 200
       content: |
@@ -128,7 +128,7 @@ resources:
     requestBody:
       allOf:
         - jsonPath: $.nino
-          value: "RT123456A"
+          value: "EE123456A"
     response:
       statusCode: 422
       content: |

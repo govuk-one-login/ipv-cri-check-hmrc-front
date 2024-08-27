@@ -37,7 +37,7 @@ When(
   async function () {
     const ninoPage = new NinoPage(this.page);
 
-    await ninoPage.enterNINO("RT123456A");
+    await ninoPage.enterNINO("EE123456A");
   }
 );
 

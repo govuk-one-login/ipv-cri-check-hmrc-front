@@ -1,29 +1,61 @@
+const axios = require("axios");
+
 module.exports = class PlaywrightDevPage {
   /**
    * @param {import('@playwright/test').Page} page
    */
   constructor(page, clientId) {
     this.page = page;
-    this.clientId = clientId;
 
-    // Starting URL properties
-    const websiteHost = process.env.WEBSITE_HOST || "http://localhost:5050";
+    const websiteHost = process.env.WEBSITE_HOST || "http://localhost:5020";
+    const relyingPartyURL =
+      process.env.RELYING_PARTY_URL || "http://example.net";
     this.baseURL = new URL(websiteHost);
+    this.relyingPartyURL = new URL(relyingPartyURL);
+    this.env = process.env.ENV || "dev";
 
-    this.oauthPath = `/oauth2/authorize?request=lorem&client_id=${this.clientId}`;
-    this.startingURL = new URL(this.oauthPath, this.baseURL);
-
-    // Relying Party Return URL
-    this.relyingPartyURL = new URL("http://example.net");
+    if (
+      process.env.USE_LOCAL_API === "true" ||
+      process.env.USE_LOCAL_API === undefined
+    ) {
+      this.oauthPath = this.getOauthPath("lorem", clientId);
+      this.startingURL = new URL(this.oauthPath, this.baseURL);
+    }
   }
 
   async goto() {
+    if (process.env.USE_LOCAL_API === "false") {
+      this.startingURL = await this.getStartingURLForStub();
+    }
+
     await this.page.goto(this.startingURL.toString());
+  }
+
+  getOauthPath(request, clientId) {
+    return `/oauth2/authorize?request=${request}&client_id=${clientId}`;
+  }
+
+  async getStartingURLForStub() {
+    // needed so that the browser has the credentials set
+    await this.page.goto(this.relyingPartyURL.href);
+
+    const { data } = await axios.get(
+      `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-${this.env}&rowNumber=197`
+    );
+
+    const {
+      data: { request, client_id },
+    } = await axios.post(
+      `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-${this.env}&rowNumber=197`,
+      data
+    );
+
+    this.oauthPath = this.getOauthPath(request, client_id);
+    return new URL(this.oauthPath, this.baseURL);
   }
 
   isRelyingPartyServer() {
     const { origin } = new URL(this.page.url());
-
     return origin === this.relyingPartyURL.origin;
   }
 
@@ -31,9 +63,9 @@ module.exports = class PlaywrightDevPage {
     const { searchParams } = new URL(this.page.url());
 
     return (
-      searchParams.get("client_id") && // FIXME: Restore checking of client_id
-      searchParams.get("state") === "sT@t3" &&
-      searchParams.get("code").startsWith("auth-code-")
+      !!searchParams.get("client_id") &&
+      !!searchParams.get("state") &&
+      !!searchParams.get("code")
     );
   }
 

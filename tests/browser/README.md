@@ -41,4 +41,4 @@ The browser tests are written as [Cucumber Gherkin Features](https://cucumber.io
 
 ### Test Data
 
-When invoking error scenarios, use a valid NINO beginning with `RT` with the exception of `RT123456A` which is the retry scenario.
+When invoking error scenarios, use a valid NINO beginning with `EE` and with the exception of `EE123456A` which is the retry scenario.

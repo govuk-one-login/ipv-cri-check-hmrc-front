@@ -31,8 +31,13 @@ AfterAll(async function () {
 });
 
 Before(async function ({ pickle } = {}) {
-  // Only if MOCK_API do we use the @mock-api -> client_id mapping
-  if (!(process.env.MOCK_API === "true")) {
+  // Only if USE_LOCAL_API do we use the @mock-api -> client_id mapping
+  if (
+    !(
+      process.env.USE_LOCAL_API === "true" ||
+      process.env.USE_LOCAL_API === undefined
+    )
+  ) {
     return;
   }
 

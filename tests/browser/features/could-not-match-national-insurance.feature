@@ -1,4 +1,4 @@
-@mock-api:success @retry
+@mock-api:success @retry @post-merge
 Feature: Could not match national insurance
   Retry on the NINO page
   Background:
