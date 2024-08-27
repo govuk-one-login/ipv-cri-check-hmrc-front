@@ -14,14 +14,17 @@ module.exports = class PlaywrightDevPage {
     this.relyingPartyURL = new URL(relyingPartyURL);
     this.env = process.env.ENV || "dev";
 
-    if (process.env.MOCK_API === "true" || process.env.MOCK_API === undefined) {
+    if (
+      process.env.USE_LOCAL_API === "true" ||
+      process.env.USE_LOCAL_API === undefined
+    ) {
       this.oauthPath = this.getOauthPath("lorem", clientId);
       this.startingURL = new URL(this.oauthPath, this.baseURL);
     }
   }
 
   async goto() {
-    if (process.env.MOCK_API === "false") {
+    if (process.env.USE_LOCAL_API === "false") {
       this.startingURL = await this.getStartingURLForStub();
     }
 
