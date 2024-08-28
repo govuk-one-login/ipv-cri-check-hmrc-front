@@ -1521,17 +1521,28 @@ Outputs:
   StackName:
     Description: "CloudFormation stack name"
     Value: !Sub "${AWS::StackName}"
+
   FrontUrl:
     Description: >-
       The API Gateway URL which Check Front can be invoked on.
     Value: !GetAtt ApiGwHttpEndpoint.ApiEndpoint
+
   FrontGatewayId:
     Description: Check Front API Gateway ID
     Export:
       Name: !Sub "${AWS::StackName}-GatewayId"
     Value: !Ref ApiGwHttpEndpoint
+
   LoadBalancerArn:
     Description: The Fargate Front End Load Balancer ARN
     Export:
       Name: !Sub "${AWS::StackName}-LoadBalancer"
     Value: !Ref LoadBalancer
+
+  Environment:
+    Description: "The environment identifier"
+    Value: !Ref Environment
+
+  WebsiteHost:
+    Description: "The website host name"
+    Value: !Sub https://review-hc.${Environment}.account.gov.uk
