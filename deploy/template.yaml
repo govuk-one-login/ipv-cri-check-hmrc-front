@@ -391,10 +391,12 @@ Resources:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-ECSFatalErrorAlarm"
       AlarmDescription: !Sub "Trigger an alarm when Fatal Error occurs. ${SupportManualURL}"
       ActionsEnabled: true
-      OKActions:
-        - !ImportValue platform-alarm-critical-alert-topic
       AlarmActions:
-        - !ImportValue platform-alarm-critical-alert-topic
+        - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-topic-critical-alert
+      OKActions:
+        - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-topic-critical-alert
       InsufficientDataActions: []
       MetricName: ECSFatalerror-message
       Namespace: !Sub "${AWS::StackName}/LogMessages"
@@ -718,10 +720,12 @@ Resources:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-APIGWFatalErrorAlarm"
       AlarmDescription: !Sub "Trigger an alarm when Fatal Error occurs. ${SupportManualURL}"
       ActionsEnabled: true
-      OKActions:
-        - !ImportValue platform-alarm-critical-alert-topic
       AlarmActions:
-        - !ImportValue platform-alarm-critical-alert-topic
+        - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-topic-critical-alert
+      OKActions:
+        - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-topic-critical-alert
       InsufficientDataActions: []
       MetricName: APIGWFatalerror-message
       Namespace: !Sub "${AWS::StackName}/LogMessages"
@@ -898,10 +902,12 @@ Resources:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FE5XXErrorAlarm"
       AlarmDescription: !Sub "Threshold exceeds 10% with a minimum of 150 invocations and a minimum of 5 errors in 5 out of the last 5 minutes. ${SupportManualURL}"
       ActionsEnabled: true
-      OKActions:
-        - !ImportValue platform-alarm-warning-alert-topic
       AlarmActions:
-        - !ImportValue platform-alarm-warning-alert-topic
+        - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-topic-critical-alert
+      OKActions:
+        - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-topic-critical-alert
       InsufficientDataActions: []
       Dimensions: []
       EvaluationPeriods: 5
@@ -1091,8 +1097,10 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-topic-critical-alert
       OKActions:
         - !ImportValue platform-alarm-warning-alert-topic
+        - !ImportValue platform-alarm-topic-critical-alert
       InsufficientDataActions:
         - !ImportValue platform-alarm-warning-alert-topic
       MetricName: TaskCount
@@ -1116,6 +1124,7 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-topic-critical-alert
       OKActions: []
       InsufficientDataActions: []
       MetricName: TaskCount
@@ -1139,6 +1148,7 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-topic-critical-alert
       OKActions: []
       InsufficientDataActions: []
       MetricName: HTTPCode_Target_5XX_Count
@@ -1164,7 +1174,9 @@ Resources:
       AlarmDescription: !Sub "Trigger a warning if the running container task count drops below 2. ${SupportManualURL}"
       ActionsEnabled: true
       AlarmActions:
-        - !ImportValue platform-alarm-critical-alert-topic
+        - !ImportValue platform-alarm-warning-alert-topic
+      OKActions:
+        - !ImportValue platform-alarm-warning-alert-topic
       InsufficientDataActions: []
       Dimensions: []
       EvaluationPeriods: 1
@@ -1226,6 +1238,8 @@ Resources:
       AlarmDescription: !Sub "Critical alert, running container task count droped below 1. ${SupportManualURL}"
       ActionsEnabled: false # to be enabled once proved stable in production
       AlarmActions:
+        - !ImportValue platform-alarm-critical-alert-topic
+      OKActions:
         - !ImportValue platform-alarm-critical-alert-topic
       InsufficientDataActions: []
       Dimensions: []
