@@ -11,4 +11,4 @@ RUN npm install
 
 COPY . ./
 
-CMD ["./run-tests.sh"]
+CMD ["./run-tests-post-merge.sh"]
