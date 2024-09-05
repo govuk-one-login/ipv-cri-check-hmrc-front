@@ -1,0 +1,37 @@
+name: Push test Docker image
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  push-image:
+    name: Push image
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.environment }}
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    strategy:
+      matrix:
+        environment: [development, build]
+    concurrency:
+      group: push-tests-image-${{ matrix.environment }}
+      cancel-in-progress: true
+    steps:
+      - name: Push test Docker image
+        uses: govuk-one-login/github-actions/aws/ecr/build-docker-image@3b8133beab89c813cf15375904be82bf9ab79a91
+        if: ${{ github.ref_name == 'main' || matrix.environment == 'development' }}
+        with:
+          immutable-tags: false
+          image-version: ${{ github.sha }}
+          aws-role-arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
+          repository: ${{ vars.IMAGE_REPOSITORY }}
+          dockerfile: tests/browser/post-merge.Dockerfile
+          build-path: tests/browser
+          image-tags: |
+            ${{ github.head_ref || github.ref_name }}-${{ github.sha }}
+            ${{ github.head_ref || github.ref_name }}
+            check-hmrc-tests-${{ github.sha }}
+            latest
