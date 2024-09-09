@@ -68,6 +68,10 @@ Conditions:
     - !Equals [!Ref Environment, production]
     - !Equals [!Ref Environment, build]
 
+  IsDevOrBuild: !Or
+    - !Equals [!Ref Environment, dev]
+    - !Equals [!Ref Environment, build]
+
   DeployAlarms: !Or
     - !Condition IsNotDevelopment
     - !Equals [!Ref DeployAlarmsInDevEnvironment, "true"]
@@ -1560,3 +1564,8 @@ Outputs:
   WebsiteHost:
     Description: "The website host name"
     Value: !Sub https://review-hc.${Environment}.account.gov.uk
+
+  CoreStubURL:
+    Condition: IsDevOrBuild
+    Description: "The core stub URL"
+    Value: !Sub "{{resolve:ssm:/check-hmrc-cri-api/smoke-tests/core-stub-url}}"
