@@ -7,6 +7,7 @@ export RELYING_PARTY_URL
 export WEBSITE_HOST
 export ENVIRONMENT
 export GITHUB_ACTIONS=true
+export USE_LOCAL_API=false
 
 cd /tests || exit 1
 
