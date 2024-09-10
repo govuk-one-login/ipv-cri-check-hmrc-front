@@ -12,7 +12,7 @@ module.exports = class PlaywrightDevPage {
       process.env.RELYING_PARTY_URL || "http://example.net";
     this.baseURL = new URL(websiteHost);
     this.relyingPartyURL = new URL(relyingPartyURL);
-    this.env = process.env.ENV || "dev";
+    this.env = process.env.ENVIRONMENT || "dev";
 
     if (
       process.env.USE_LOCAL_API === "true" ||
