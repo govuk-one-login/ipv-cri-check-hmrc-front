@@ -30,7 +30,7 @@ module.exports = {
       "/oauth2/callback",
     ],
   },
-  "/abandon": {
+  "/how-continue-national-insurance": {
     prereqs: ["/check"],
     fields: ["abandonRadio"],
     controller: AbandonController,
