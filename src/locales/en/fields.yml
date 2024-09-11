@@ -22,9 +22,9 @@ retryNationalInsuranceRadio:
       hint: ""
       reveal: ""
     findAnotherWay:
-      label: Find another way to prove your identity
+      label: Try another way to prove your identity
       value: stop
-      hint: Go back to the service you need to use or try photo ID
+      hint: You may be able to prove your identity another way with GOV.UK One Login.
       reveal: ""
 
 abandonRadio:
@@ -36,9 +36,9 @@ abandonRadio:
     required: Select what you would like to do
   items:
     abandon:
-      label: Find another way to prove your identity
+      label: Try another way to prove your identity
       value: stop
-      hint: Go back to the service you need to use or try photo ID
+      hint: You may be able to prove your identity another way with GOV.UK One Login.
       reveal: ""
     retryNationalInsurance:
       label: Enter your National Insurance number and continue to prove your identity
