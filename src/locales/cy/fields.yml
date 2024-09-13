@@ -22,9 +22,9 @@ retryNationalInsuranceRadio:
       hint: ""
       reveal: ""
     findAnotherWay:
-      label: Dod o hyd i ffordd arall o brofi eich hunaniaeth
+      label: Rhowch gynnig ar ffordd arall o brofi eich hunaniaeth
       value: stop
-      hint: Ewch yn ôl i'r gwasanaeth rydych angen ei ddefnyddio neu ddefnyddiwch ID gyda llun
+      hint: Efallai y gallwch brofi eich hunaniaeth mewn ffordd arall gyda GOV.UK One Login.
       reveal: ""
 
 abandonRadio:
@@ -36,9 +36,9 @@ abandonRadio:
     required: Dewiswch beth hoffech chi ei wneud
   items:
     abandon:
-      label: Dod o hyd i ffordd arall o brofi eich hunaniaeth
+      label: Rhowch gynnig ar ffordd arall o brofi eich hunaniaeth
       value: stop
-      hint: Ewch yn ôl i'r gwasanaeth rydych angen ei ddefnyddio neu ddefnyddiwch ID gyda llun
+      hint: Efallai y gallwch brofi eich hunaniaeth mewn ffordd arall gyda GOV.UK One Login.
       reveal: ""
     retryNationalInsurance:
       label: Rhowch eich rhif Yswiriant Gwladol a pharhau i brofi eich hunaniaeth
