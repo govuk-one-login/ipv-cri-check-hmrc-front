@@ -2,8 +2,8 @@ national-insurance-number:
   title: "Enter your National Insurance Number"
   h1: "Enter your National Insurance number"
   content:
-    - We’ll check your National Insurance number with HM Revenue and Customs (HMRC) as part of proving your identity.
-    - You can find your National Insurance number on your payslip, P60 or benefit letter.
+    - We'll use your National Insurance number to check your HMRC record as part of proving your identity.
+    - You can find it on your payslip, P60 or benefit letter.
 could-not-match-national-insurance:
   title: "We could not match your National Insurance number"
   h1: We could  not match your National Insurance number
