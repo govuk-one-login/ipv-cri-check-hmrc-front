@@ -103,7 +103,7 @@ When connecting to a mock API both the `client_id` and `request` parameters are 
 
 ### Deployed API
 
-This can also be connected to a deployed API behind an API Gatewa, using the same `API_BASE_URL` variable.
+This can also be connected to a deployed API behind an API Gateway, using the same `API_BASE_URL` variable.
 
 When connecting to a deployed API both the `client_id` and `request` parameters are supplied by an upstream service acting as this systems Relying Party. The `client_id` is configured for use with API and the `request` payload is signed and encrypted with keys known to the API.
 

@@ -26,6 +26,7 @@ module.exports = {
     },
     LANGUAGE_TOGGLE_DISABLED: process.env.LANGUAGE_TOGGLE_DISABLED || "true",
   },
+  LOG_LEVEL: process.env.LOG_LEVEL || "request",
   AWS_REGION: process.env.AWS_REGION || "eu-west-2",
   PORT: process.env.PORT || 5000,
   SESSION_SECRET: process.env.SESSION_SECRET,

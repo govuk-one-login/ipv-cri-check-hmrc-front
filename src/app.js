@@ -28,6 +28,7 @@ const {
   SESSION_SECRET,
   SESSION_TABLE_NAME,
   SESSION_TTL,
+  LOG_LEVEL,
 } = require("./lib/config.js");
 
 const { setup } = require("hmpo-app");
@@ -35,6 +36,8 @@ const { setup } = require("hmpo-app");
 const loggerConfig = {
   console: true,
   consoleJSON: true,
+  consoleLevel: LOG_LEVEL,
+  appLevel: LOG_LEVEL,
   app: false,
 };
 
