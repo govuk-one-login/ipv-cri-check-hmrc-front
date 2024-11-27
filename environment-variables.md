@@ -20,8 +20,8 @@
 | :----------------------- | :---------------------------------------------------------------------------------------- | :---------- |
 | ANALYTICS_COOKIE_DOMAIN  | Cookie domain to persist values throughout the different sections of the OneLogin journey | localhost   |
 | GA4_CONTAINER_ID         | Container ID for GA4, required for analytics to work correctly                            | GTM-KD86CMZ |
-| GA4_DISABLED             | Feature flag to disable GA4                                                               | false       |
+| GA4_ENABLED              | Feature flag to enable GA4                                                                | true        |
 | UA_CONTAINER_ID          | Container ID for Universal Analytics, required for UA to work correctly                   | GTM-TK92W68 |
-| UA_DISABLED              | Feature flag to disable UA                                                                | true        |
+| UA_ENABLED               | Feature flag to enable UA                                                                 | false       |
 | ANALYTICS_DATA_SENSITIVE | Feature flag for analyticsDataSensitive                                                   | false       |
 | LOG_LEVEL                | Determines the log level for the application                                              | request     |
