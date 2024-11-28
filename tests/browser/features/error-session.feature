@@ -4,7 +4,7 @@ Feature: Error handling
 
   @mock-api:session-500
   Scenario: Session error
-    Given Error Eric is using the system
+    Given that "Error Eric" user is going through the system
     And they have started the journey
     When there is an immediate error
     Then they should see the unrecoverable error page

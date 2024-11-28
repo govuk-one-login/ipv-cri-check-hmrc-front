@@ -23,11 +23,45 @@ module.exports = class PlaywrightDevPage {
     }
   }
 
-  async goto() {
-    if (process.env.USE_LOCAL_API === "false") {
-      this.startingURL = await this.getStartingURLForStub();
-    }
+  // async goto() {
+  //   if (process.env.USE_LOCAL_API === "false") {
+  //     this.startingURL = await this.getStartingURLForStub();
+  //   }
 
+  //   await this.page.goto(this.startingURL.toString());
+  // }
+
+  // getOauthPath(request, clientId) {
+  //   return `/oauth2/authorize?request=${request}&client_id=${clientId}`;
+  // }
+
+  // async getStartingURLForStub() {
+  //   // needed so that the browser has the credentials set
+  //   await this.page.goto(this.relyingPartyURL.href);
+
+  //   const { data } = await axios.get(
+  //     `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-${this.env}&rowNumber=197`
+  //   );
+
+  // //   console.log("making request to the api...")
+  //   const {
+  //     data: { request, client_id },
+  //   } = await axios.post(
+  //     `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-${this.env}&rowNumber=197`,
+  //     data
+  //   );
+
+  // //   console.log(`api response body is request ${request} and client id ${client_id}`)
+
+  //   this.oauthPath = this.getOauthPath(request, client_id);
+  //   console.log(`and the oAuth path should be this ${this.oauthPath}`)
+  //   return new URL(this.oauthPath, this.baseURL);
+  // }
+
+  async goto(rowNumber) {
+    if (process.env.USE_LOCAL_API === "false") {
+      this.startingURL = await this.getStartingURLForStub1(rowNumber);
+    }
     await this.page.goto(this.startingURL.toString());
   }
 
@@ -35,18 +69,17 @@ module.exports = class PlaywrightDevPage {
     return `/oauth2/authorize?request=${request}&client_id=${clientId}`;
   }
 
-  async getStartingURLForStub() {
+  async getStartingURLForStub(rowNumber) {
     // needed so that the browser has the credentials set
     await this.page.goto(this.relyingPartyURL.href);
-
     const { data } = await axios.get(
-      `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-${this.env}&rowNumber=197`
+      `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-${this.env}&rowNumber=${rowNumber}`
     );
 
     const {
       data: { request, client_id },
     } = await axios.post(
-      `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-${this.env}&rowNumber=197`,
+      `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-${this.env}&rowNumber=${rowNumber}`,
       data
     );
 

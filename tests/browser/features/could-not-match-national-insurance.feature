@@ -2,7 +2,7 @@
 Feature: Could not match national insurance
   Retry on the NINO page
   Background:
-    Given Happy Harriet is using the system
+    Given that "Happy Harriet" user is going through the system
     And they have started the journey
     And they should see the national insurance number page
     And they enter a national insurance number that requires a retry
