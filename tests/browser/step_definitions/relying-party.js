@@ -3,10 +3,16 @@ const { Given, When, Then } = require("@cucumber/cucumber");
 const { RelyingPartyPage } = require("../pages");
 const { expect } = require("chai");
 
-Given(/^([A-Za-z ]+) is using the system$/, async function (_name) {
-  const rpPage = new RelyingPartyPage(this.page, this.TESTING_CLIENT_ID);
-  await rpPage.goto();
-});
+Given(
+  "that {string} user is going through the system",
+  async function (userName) {
+    const user = this.allUsers[userName];
+    this.currentUser = user;
+    const { rowNumber } = this.currentUser;
+    const rpPage = new RelyingPartyPage(this.page, this.TESTING_CLIENT_ID);
+    await rpPage.goto(rowNumber);
+  }
+);
 
 Given("they have been redirected as a success", function () {
   const rpPage = new RelyingPartyPage(this.page);

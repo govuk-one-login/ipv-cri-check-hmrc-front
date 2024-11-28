@@ -4,7 +4,7 @@ Feature: Translation from Welsh to English and back
   The page should get translated into the correct language, when changed using cookies or the language toggle.
 
   Background:
-    Given Error Eric is using the system
+    Given that "Error Eric" user is going through the system
     And they have started the journey
     When there is an immediate error
     Then they should see the unrecoverable error page
