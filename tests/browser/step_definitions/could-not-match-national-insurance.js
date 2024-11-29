@@ -3,7 +3,7 @@ const {
   CouldNotMatchNationalInsurancePage,
   RelyingPartyPage,
 } = require("../pages");
-const { expect } = require("chai");
+const { expect, assert } = require("chai");
 
 When(
   "they click continue could not match national insurance number",
@@ -32,9 +32,11 @@ When(
   }
 );
 
-Then("they should be redirected", function () {
+Then("they should be redirected to access_denied", function () {
   const rpPage = new RelyingPartyPage(this.page);
   expect(rpPage.isRelyingPartyServer()).to.be.true;
+  const { searchParams } = new URL(rpPage.page.url());
+  assert.equal(searchParams.get("error"), "access_denied");
 });
 
 Then(
