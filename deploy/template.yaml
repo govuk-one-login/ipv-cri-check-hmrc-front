@@ -432,7 +432,7 @@ Resources:
             - Name: ANALYTICS_DATA_SENSITIVE
               Value: "false"
             - Name: UA_ENABLED
-              Value: true
+              Value: false
             - Name: ANALYTICS_COOKIE_DOMAIN
               Value:
                 !If [
