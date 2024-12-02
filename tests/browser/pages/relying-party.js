@@ -25,7 +25,7 @@ module.exports = class PlaywrightDevPage {
 
   async goto(rowNumber) {
     if (process.env.USE_LOCAL_API === "false") {
-      this.startingURL = await this.getStartingURLForStub1(rowNumber);
+      this.startingURL = await this.getStartingURLForStub(rowNumber);
     }
 
     await this.page.goto(this.startingURL.toString());
