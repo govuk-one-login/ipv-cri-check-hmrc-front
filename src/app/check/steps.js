@@ -27,20 +27,24 @@ module.exports = {
         value: "retryNationalInsurance",
         next: "national-insurance-number",
       },
-      "/oauth2/callback",
+      "abandon",
     ],
   },
   "/how-continue-national-insurance": {
     prereqs: ["/check"],
     fields: ["abandonRadio"],
-    controller: AbandonController,
     next: [
       {
         field: "abandonRadio",
         value: "retryNationalInsurance",
         next: "national-insurance-number",
       },
-      "/oauth2/callback",
+      "abandon",
     ],
+  },
+  "/abandon": {
+    skip: true,
+    controller: AbandonController,
+    next: "/oauth2/callback",
   },
 };

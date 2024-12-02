@@ -137,6 +137,19 @@ resources:
   - method: POST
     path: /check
     requestHeaders:
+      session-id: "access-denied"
+    requestBody:
+      allOf:
+        - jsonPath: $.nino
+          value: "EE123456A"
+    response:
+      statusCode: 422
+      content: |
+        {}
+
+  - method: POST
+    path: /check
+    requestHeaders:
       session-id: "check-error"
     response:
       statusCode: 500
