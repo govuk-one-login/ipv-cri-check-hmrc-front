@@ -76,6 +76,37 @@ describe("national insurance number", () => {
       });
     });
 
+    describe("with 200 status and requestRetry", () => {
+      it('should set "showRetryErrorSummary" to true', async () => {
+        req.axios.post = jest
+          .fn()
+          .mockResolvedValue({ status: 200, data: { requestRetry: true } });
+
+        await controller.saveValues(req, res, next);
+
+        expect(req.session.redirectToRetry).toBe(true);
+        expect(controller.hasRedirectToRetryShowing(req)).toBe(true);
+      });
+      it('should not set "showRetryErrorSummary" to true', async () => {
+        req.axios.post = jest
+          .fn()
+          .mockResolvedValue({ status: 200, data: { requestRetry: false } });
+
+        await controller.saveValues(req, res, next);
+
+        expect(req.session.redirectToRetry).toBe(false);
+        expect(controller.hasRedirectToRetryShowing(req)).toBe(false);
+      });
+      it('should not set "showRetryErrorSummary" to true when missing requestRetry', async () => {
+        req.axios.post = jest.fn().mockResolvedValue({ status: 200 });
+
+        await controller.saveValues(req, res, next);
+
+        expect(req.session.redirectToRetry).toBe(false);
+        expect(controller.hasRedirectToRetryShowing(req)).toBe(false);
+      });
+    });
+
     describe("on API failure", () => {
       it("should call next with error", async () => {
         const error = new Error("Async error message");

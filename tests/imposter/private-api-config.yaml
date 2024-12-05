@@ -105,7 +105,7 @@ resources:
     response:
       statusCode: 200
       content: |
-        {}
+        {"requestRetry":false}
 
   - method: POST
     path: /check
@@ -119,7 +119,7 @@ resources:
     response:
       statusCode: 200
       content: |
-        {}
+        {"requestRetry":false}
 
   - method: POST
     path: /check
@@ -130,9 +130,9 @@ resources:
         - jsonPath: $.nino
           value: "EE123456A"
     response:
-      statusCode: 422
+      statusCode: 200
       content: |
-        {}
+        {"requestRetry":true}
 
   - method: POST
     path: /check
@@ -143,9 +143,9 @@ resources:
         - jsonPath: $.nino
           value: "EE123456A"
     response:
-      statusCode: 422
+      statusCode: 200
       content: |
-        {}
+        {"requestRetry":true}
 
   - method: POST
     path: /check
