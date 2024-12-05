@@ -18,6 +18,9 @@ const {
   setI18n,
 } = require("@govuk-one-login/di-ipv-cri-common-express/src/lib/i18next");
 
+/* eslint no-console: 0 */
+console.log("hello hello hello");
+
 const addLanguageParam = require("@govuk-one-login/frontend-language-toggle/build/cjs/language-param-setter.cjs");
 
 const {

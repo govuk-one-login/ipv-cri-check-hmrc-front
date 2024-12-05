@@ -32,7 +32,7 @@ Parameters:
   MaxContainerCount:
     Description: Maximum number of FE node/express container tasks to allow autoscaling to reach
     Type: Number
-    Default: 12
+    Default: 2
 
   SupportManualURL:
     Type: String
@@ -42,7 +42,7 @@ Parameters:
   DeployAlarmsInDevEnvironment:
     Description: "Set to the string value `true` to deploy alarms in a DEV environment"
     Type: String
-    Default: false
+    Default: true
 
   CodeSigningConfigArn:
     Type: String
