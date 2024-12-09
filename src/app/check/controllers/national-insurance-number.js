@@ -42,6 +42,10 @@ class NationalInsuranceNumberController extends BaseController {
           req.session.redirectToRetry = true;
         }
 
+        if (response.status === 200 && response.data.requestRetry === true) {
+          req.session.redirectToRetry = true;
+        }
+
         callback();
       } catch (err) {
         if (err) {
