@@ -11,7 +11,7 @@ const {
 
 /* istanbul ignore next @preserve */
 const validateStatus = (status) => {
-  return (status >= 200 && status < 300) || status === 422;
+  return status >= 200 && status < 300;
 };
 
 class NationalInsuranceNumberController extends BaseController {
@@ -37,10 +37,6 @@ class NationalInsuranceNumberController extends BaseController {
             validateStatus,
           }
         );
-
-        if (response.status === 422) {
-          req.session.redirectToRetry = true;
-        }
 
         if (response.status === 200 && response.data.requestRetry === true) {
           req.session.redirectToRetry = true;

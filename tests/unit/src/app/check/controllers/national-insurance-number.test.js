@@ -65,17 +65,6 @@ describe("national insurance number", () => {
       });
     });
 
-    describe("with 422 status", () => {
-      it('should set "showRetryErrorSummary" to true', async () => {
-        req.axios.post = jest.fn().mockResolvedValue({ status: 422 });
-
-        await controller.saveValues(req, res, next);
-
-        expect(req.session.redirectToRetry).toBeTruthy();
-        expect(controller.hasRedirectToRetryShowing(req)).toBeTruthy();
-      });
-    });
-
     describe("with 200 status and requestRetry", () => {
       it('should set "showRetryErrorSummary" to true', async () => {
         req.axios.post = jest
