@@ -20,6 +20,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "overload-protection": "1.2.3",
     "@aws-sdk/client-dynamodb": "3.668.0",
     "@govuk-one-login/di-ipv-cri-common-express": "8.1.0",
     "@govuk-one-login/frontend-analytics": "3.0.0",
@@ -42,6 +43,7 @@
     "nunjucks": "3.2.4"
   },
   "devDependencies": {
+    "@types/overload-protection": "1.2.4",
     "chai": "4.4.1",
     "chai-as-promised": "7.1.1",
     "copyfiles": "2.4.1",
