@@ -875,6 +875,56 @@ Resources:
         SSEEnabled: true
         SSEType: KMS
 
+  FE5XXErrorCriticalAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: DeployAlarms
+    Properties:
+      AlarmName: !Sub "${AWS::StackName}-${Environment}-FE5XXErrorCriticalAlarm"
+      AlarmDescription: !Sub "Threshold exceeds 80% with a minimum of at least 5 invocations in 2 out of the last 5 evaluation periods of (15mins each). ${SupportManualURL}"
+      ActionsEnabled: true
+      AlarmActions:
+        - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-critical-alert-topic
+      OKActions:
+        - !ImportValue core-infrastructure-AlarmTopic
+        - !ImportValue platform-alarm-critical-alert-topic
+      EvaluationPeriods: 5
+      DatapointsToAlarm: 2
+      Threshold: 80
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      Metrics:
+        - Id: errorThreshold
+          Label: errorThreshold
+          ReturnData: true
+          Expression: IF(invocations >= 5, errorPercentage, 0)
+        - Id: errorPercentage
+          Label: errorPercentage
+          ReturnData: false
+          Expression: (error / invocations) * 100
+        - Id: invocations
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: Count
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 900
+            Stat: Sum
+        - Id: error
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApiGateway
+              MetricName: 5xx
+              Dimensions:
+                - Name: ApiId
+                  Value: !Ref ApiGwHttpEndpoint
+            Period: 900
+            Stat: Sum
+
   FE5XXErrorAlarm:
     Type: AWS::CloudWatch::Alarm
     Condition: DeployAlarms
