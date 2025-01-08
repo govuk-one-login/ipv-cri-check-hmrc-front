@@ -29,11 +29,6 @@ Parameters:
     Type: String
     Default: "none"
 
-  MaxContainerCount:
-    Description: Maximum number of FE node/express container tasks to allow autoscaling to reach
-    Type: Number
-    Default: 12
-
   SupportManualURL:
     Type: String
     Default: "https://team-manual.account.gov.uk/teams/CRI-Orange-team/supporting-cri-orange/hmrc-nino-runbook/#frontend-api-alarms"
@@ -1192,7 +1187,7 @@ Resources:
       Dimensions: []
       EvaluationPeriods: 5
       DatapointsToAlarm: 5
-      Threshold: !Ref MaxContainerCount
+      Threshold: 13
       ComparisonOperator: GreaterThanOrEqualToThreshold
       TreatMissingData: notBreaching
       Metrics:
