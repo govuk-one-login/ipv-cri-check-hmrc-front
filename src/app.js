@@ -33,7 +33,8 @@ const {
   LOG_LEVEL,
 } = require("./lib/config.js");
 
-const { setup } = require("hmpo-app");
+const { setup } =
+  require("@govuk-one-login/di-ipv-cri-common-express").bootstrap;
 
 const loggerConfig = {
   console: true,
