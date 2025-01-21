@@ -1,5 +1,5 @@
 ARG DYNATRACE_SOURCE=khw46367.live.dynatrace.com/linux/oneagent-codemodules-musl:nodejs
-ARG NODE_SHA=sha256:56e8282f4392fb96c877babc93b3829e46b79c6fbcd48c92de578febffc80587
+ARG NODE_SHA=sha256:9ed7b5265e6af2910e66e097057b38533cf669ee4fa6d9d574c01135bd0c6b6a
 
 FROM ${DYNATRACE_SOURCE} AS dynatrace
 FROM arm64v8/node@${NODE_SHA} AS builder
