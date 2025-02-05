@@ -492,7 +492,7 @@ Resources:
             StartPeriod: 0
       Cpu: "2048"
       ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
-      Memory: "1024"
+      Memory: "4096"
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
