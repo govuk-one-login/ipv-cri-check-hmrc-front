@@ -1,4 +1,4 @@
-const { isValidNino } = require("../../lib/validator");
+const { isValidNino, invalidCharacters } = require("../../lib/validator");
 
 module.exports = {
   nationalInsuranceNumber: {
@@ -14,6 +14,10 @@ module.exports = {
       {
         type: "nino",
         fn: isValidNino,
+      },
+      {
+        type: "invalidLetter",
+        fn: invalidCharacters,
       },
     ],
   },
