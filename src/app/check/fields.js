@@ -13,11 +13,15 @@ module.exports = {
       },
       {
         type: "nino",
-        fn: isValidNino,
+        fn: (value) => {
+          return isValidNino(value);
+        },
       },
       {
         type: "invalidLetter",
-        fn: invalidCharacters,
+        fn: (value) => {
+          return invalidCharacters(value);
+        },
       },
     ],
   },
