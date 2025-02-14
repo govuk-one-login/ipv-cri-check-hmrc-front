@@ -3,7 +3,7 @@ const isValidNino = (value) => {
   if (formattedValue.length < 9 || formattedValue.length > 9) {
     return null;
   }
-  const formatRegex = /^[A-Z]{2}[0-9]{6}[A-Z]$/i;
+  const formatRegex = /^[A-Z]{2}\d{6}[A-Z]$/i;
   if (!formatRegex.test(formattedValue)) {
     return null;
   }
@@ -16,7 +16,7 @@ const invalidCharacters = (value) => {
     return formattedValue;
   }
   const invalidRegex =
-    /^(BG|GB|KN|NK|NT|TN|ZZ)|^[DFIQUV][A-Z]|^[A-Z][DFIQUV]|^[A-Z]O|[A-Z]{2}[0-9]{6}[^ABCD]$/;
+    /^(BG|GB|KN|NK|NT|TN|ZZ)|^[DFIQUV][A-Z]|^[A-Z][DFIQUV]|^[A-Z]O|[A-Z]{2}\d{6}[^ABCD]$/;
   if (invalidRegex.test(formattedValue)) {
     return null;
   }
