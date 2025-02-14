@@ -221,6 +221,9 @@ Resources:
           - Key: access_logs.s3.prefix
             Value: !Sub ${AWS::StackName}-${Environment}
         - !Ref AWS::NoValue
+      Tags:
+        - Key: FMSRegionalPolicy
+          Value: false
 
   LoadBalancerListenerTargetGroupECS:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
@@ -730,6 +733,7 @@ Resources:
       TreatMissingData: notBreaching
 
   CloudFrontWAFv2ACLAssociation:
+    Condition: IsNotDevelopment
     Type: AWS::WAFv2::WebACLAssociation
     Properties:
       ResourceArn: !Ref LoadBalancer
