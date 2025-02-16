@@ -15,9 +15,17 @@ const invalidCharacters = (value) => {
   if (isValidNino(formattedValue) !== formattedValue) {
     return formattedValue;
   }
-  const invalidRegex =
-    /^(BG|GB|KN|NK|NT|TN|ZZ)|^[DFIQUV][A-Z]|^[A-Z][DFIQUV]|^[A-Z]O|[A-Z]{2}\d{6}[^ABCD]$/;
-  if (invalidRegex.test(formattedValue)) {
+  const prefixRegex = /^(?:BG|GB|KN|NK|NT|TN|ZZ)/;
+  const firstLetterRegex = /^[DFIQUV][A-Z]/;
+  const secondLetterRegex = /^[A-Z][DFIQUVO]/;
+  const lastLetterRegex = /[A-Z]{2}\d{6}[^ABCD]$/;
+
+  if (
+    prefixRegex.test(formattedValue) ||
+    firstLetterRegex.test(formattedValue) ||
+    secondLetterRegex.test(formattedValue) ||
+    lastLetterRegex.test(formattedValue)
+  ) {
     return null;
   }
   return formattedValue;
