@@ -12,3 +12,6 @@ could-not-match-national-insurance:
     - Gallwch wirio eich rhif Yswiriant Gwladol a cheisio eto. Dim ond unwaith y gallwch wneud hyn.
 abandon:
   title: "Beth hoffech chi ei wneud"
+error:
+  unrecoverable:
+    title: "Mae'n ddrwg gennym, mae problem"
