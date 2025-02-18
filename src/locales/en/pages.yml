@@ -12,3 +12,6 @@ could-not-match-national-insurance:
     - You can check your National Insurance number and try again. You’ll only be able to do this once.
 abandon:
   title: "What would you like to do"
+error:
+  unrecoverable:
+    title: Sorry, there is a problem with the service
