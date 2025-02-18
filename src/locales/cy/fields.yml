@@ -7,6 +7,7 @@ nationalInsuranceNumber:
   validation:
     required: Rhowch eich rhif Yswiriant Gwladol
     nino: Rhowch eich rhif Yswiriant Gwladol yn y ffurf cywir
+    invalidLetter: Nid yw'r rhif Yswiriant Gwladol a roddwyd gennych yn gywir, gwiriwch ef a rhowch gynnig arall
 
 retryNationalInsuranceRadio:
   label: Beth hoffech chi ei wneud?

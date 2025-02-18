@@ -7,6 +7,7 @@ nationalInsuranceNumber:
   validation:
     required: Enter your National Insurance number
     nino: Enter your National Insurance number in the correct format
+    invalidLetter: The National Insurance number you entered is not correct, check it and try again
 
 retryNationalInsuranceRadio:
   label: What would you like to do?

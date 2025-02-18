@@ -1,4 +1,8 @@
-const { isValidNino } = require("../../../../src/lib/validator");
+const {
+  isValidNino,
+  invalidCharacters,
+} = require("../../../../src/lib/validator");
+const { expect } = require("chai");
 
 const good_edge_case_ninos = [
   "CA283902A",
@@ -28,6 +32,7 @@ const good_edge_case_ninos = [
   "aa 28 39 02 d",
   "aa283902d",
 ];
+
 const bad_prefixes_ninos = [
   "DA283902A",
   "FA283902A",
@@ -71,42 +76,61 @@ const bad_length_ninos = [
   "AA",
   "A",
   "",
+  "abc def",
+  "a b c d e f",
+  "ab1cd 2",
 ];
 
 describe("should fail all the bad ninos", () => {
   test.each(bad_prefixes_ninos)(
-    "given bad prefix nino of %p, returns null string",
+    "given bad prefix nino of %p, returns false",
     (ninoArg) => {
-      const result = isValidNino(ninoArg);
-      expect(result).toBeNull();
+      const invalidCharResult = invalidCharacters(ninoArg);
+
+      expect(invalidCharResult).to.be.false;
     }
   );
   test.each(bad_unused_prefixes_ninos)(
-    "given unused prefix nino of %p, returns null string",
+    "given unused prefix nino of %p, returns false",
     (ninoArg) => {
-      const result = isValidNino(ninoArg);
-      expect(result).toBeNull();
+      const invalidCharResult = invalidCharacters(ninoArg);
+
+      expect(invalidCharResult).to.be.false;
     }
   );
   test.each(bad_suffixes_ninos)(
-    "given bad suffix nino of %p, returns null string",
+    "given bad suffix nino of %p, returns false",
     (ninoArg) => {
-      const result = isValidNino(ninoArg);
-      expect(result).toBeNull();
+      const invalidCharResult = invalidCharacters(ninoArg);
+
+      expect(invalidCharResult).to.be.false;
     }
   );
   test.each(bad_length_ninos)(
-    "given bad length nino of %p, returns null string",
+    "given bad length nino of %p, returns false",
     (ninoArg) => {
       const result = isValidNino(ninoArg);
-      expect(result).toBeNull();
+
+      expect(result).to.be.false;
     }
   );
 });
 
 describe("should return all the good ninos", () => {
-  test.each(good_edge_case_ninos)("returns the given nino of %p", (ninoArg) => {
-    const result = isValidNino(ninoArg)[0];
-    expect(result).toEqual(ninoArg.replaceAll(" ", "").toUpperCase());
-  });
+  test.each(good_edge_case_ninos)(
+    "isValidNino returns true for the given nino of %p",
+    (ninoArg) => {
+      const result = isValidNino(ninoArg);
+
+      expect(result).to.be.true;
+    }
+  );
+  test.each(good_edge_case_ninos)(
+    "invalidCharacters returns true for the given nino of %p",
+    (ninoArg) => {
+      const result = invalidCharacters(ninoArg);
+
+      expect(result).to.be.true;
+    }
+  );
 });
