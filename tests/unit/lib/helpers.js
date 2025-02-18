@@ -61,12 +61,12 @@ global.beforeEach(() => {
 
 const testNinoValidation = (ninoArg) => {
   const isValidResult = isValidNino(ninoArg);
-  if (isValidResult === null) {
-    expect(isValidResult).to.be.null;
+  if (!isValidResult) {
+    expect(isValidResult).to.be.false;
   } else {
     const invalidCharResult = invalidCharacters(ninoArg);
-    expect(invalidCharResult).to.be.null;
-    if (invalidCharResult !== null) {
+    expect(invalidCharResult).to.be.false;
+    if (invalidCharResult) {
       expect(invalidCharResult).to.equal(
         ninoArg.replaceAll(" ", "").toUpperCase()
       );

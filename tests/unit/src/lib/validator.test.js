@@ -77,53 +77,51 @@ const bad_length_ninos = [
   "AA",
   "A",
   "",
+  "abc def",
+  "a b c d e f",
+  "ab1cd 2",
 ];
 
 describe("should fail all the bad ninos", () => {
   test.each(bad_prefixes_ninos)(
-    "given bad prefix nino of %p, returns null string",
+    "given bad prefix nino of %p, returns false",
     (ninoArg) => {
       testNinoValidation(ninoArg);
     }
   );
   test.each(bad_unused_prefixes_ninos)(
-    "given unused prefix nino of %p, returns null string",
+    "given unused prefix nino of %p, returns false",
     (ninoArg) => {
       testNinoValidation(ninoArg);
     }
   );
   test.each(bad_suffixes_ninos)(
-    "given bad suffix nino of %p, returns null string",
+    "given bad suffix nino of %p, returns false",
     (ninoArg) => {
       testNinoValidation(ninoArg);
     }
   );
   test.each(bad_length_ninos)(
-    "given bad length nino of %p, returns null string",
+    "given bad length nino of %p, returns false",
     (ninoArg) => {
       testNinoValidation(ninoArg);
     }
   );
 });
 
-describe("invoke the invalidCharacters function", () => {
-  it("should return formattedValue when isValidNino does not return the same value", () => {
-    const testValue = "123456";
-    const formattedValue = testValue.replaceAll(" ", "").toUpperCase();
-    const isValidNinoResult = isValidNino(formattedValue);
-    expect(isValidNinoResult).to.not.equal(formattedValue);
-    const result = invalidCharacters(formattedValue);
-    expect(result).to.equal(formattedValue);
-  });
-});
-
 describe("should return all the good ninos", () => {
-  test.each(good_edge_case_ninos)("returns the given nino of %p", (ninoArg) => {
-    const result = isValidNino(ninoArg);
-    expect(result).to.equal(ninoArg.replaceAll(" ", "").toUpperCase());
-  });
-  test.each(good_edge_case_ninos)("returns the given nino of %p", (ninoArg) => {
-    const result = invalidCharacters(ninoArg);
-    expect(result).to.equal(ninoArg.replaceAll(" ", "").toUpperCase());
-  });
+  test.each(good_edge_case_ninos)(
+    "isValidNino returns true for the given nino of %p",
+    (ninoArg) => {
+      const result = isValidNino(ninoArg);
+      expect(result).to.be.true;
+    }
+  );
+  test.each(good_edge_case_ninos)(
+    "invalidCharacters returns true for the given nino of %p",
+    (ninoArg) => {
+      const result = invalidCharacters(ninoArg);
+      expect(result).to.be.true;
+    }
+  );
 });
