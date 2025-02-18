@@ -3,7 +3,6 @@ const {
   invalidCharacters,
 } = require("../../../../src/lib/validator");
 const { expect } = require("chai");
-const { testNinoValidation } = require("../../lib/helpers");
 
 const good_edge_case_ninos = [
   "CA283902A",
@@ -86,25 +85,33 @@ describe("should fail all the bad ninos", () => {
   test.each(bad_prefixes_ninos)(
     "given bad prefix nino of %p, returns false",
     (ninoArg) => {
-      testNinoValidation(ninoArg);
+      const invalidCharResult = invalidCharacters(ninoArg);
+
+      expect(invalidCharResult).to.be.false;
     }
   );
   test.each(bad_unused_prefixes_ninos)(
     "given unused prefix nino of %p, returns false",
     (ninoArg) => {
-      testNinoValidation(ninoArg);
+      const invalidCharResult = invalidCharacters(ninoArg);
+
+      expect(invalidCharResult).to.be.false;
     }
   );
   test.each(bad_suffixes_ninos)(
     "given bad suffix nino of %p, returns false",
     (ninoArg) => {
-      testNinoValidation(ninoArg);
+      const invalidCharResult = invalidCharacters(ninoArg);
+
+      expect(invalidCharResult).to.be.false;
     }
   );
   test.each(bad_length_ninos)(
     "given bad length nino of %p, returns false",
     (ninoArg) => {
-      testNinoValidation(ninoArg);
+      const result = isValidNino(ninoArg);
+
+      expect(result).to.be.false;
     }
   );
 });
@@ -114,6 +121,7 @@ describe("should return all the good ninos", () => {
     "isValidNino returns true for the given nino of %p",
     (ninoArg) => {
       const result = isValidNino(ninoArg);
+
       expect(result).to.be.true;
     }
   );
@@ -121,6 +129,7 @@ describe("should return all the good ninos", () => {
     "invalidCharacters returns true for the given nino of %p",
     (ninoArg) => {
       const result = invalidCharacters(ninoArg);
+
       expect(result).to.be.true;
     }
   );

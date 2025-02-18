@@ -1,12 +1,7 @@
 const { mockRequest, mockResponse } = require("jest-mock-req-res");
-const { expect } = require("chai");
 
 const JourneyModel = require("hmpo-form-wizard/lib/journey-model");
 const WizardModel = require("hmpo-form-wizard/lib/wizard-model.js");
-const {
-  isValidNino,
-  invalidCharacters,
-} = require("../../../src/lib/validator");
 
 /* global createDefaultReqResNext */
 global.createDefaultReqResNext = () => {
@@ -58,19 +53,3 @@ global.beforeEach(() => {
   global.res = setup.res;
   global.next = setup.next;
 });
-
-const testNinoValidation = (ninoArg) => {
-  const isValidResult = isValidNino(ninoArg);
-  if (!isValidResult) {
-    expect(isValidResult).to.be.false;
-  } else {
-    const invalidCharResult = invalidCharacters(ninoArg);
-    expect(invalidCharResult).to.be.false;
-    if (invalidCharResult) {
-      expect(invalidCharResult).to.equal(
-        ninoArg.replaceAll(" ", "").toUpperCase()
-      );
-    }
-  }
-};
-module.exports = { testNinoValidation };
