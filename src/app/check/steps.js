@@ -1,4 +1,4 @@
-const ninoController = require("./controllers/national-insurance-number");
+const ninoController = require("./controllers/enter-national-insurance-number");
 const AbandonController = require("./controllers/abandon");
 
 module.exports = {
@@ -6,9 +6,9 @@ module.exports = {
     resetJourney: true,
     entryPoint: true,
     skip: true,
-    next: "national-insurance-number",
+    next: "enter-national-insurance-number",
   },
-  "/national-insurance-number": {
+  "/enter-national-insurance-number": {
     controller: ninoController,
     fields: ["nationalInsuranceNumber"],
     next: [
@@ -25,19 +25,19 @@ module.exports = {
       {
         field: "retryNationalInsuranceRadio",
         value: "retryNationalInsurance",
-        next: "national-insurance-number",
+        next: "enter-national-insurance-number",
       },
       "abandon",
     ],
   },
   "/how-continue-national-insurance": {
-    prereqs: ["/check"],
+    prereqs: ["/"],
     fields: ["abandonRadio"],
     next: [
       {
         field: "abandonRadio",
         value: "retryNationalInsurance",
-        next: "national-insurance-number",
+        next: "enter-national-insurance-number",
       },
       "abandon",
     ],

@@ -1,5 +1,5 @@
 const BaseController = require("hmpo-form-wizard").Controller;
-const Controller = require("../../../../../../src/app/check/controllers/national-insurance-number");
+const Controller = require("../../../../../../src/app/check/controllers/enter-national-insurance-number");
 
 const {
   API: {

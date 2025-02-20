@@ -14,7 +14,7 @@ const validateStatus = (status) => {
   return status >= 200 && status < 300;
 };
 
-class NationalInsuranceNumberController extends BaseController {
+class EnterNationalInsuranceNumberController extends BaseController {
   async saveValues(req, res, callback) {
     req.session.redirectToRetry = false;
     super.saveValues(req, res, async () => {
@@ -56,4 +56,4 @@ class NationalInsuranceNumberController extends BaseController {
   }
 }
 
-module.exports = NationalInsuranceNumberController;
+module.exports = EnterNationalInsuranceNumberController;

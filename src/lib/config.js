@@ -13,7 +13,7 @@ module.exports = {
   APP: {
     BASE_URL: process.env.EXTERNAL_WEBSITE_HOST || "http://localhost:5000",
     PATHS: {
-      CHECK: "/check",
+      CHECK: "/",
     },
     GTM: {
       ANALYTICS_COOKIE_DOMAIN:

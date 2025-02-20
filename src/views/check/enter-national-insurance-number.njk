@@ -2,8 +2,8 @@
 {% from "hmpo-text/macro.njk" import hmpoText %}
 {% from "hmpo-form/macro.njk" import hmpoForm %}
 
-{% set hmpoPageKey = "national-insurance-number" %}
-{% set hmpoPageContent = "national-insurance-number" %}
+{% set hmpoPageKey = "enter-national-insurance-number" %}
+{% set hmpoPageContent = "enter-national-insurance-number" %}
 {% set gtmJourney = "check - middle" %}
 
 {% block mainContent %}
@@ -17,7 +17,7 @@
   {{ hmpoSubmit(ctx, {
     id: "continue",
     text: translate("buttons.checkAndContinue"),
-    attributes: {"data-nav": true,"data-link": "/national-insurance-number"}
+    attributes: {"data-nav": true,"data-link": "/enter-national-insurance-number"}
   }) }}
 
   <script nonce="{{ cspNonce }}">
@@ -56,7 +56,7 @@
         window.addEventListener('load', function () {
             window.DI.analyticsGa4.pageViewTracker.trackOnPageLoad({
                 statusCode: '200', // Access status code
-                englishPageTitle: '{{ translate("pages.national-insurance-number.title") }}',
+                englishPageTitle: '{{ translate("pages.enter-national-insurance-number.title") }}',
                 taxonomy_level1: 'web cri', // Access taxonomy level 1
                 taxonomy_level2: 'check hmrc', // Access taxonomy level 2
                 content_id: '093',

@@ -4,7 +4,7 @@ module.exports = class PlaywrightDevPage {
    */
   constructor(page) {
     this.page = page;
-    this.path = "/check/could-not-match-national-insurance";
+    this.path = "/could-not-match-national-insurance";
   }
 
   async continue() {

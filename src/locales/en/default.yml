@@ -70,4 +70,4 @@ error:
 abandonWarning:
   content: "You cannot return to this screen if you look for another way to prove your identity."
 abandonLink:
-  content: "<a href='/check/how-continue-national-insurance' class='govuk-link' id='abandon-link' data-id='abandon'> I do not have my National Insurance number </a>"
+  content: "<a href='/how-continue-national-insurance' class='govuk-link' id='abandon-link' data-id='abandon'> I do not have my National Insurance number </a>"

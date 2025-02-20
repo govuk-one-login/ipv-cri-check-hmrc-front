@@ -70,4 +70,4 @@ error:
 abandonWarning:
   content: "Ni allwch ddychwelyd i'r sgrin hon os ydych yn chwilio am ffordd arall o brofi eich hunaniaeth."
 abandonLink:
-  content: "<a href='/check/how-continue-national-insurance' class='govuk-link' id='abandon-link' data-id='abandon'> Nid yw fy rhif Yswiriant Gwladol gennyf </a>"
+  content: "<a href='/how-continue-national-insurance' class='govuk-link' id='abandon-link' data-id='abandon'> Nid yw fy rhif Yswiriant Gwladol gennyf </a>"
