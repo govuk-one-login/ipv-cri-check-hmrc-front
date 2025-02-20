@@ -6,6 +6,10 @@ module.exports = class PlaywrightDevPage {
     this.page = page;
   }
 
+  async directlyAccessBaseUrl() {
+    await this.page.goto(process.env.WEBSITE_HOST || "http://localhost:5020");
+  }
+
   getErrorTitle() {
     return this.page.textContent('[data-id="error-title"]');
   }
