@@ -429,6 +429,8 @@ Resources:
               Value: !Sub
                 - "${AWS::StackName}-sessions-${Environment}"
                 - Environment: !Ref Environment
+            - Name: NODE_ENV
+              Value: "production"
             - Name: UA_CONTAINER_ID
               Value: !If [IsProduction, "GTM-TT5HDKV", "GTM-TK92W68"]
             - Name: GA4_CONTAINER_ID
