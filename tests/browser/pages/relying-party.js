@@ -1,4 +1,22 @@
 const axios = require("axios");
+const { fromNodeProviderChain } = require("@aws-sdk/credential-providers");
+const { aws4Interceptor } = require("aws4-axios");
+
+const customCredentialsProvider = {
+  getCredentials: fromNodeProviderChain({
+    timeout: 1000,
+    maxRetries: 0,
+  }),
+};
+const interceptor = aws4Interceptor({
+  options: {
+    region: "eu-west-2",
+    service: "execute-api",
+  },
+  credentials: customCredentialsProvider,
+});
+
+axios.interceptors.request.use(interceptor);
 
 module.exports = class PlaywrightDevPage {
   /**
@@ -23,9 +41,9 @@ module.exports = class PlaywrightDevPage {
     }
   }
 
-  async goto(rowNumber) {
+  async goto() {
     if (process.env.USE_LOCAL_API === "false") {
-      this.startingURL = await this.getStartingURLForStub(rowNumber);
+      this.startingURL = await this.getStartingURLForStub();
     }
 
     await this.page.goto(this.startingURL.toString());
@@ -35,23 +53,23 @@ module.exports = class PlaywrightDevPage {
     return `/oauth2/authorize?request=${request}&client_id=${clientId}`;
   }
 
-  async getStartingURLForStub(rowNumber) {
-    // needed so that the browser has the credentials set
-    await this.page.goto(this.relyingPartyURL.href);
+  async getStartingURLForStub() {
+    try {
+      const response = await axios.post(
+        `${process.env.RELYING_PARTY_URL}start`,
+        { aud: process.env.WEBSITE_HOST }
+      );
 
-    const { data } = await axios.get(
-      `${this.relyingPartyURL.href}backend/generateInitialClaimsSet?cri=check-hmrc-${this.env}&rowNumber=${rowNumber}`
-    );
+      this.oauthPath = this.getOauthPath(
+        response.data.request,
+        response.data.client_id
+      );
 
-    const {
-      data: { request, client_id },
-    } = await axios.post(
-      `${this.relyingPartyURL.href}backend/createSessionRequest?cri=check-hmrc-${this.env}&rowNumber=${rowNumber}`,
-      data
-    );
-
-    this.oauthPath = this.getOauthPath(request, client_id);
-    return new URL(this.oauthPath, this.baseURL);
+      return new URL(this.oauthPath, this.baseURL);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
   }
 
   isRelyingPartyServer() {

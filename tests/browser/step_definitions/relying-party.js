@@ -8,9 +8,8 @@ Given(
   async function (userName) {
     const user = this.allUsers[userName];
     this.currentUser = user;
-    const { rowNumber } = this.currentUser;
     const rpPage = new RelyingPartyPage(this.page, this.TESTING_CLIENT_ID);
-    await rpPage.goto(rowNumber);
+    await rpPage.goto();
   }
 );
 
