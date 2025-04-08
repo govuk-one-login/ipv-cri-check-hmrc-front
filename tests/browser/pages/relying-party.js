@@ -41,9 +41,9 @@ module.exports = class PlaywrightDevPage {
     }
   }
 
-  async goto() {
+  async goto(sharedClaims) {
     if (process.env.USE_LOCAL_API === "false") {
-      this.startingURL = await this.getStartingURLForStub();
+      this.startingURL = await this.getStartingURLForStub(sharedClaims);
     }
 
     await this.page.goto(this.startingURL.toString());
@@ -53,11 +53,14 @@ module.exports = class PlaywrightDevPage {
     return `/oauth2/authorize?request=${request}&client_id=${clientId}`;
   }
 
-  async getStartingURLForStub() {
+  async getStartingURLForStub(sharedClaims) {
     try {
       const response = await axios.post(
         `${process.env.RELYING_PARTY_URL}start`,
-        { aud: process.env.WEBSITE_HOST }
+        {
+          aud: process.env.WEBSITE_HOST,
+          ...(sharedClaims && { shared_claims: sharedClaims }),
+        }
       );
 
       this.oauthPath = this.getOauthPath(
