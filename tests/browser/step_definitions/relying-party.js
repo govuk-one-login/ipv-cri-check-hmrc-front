@@ -7,10 +7,9 @@ Given(
   "that {string} user is going through the system",
   async function (userName) {
     const user = this.allUsers[userName];
-    this.currentUser = user;
-    const { rowNumber } = this.currentUser;
+    const { sharedClaims } = user;
     const rpPage = new RelyingPartyPage(this.page, this.TESTING_CLIENT_ID);
-    await rpPage.goto(rowNumber);
+    await rpPage.goto(sharedClaims);
   }
 );
 
