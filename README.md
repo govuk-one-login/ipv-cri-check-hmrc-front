@@ -164,10 +164,6 @@ imposter up
 With the inclusion of dynatrace in the repository, local testing errors due to authentication. A possible solution to this is to use
 a local.Dockerfile without the dynatrace layer.
 
-## Environment Variables
-
-- `LANGUAGE_TOGGLE_DISABLED` - Feature flag to disable Language Toggle, defaulted to `true`
-
 ## Licence
 
 The codebase is released under the [MIT License](./LICENSE).
