@@ -22,8 +22,6 @@ const {
 
 const addLanguageParam = require("@govuk-one-login/frontend-language-toggle/build/cjs/language-param-setter.cjs");
 
-const protect = require("overload-protection");
-
 const {
   API,
   APP,
@@ -33,6 +31,7 @@ const {
   SESSION_TABLE_NAME,
   SESSION_TTL,
   LOG_LEVEL,
+  OVERLOAD_PROTECTION,
 } = require("./lib/config.js");
 
 const { setup } =
@@ -115,20 +114,8 @@ const { app, router } = setup({
       ],
     });
     app.use(setHeaders);
-
-    app.use(
-      protect("express", {
-        production: process.env.NODE_ENV === "production",
-        clientRetrySecs: 1,
-        sampleInterval: 5,
-        maxEventLoopDelay: 400,
-        maxHeapUsedBytes: 0,
-        maxRssBytes: 0,
-        errorPropagationMode: false,
-        logging: "error",
-      })
-    );
   },
+  overloadProtection: OVERLOAD_PROTECTION,
   dev: true,
 });
 

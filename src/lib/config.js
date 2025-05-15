@@ -33,4 +33,14 @@ module.exports = {
   SESSION_SECRET: process.env.SESSION_SECRET,
   SESSION_TABLE_NAME: process.env.SESSION_TABLE_NAME,
   SESSION_TTL: process.env.SESSION_TTL || 7200000, // two hours in ms
+  OVERLOAD_PROTECTION: {
+    production: process.env.NODE_ENV === "production",
+    clientRetrySecs: 1,
+    sampleInterval: 5,
+    maxEventLoopDelay: 400,
+    maxHeapUsedBytes: 0,
+    maxRssBytes: 0,
+    errorPropagationMode: false,
+    logging: "error",
+  },
 };
