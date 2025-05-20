@@ -134,7 +134,7 @@ app.get("nunjucks").addGlobal("addLanguageParam", addLanguageParam);
 setDeviceIntelligence({
   app,
   deviceIntelligenceEnabled: APP.DEVICE_INTELLIGENCE_ENABLED,
-  deviceIntelligenceDomain: APP.FRONTEND_DOMAIN,
+  deviceIntelligenceDomain: APP.DEVICE_INTELLIGENCE_DOMAIN,
 });
 
 app.set("view engine", "njk");

@@ -26,6 +26,8 @@ module.exports = {
     LANGUAGE_TOGGLE_DISABLED: process.env.LANGUAGE_TOGGLE_DISABLED || "true",
     DEVICE_INTELLIGENCE_ENABLED:
       process.env.DEVICE_INTELLIGENCE_ENABLED || "false",
+    DEVICE_INTELLIGENCE_DOMAIN:
+      process.env.DEVICE_INTELLIGENCE_DOMAIN || "account.gov.uk",
   },
   LOG_LEVEL: process.env.LOG_LEVEL || "request",
   AWS_REGION: process.env.AWS_REGION || "eu-west-2",
