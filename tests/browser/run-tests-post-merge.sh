@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ENVIRONMENT=$(aws cloudformation describe-stacks --stack-name check-hmrc-cri-front --query "Stacks[0].Parameters[?ParameterKey=='Environment'].ParameterValue" --output text)
+ENVIRONMENT=$TEST_ENVIRONMENT
 RELYING_PARTY_URL=$(aws cloudformation describe-stacks --stack-name test-resources --query "Stacks[0].Outputs[?OutputKey=='TestHarnessExecuteUrl'].OutputValue" --output text)
 WEBSITE_HOST="https://review-hc.${ENVIRONMENT}.account.gov.uk"
 
