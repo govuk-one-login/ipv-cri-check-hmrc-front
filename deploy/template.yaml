@@ -29,11 +29,6 @@ Parameters:
     Type: String
     Default: "none"
 
-  SupportManualURL:
-    Type: String
-    Default: "https://team-manual.account.gov.uk/teams/CRI-Orange-team/supporting-cri-orange/hmrc-nino-runbook/#frontend-api-alarms"
-    Description: The support manual URL to be provided in alarm messages.
-
   DeployAlarmsInDevEnvironment:
     Description: "Set to the string value `true` to deploy alarms in a DEV environment"
     Type: String
@@ -70,6 +65,9 @@ Conditions:
   EnableSpotArmInstance: !Equals [!Ref Environment, dev]
 
 Mappings:
+  StaticVariables:
+    Urls:
+      SupportManualURL: "https://team-manual.account.gov.uk/teams/CRI-Orange-team/supporting-cri-orange/hmrc-nino-runbook/#frontend-alarms"
   EnvironmentConfiguration:
     dev:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -390,7 +388,9 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-ECSFatalErrorAlarm"
-      AlarmDescription: !Sub "Trigger an alarm when Fatal Error occurs. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Trigger an alarm when Fatal Error occurs. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
@@ -726,7 +726,9 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-APIGWFatalErrorAlarm"
-      AlarmDescription: !Sub "Trigger an alarm when Fatal Error occurs. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Trigger an alarm when Fatal Error occurs. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
@@ -899,7 +901,9 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FE5XXErrorCriticalAlarm"
-      AlarmDescription: !Sub "Threshold exceeds 80% with a minimum of at least 5 invocations in 2 out of the last 5 evaluation periods of (15mins each). ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Threshold exceeds 80% with a minimum of at least 5 invocations in 2 out of the last 5 evaluation periods of (15mins each). Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
@@ -949,7 +953,9 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FE4XXErrorAlarm"
-      AlarmDescription: !Sub "Error threshold exceeds 5% with a minimum of 150 invocations and a minimum of 2 errors in 2 out of the last 5 minutes. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Error threshold exceeds 5% with a minimum of 150 invocations and a minimum of 2 errors in 2 out of the last 5 minutes. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       OKActions:
         - !ImportValue platform-alarm-warning-alert-topic
@@ -998,7 +1004,9 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FELatencyAlarmP95"
-      AlarmDescription: !Sub "Trigger the alarm if less than 95% of requests has a latency of more than 1 second with a minimum of 25 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Trigger the alarm if less than 95% of requests has a latency of more than 1 second with a minimum of 25 invocations in 2 out of the last 5 minutes. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: false
       OKActions:
         - !ImportValue platform-alarm-warning-alert-topic
@@ -1043,7 +1051,9 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FELatencyAlarmP99"
-      AlarmDescription: !Sub "Trigger the alarm if less than 99% of requests have a latency of more than 2.5 second with a minimum of 150 invocations in 2 out of the last 5 minutes. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Trigger the alarm if less than 99% of requests have a latency of more than 2.5 second with a minimum of 150 invocations in 2 out of the last 5 minutes. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: false
       OKActions:
         - !ImportValue platform-alarm-warning-alert-topic
@@ -1087,7 +1097,9 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Condition: DeployAlarms
     Properties:
-      AlarmDescription: !Sub "Check HMRC ${Environment} frontend no ECS service tasks. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Check HMRC ${Environment} frontend no ECS service tasks. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
@@ -1114,7 +1126,9 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Condition: DeployAlarms
     Properties:
-      AlarmDescription: !Sub "Check ${Environment} frontend below desired ECS service tasks. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Check ${Environment} frontend below desired ECS service tasks. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
@@ -1138,7 +1152,9 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Condition: DeployAlarms
     Properties:
-      AlarmDescription: !Sub "Check HRMC ${Environment} frontend 5XX count. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Check HRMC ${Environment} frontend 5XX count. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue core-infrastructure-AlarmTopic
@@ -1165,7 +1181,9 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FELowContainerTaskCountAlarm"
-      AlarmDescription: !Sub "Trigger a warning if the running container task count drops below 2. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Trigger a warning if the running container task count drops below 2. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
         - !ImportValue platform-alarm-warning-alert-topic
@@ -1195,7 +1213,9 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-${Environment}-FEHighContainerTaskCountWarning"
-      AlarmDescription: !Sub "Task count reached the auto-scaling maximum for 5 minutes. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Task count reached the auto-scaling maximum for 5 minutes. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       OKActions:
         - !ImportValue platform-alarm-warning-alert-topic
@@ -1227,7 +1247,9 @@ Resources:
     Condition: DeployAlarms
     Properties:
       AlarmName: !Sub "${AWS::StackName}-FELowContainerTaskCountCriticalAlarm"
-      AlarmDescription: !Sub "Critical alert, running container task count droped below 1. ${SupportManualURL}"
+      AlarmDescription: !Sub
+        - "Critical alert, running container task count droped below 1. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: false # to be enabled once proved stable in production
       AlarmActions:
         - !ImportValue platform-alarm-critical-alert-topic
