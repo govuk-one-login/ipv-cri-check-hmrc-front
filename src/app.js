@@ -6,6 +6,7 @@ const session = require("express-session");
 const { DynamoDB } = require("@aws-sdk/client-dynamodb");
 const DynamoDBStore = require("connect-dynamodb")(session);
 const commonExpress = require("@govuk-one-login/di-ipv-cri-common-express");
+const frontendUi = require("@govuk-one-login/frontend-ui");
 
 const setHeaders = commonExpress.lib.headers;
 const setScenarioHeaders = commonExpress.lib.scenarioHeaders;
@@ -166,6 +167,7 @@ setGTM({
 
 router.use(getGTM);
 router.use(getLanguageToggle);
+router.use(frontendUi.frontendUiMiddlewareIdentityBypass);
 router.use(getDeviceIntelligence);
 router.use(setScenarioHeaders);
 router.use(setAxiosDefaults);
