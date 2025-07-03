@@ -28,3 +28,4 @@
 | UA_ENABLED                  | Feature flag to enable UA                                                                 | false          |
 | ANALYTICS_DATA_SENSITIVE    | Feature flag for analyticsDataSensitive                                                   | false          |
 | LOG_LEVEL                   | Determines the log level for the application                                              | request        |
+| MAY_2025_REBRAND_ENABLED    | Feature flag to enable the May 2025 GOV.UK branding changes                               | false          |
