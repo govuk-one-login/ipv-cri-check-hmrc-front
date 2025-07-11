@@ -8,6 +8,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 COPY /src ./src
+COPY /patches ./patches
 
 RUN npm ci && npm run build && npm prune
 

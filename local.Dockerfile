@@ -5,6 +5,7 @@ ENV PORT 5000
 WORKDIR /app
 
 COPY package.json package-lock.json ./
+COPY /patches ./patches
 RUN npm ci
 
 COPY . ./
