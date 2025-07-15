@@ -19,7 +19,8 @@
     "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts && copyfiles -u 3 src/assets/images/** dist/public/images",
     "check-translation": "node node_modules/@govuk-one-login/di-ipv-cri-common-express/scripts/checkTranslations.js ../../../../src/locales/",
     "test:coverage": "npm run test -- --coverage",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.668.0",
@@ -33,16 +34,16 @@
     "cfenv": "1.2.4",
     "connect-dynamodb": "3.0.3",
     "dotenv": "16.4.5",
-    "express": "4.21.2",
-    "express-async-errors": "3.1.1",
+    "express": "5.1.0",
     "express-session": "1.18.1",
     "govuk-frontend": "4.10.0",
     "hmpo-components": "7.1.0",
     "hmpo-config": "4.0.0",
-    "hmpo-form-wizard": "13.0.2",
+    "hmpo-form-wizard": "15.0.3",
     "hmpo-i18n": "7.0.0",
     "hmpo-logger": "8.0.0",
-    "nunjucks": "3.2.4"
+    "nunjucks": "3.2.4",
+    "patch-package": "8.0.0"
   },
   "devDependencies": {
     "chai": "4.4.1",
