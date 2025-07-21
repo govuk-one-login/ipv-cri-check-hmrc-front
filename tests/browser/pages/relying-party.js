@@ -27,7 +27,7 @@ module.exports = class PlaywrightDevPage {
 
     const websiteHost = process.env.WEBSITE_HOST || "http://localhost:5020";
     const relyingPartyURL =
-      process.env.RELYING_PARTY_URL || "http://example.net";
+      process.env.RELYING_PARTY_URL || "http://localhost:8080";
     this.baseURL = new URL(websiteHost);
     this.relyingPartyURL = new URL(relyingPartyURL);
     this.env = process.env.ENVIRONMENT || "dev";

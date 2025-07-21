@@ -34,7 +34,7 @@ services:
       USE_LOCAL_API: true
       GITHUB_ACTIONS: true
       WEBSITE_HOST: http://localhost:5050
-      RELYING_PARTY_URL: "http://example.net"
+      RELYING_PARTY_URL: "http://localhost:8080"
     volumes:
       - ./reports:/reports
     network_mode: "host"
