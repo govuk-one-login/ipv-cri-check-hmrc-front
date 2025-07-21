@@ -24,7 +24,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Push test Docker image
-        uses: govuk-one-login/github-actions/aws/ecr/build-docker-image@c8eefadf581d2087ce2af48b7060c1329cfa5251
+        uses: govuk-one-login/github-actions/aws/ecr/build-docker-image@3b8133beab89c813cf15375904be82bf9ab79a91
         if: ${{ github.ref_name == 'main' || matrix.environment == 'development' }}
         with:
           immutable-tags: false
