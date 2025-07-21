@@ -202,6 +202,22 @@ paths:
                 #else
                 #set($context.responseOverride.status = 200)
                 #end
+  /return:
+    get:
+      summary: "Mock RP endpoint"
+      parameters:
+        properties:
+          client_id:
+            type: "string"
+          code:
+            type: "string"
+          error:
+            type: "string"
+          error_description:
+            type: "string"
+      responses:
+        "200":
+          description: OK
 
 components:
   parameters:
