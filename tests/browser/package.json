@@ -18,5 +18,8 @@
   "devDependencies": {
     "@aws-sdk/credential-providers": "3.782.0",
     "aws4-axios": "3.4.0"
+  },
+  "overrides": {
+    "form-data": ">=4.0.4"
   }
 }
