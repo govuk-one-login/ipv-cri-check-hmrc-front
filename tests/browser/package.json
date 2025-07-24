@@ -13,13 +13,10 @@
     "chai": "4.3.8",
     "dotenv": "16.3.1",
     "playwright": "1.52.0",
-    "wait-on": "8.0.3"
+    "wait-on": "8.0.4"
   },
   "devDependencies": {
     "@aws-sdk/credential-providers": "3.782.0",
     "aws4-axios": "3.4.0"
-  },
-  "overrides": {
-    "form-data": ">=4.0.4"
   }
 }

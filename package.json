@@ -57,8 +57,5 @@
     "nodemon": "3.1.0",
     "sass": "1.77.6",
     "uglify-js": "3.17.4"
-  },
-  "overrides": {
-    "form-data": ">=4.0.4"
   }
 }
