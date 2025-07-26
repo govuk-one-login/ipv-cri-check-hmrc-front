@@ -18,7 +18,7 @@ Parameters:
   Environment:
     Description: The name of the environment to deploy to.
     Type: String
-    AllowedPattern: ((production)|(integration)|(staging)|(build)|(dev))
+    AllowedPattern: ((production)|(integration)|(staging)|(build)|(dev)|(localdev))
   VpcStackName:
     Description: >
       The name of the stack that defines the VPC in which this container will
@@ -39,6 +39,14 @@ Parameters:
     Description: Asserts that lambdas are signed when deployed.
     Default: "none"
 
+  CriPublicAPIGatewayId:
+    Type: String
+    Default: "check-hmrc-cri-api-PrivateApiGatewayId"
+
+  ECSRepository:
+    Type: String
+    Default: "none"
+
   DeploymentStrategy:
     Description: "Predefined deployment configuration for ECS application"
     Type: String
@@ -46,8 +54,12 @@ Parameters:
     # Allowed values: See https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
 
 Conditions:
+  IsLocalDev: !Equals [!Ref Environment, localdev]
+
   IsNotDevelopment: !Not
-    - !Equals [!Ref Environment, dev]
+    - !Or
+      - !Equals [ !Ref Environment, dev ]
+      - !Equals [ !Ref Environment, localdev ]
 
   IsProduction: !Equals [!Ref Environment, production]
 
@@ -69,6 +81,12 @@ Mappings:
     Urls:
       SupportManualURL: "https://team-manual.account.gov.uk/teams/CRI-Orange-team/supporting-cri-orange/hmrc-nino-runbook/#frontend-alarms"
   EnvironmentConfiguration:
+    localdev:
+      dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      minECSCount: 1
+      maxECSCount: 1
+      deviceIntelligenceEnabled: true
+      may2025RebrandEnabled: true
     dev:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       minECSCount: 1
@@ -105,6 +123,8 @@ Mappings:
       AccountId: 652711504416
 
   PlatformConfiguration:
+    localdev:
+      CSLSEGRESS: arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2
     dev:
       CSLSEGRESS: arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2
     build:
@@ -422,14 +442,17 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Essential: true
-          Image: CONTAINER-IMAGE-PLACEHOLDER
+          Image: !If
+            - IsLocalDev
+            - !Sub ${ECSRepository}:latest
+            - "CONTAINER-IMAGE-PLACEHOLDER"
           Name: app
           Environment:
             - Name: API_BASE_URL
               Value: !Sub
                 - "https://${APIGatewayId}-${VpceId}.execute-api.${AWS::Region}.amazonaws.com/${Environment}"
                 - APIGatewayId:
-                    Fn::ImportValue: check-hmrc-cri-api-PrivateApiGatewayId
+                    Fn::ImportValue: !Ref CriPublicAPIGatewayId
                   VpceId:
                     Fn::ImportValue: cri-vpc-ExecuteApiGatewayEndpointId
                   Environment: !Ref Environment
