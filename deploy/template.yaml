@@ -72,6 +72,8 @@ Conditions:
 
   EnableSpotArmInstance: !Equals [!Ref Environment, dev]
 
+  CreateDomainResources: !Equals [!Ref Environment, dev]
+
 Mappings:
   StaticVariables:
     Urls:
@@ -1490,6 +1492,48 @@ Resources:
         TGPort: 8080
         TargetGroupName: !GetAtt LoadBalancerListenerTargetGroupECS.TargetGroupName
         VpcId: !Sub ${VpcStackName}-VpcId
+
+  CustomDomain:
+    Condition: CreateDomainResources
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: !Sub ${AWS::StackName}.review-hc.${Environment}.account.gov.uk
+      DomainNameConfigurations:
+        - CertificateArn: !Ref CustomExternalCertificate
+          EndpointType: REGIONAL
+          SecurityPolicy: TLS_1_2
+
+  CustomExternalCertificate:
+    Condition: CreateDomainResources
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub ${AWS::StackName}.review-hc.${Environment}.account.gov.uk
+      SubjectAlternativeNames:
+        - !Sub ${AWS::StackName}.review-hc.${Environment}.account.gov.uk
+      DomainValidationOptions:
+        - DomainName: !Sub ${AWS::StackName}.review-hc.${Environment}.account.gov.uk
+          HostedZoneId: !ImportValue PublicHostedZoneId
+      ValidationMethod: DNS
+
+  CustomApiDomainRecord:
+    Condition: CreateDomainResources
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Ref CustomDomain
+      Type: A
+      HostedZoneId: !ImportValue PublicHostedZoneId
+      AliasTarget:
+        DNSName: !GetAtt CustomDomain.RegionalDomainName
+        HostedZoneId: !GetAtt CustomDomain.RegionalHostedZoneId
+        EvaluateTargetHealth: false
+
+  CustomApiBasePathMapping:
+    Condition: CreateDomainResources
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Properties:
+      ApiId: !Ref ApiGwHttpEndpoint
+      DomainName: !Ref CustomDomain
+      Stage: !Ref APIStageDefault
 
 Outputs:
   StackName:
