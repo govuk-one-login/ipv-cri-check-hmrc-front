@@ -73,6 +73,8 @@ Conditions:
   EnableSpotArmInstance: !Equals [!Ref Environment, dev]
 
   CreateDomainResources: !Equals [!Ref Environment, dev]
+  CreateCloudFrontAssociation: !Not
+    - !Equals [!Ref Environment, dev]
 
 Mappings:
   StaticVariables:
@@ -771,6 +773,7 @@ Resources:
       TreatMissingData: notBreaching
 
   CloudFrontWAFv2ACLAssociation:
+    Condition: CreateCloudFrontAssociation
     Type: AWS::WAFv2::WebACLAssociation
     Properties:
       ResourceArn: !Ref LoadBalancer
