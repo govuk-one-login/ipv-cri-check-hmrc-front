@@ -39,6 +39,14 @@ Parameters:
     Description: Asserts that lambdas are signed when deployed.
     Default: "none"
 
+  CRIPrivateApiGatewayId:
+    Type: String
+    Default: "check-hmrc-cri-api-PrivateApiGatewayId"
+
+  ContainerImageName:
+    Type: String
+    Default: "CONTAINER-IMAGE-PLACEHOLDER"
+
   DeploymentStrategy:
     Description: "Predefined deployment configuration for ECS application"
     Type: String
@@ -422,14 +430,14 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Essential: true
-          Image: CONTAINER-IMAGE-PLACEHOLDER
+          Image: !Sub ${ContainerImageName}
           Name: app
           Environment:
             - Name: API_BASE_URL
               Value: !Sub
                 - "https://${APIGatewayId}-${VpceId}.execute-api.${AWS::Region}.amazonaws.com/${Environment}"
                 - APIGatewayId:
-                    Fn::ImportValue: check-hmrc-cri-api-PrivateApiGatewayId
+                    Fn::ImportValue: !Ref CRIPrivateApiGatewayId
                   VpceId:
                     Fn::ImportValue: cri-vpc-ExecuteApiGatewayEndpointId
                   Environment: !Ref Environment
