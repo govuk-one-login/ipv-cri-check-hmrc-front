@@ -9,11 +9,11 @@
   "license": "MIT",
   "dependencies": {
     "@cucumber/cucumber": "9.5.1",
-    "axios": "1.11.0",
+    "axios": "1.12.2",
     "chai": "4.3.8",
     "dotenv": "16.3.1",
     "playwright": "1.52.0",
-    "wait-on": "8.0.4"
+    "wait-on": "8.0.5"
   },
   "devDependencies": {
     "@aws-sdk/credential-providers": "3.782.0",
