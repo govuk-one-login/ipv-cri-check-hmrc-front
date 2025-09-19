@@ -7,6 +7,14 @@
 {% set hmpoPageContent = "abandon" %}
 {% set gtmJourney = "abandon - start" %}
 
+{% set isPageDataSensitive = false %}
+{% set statusCode = '200' %}
+{% set pageTitleKey = "pages.abandon.title" %}
+{% set contentID = "0b6ebba4-08b5-40f0-b2e8-03d29a96359c" %}
+{% set taxLevel2 = 'check hmrc' %}
+{% set isPageDynamic = false %}
+{% set loggedInStatus = true %}
+
 {% block mainContent %}
   {% call hmpoForm(ctx) %}
       {{ hmpoRadios(ctx, {
@@ -29,23 +37,4 @@
     }) }}
 
   {% endcall %}
-{% endblock %}
-
-
-{% block footer %}
-   {{ super() }}
-
-    <script {% if cspNonce %} nonce="{{ cspNonce }}"{%  endif %}>
-        window.addEventListener('load', function () {
-            window.DI.analyticsGa4.pageViewTracker.trackOnPageLoad({
-                statusCode: '200', // Access status code
-                englishPageTitle: '{{ translate("pages.abandon.title") }}',
-                taxonomy_level1: 'web cri', // Access taxonomy level 1
-                taxonomy_level2: 'check hmrc', // Access taxonomy level 2
-                content_id: '091',
-                logged_in_status: true,
-                dynamic: false,
-            });
-        });
-    </script>
 {% endblock %}
