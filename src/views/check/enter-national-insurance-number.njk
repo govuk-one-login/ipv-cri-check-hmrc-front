@@ -6,6 +6,14 @@
 {% set hmpoPageContent = "enter-national-insurance-number" %}
 {% set gtmJourney = "check - middle" %}
 
+{% set isPageDataSensitive = false %}
+{% set statusCode = '200' %}
+{% set pageTitleKey = "pages.enter-national-insurance-number.title" %}
+{% set contentID = "158f792f-2d7c-4ec2-90a0-b6e5c81b343d" %}
+{% set taxLevel2 = 'check hmrc' %}
+{% set isPageDynamic = false %}
+{% set loggedInStatus = true %}
+
 {% block mainContent %}
   {{ super() }}
 
@@ -46,23 +54,5 @@
         }
       })
     }
-    </script>
-{% endblock %}
-
-{% block footer %}
-   {{ super() }}
-
-    <script {% if cspNonce %} nonce="{{ cspNonce }}"{%  endif %}>
-        window.addEventListener('load', function () {
-            window.DI.analyticsGa4.pageViewTracker.trackOnPageLoad({
-                statusCode: '200', // Access status code
-                englishPageTitle: '{{ translate("pages.enter-national-insurance-number.title") }}',
-                taxonomy_level1: 'web cri', // Access taxonomy level 1
-                taxonomy_level2: 'check hmrc', // Access taxonomy level 2
-                content_id: '093',
-                logged_in_status: true,
-                dynamic: false,
-            });
-        });
     </script>
 {% endblock %}
