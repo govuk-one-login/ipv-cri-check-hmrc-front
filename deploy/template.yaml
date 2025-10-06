@@ -64,6 +64,12 @@ Conditions:
 
   EnableSpotArmInstance: !Equals [!Ref Environment, dev]
 
+  IsProductionOrIntegrationEnvironment: !Or
+    - !Equals [!Ref Environment, production]
+    - !Equals [!Ref Environment, integration]
+  IsNotProductionOrIntegrationEnvironment:
+    !Not [!Condition IsProductionOrIntegrationEnvironment]
+
 Mappings:
   StaticVariables:
     Urls:
@@ -253,6 +259,11 @@ Resources:
       Tags:
         - Key: FMSRegionalPolicy
           Value: false
+        - !If
+          - IsNotProductionOrIntegrationEnvironment
+          - Key: CustomPolicy
+            Value: "true"
+          - !Ref AWS::NoValue
 
   LoadBalancerListenerTargetGroupECS:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
@@ -678,11 +689,18 @@ Resources:
         - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdA
         - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdB
       SecurityGroupIds: []
+
   ApiGwHttpEndpoint:
     Type: "AWS::ApiGatewayV2::Api"
     Properties:
       Name: !Sub ${AWS::StackName}-${Environment}
       ProtocolType: HTTP
+      Tags:
+        FMSRegionalPolicy: false
+        CustomPolicy: !If
+          - IsNotProductionOrIntegrationEnvironment
+          - "true"
+          - !Ref AWS::NoValue
 
   ApiGwHttpEndpointIntegration:
     Type: "AWS::ApiGatewayV2::Integration"
@@ -727,6 +745,12 @@ Resources:
           "responseLength":"$context.responseLength",
           "responseLatency":"$context.responseLatency"
           }
+      Tags:
+        FMSRegionalPolicy: false
+        CustomPolicy: !If
+          - IsNotProductionOrIntegrationEnvironment
+          - "true"
+          - !Ref AWS::NoValue
 
   APIGWAccessLogsGroup:
     Type: AWS::Logs::LogGroup
