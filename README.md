@@ -159,6 +159,92 @@ For the front end to work correctly, you will need to use a mock API so for this
 imposter up
 ```
 
+## Running Check HMRC frontend with a deployed stack
+
+You can run the Check HMRC frontend with a deployed Check HMRC CRI stack in AWS. This is useful for backend API testing.
+
+### Prerequisites
+
+1. The required repositories need to be cloned into the same parent directory, this is a one-time setup:
+   - This repository (`ipv-cri-check-hmrc-front`)
+   - [ipv-stubs](https://github.com/govuk-one-login/ipv-stubs)
+   - [ipv-config](https://github.com/govuk-one-login/ipv-config)
+
+   The `npm run ipv-core-stub` command uses relative paths in the [docker-compose](test/docker/compose.yml) file to locate the needed `.env` and `config` files from these repositories.
+
+To deploy Check HMRC CRI stack ensure you have the sam-cli installed, create a sso profile for the role AdministratorAccessPermission on the `di-ipv-cri-check-hmrc-dev` AWS account which can be found by searching the AWS start page .
+
+run:
+
+AWS_PROFILE=profile-name-you-created ./deploy.sh
+
+The Stack Name, CommonStackName and SecretPrefix are optional, but can be overridden by supplying
+
+additional arguments to deploy.sh i.e
+
+AWS_PROFILE=profile-name-you-created ./deploy.sh STACKNAME YOUR-COMMON-STACKNAME YOUR-SECRET-PREFIX
+
+2. Once deployed, note the stack outputs containing the `public-api` and `private-api` IDs
+
+### Configuration
+
+1. Create a `.env` file if you don't already have in the project root and add the `private-api` ID as the `API_BASE_URL`:
+
+```bash
+API_BASE_URL=https://xxxxx.execute-api.eu-west-2.amazonaws.com/localdev
+```
+
+Replace `xxxxx` with your actual private API ID.
+
+**Example:** If your private API ID is `75dre0xy11`, the URL would be:
+
+```bash
+API_BASE_URL=https://75dre0xy11.execute-api.eu-west-2.amazonaws.com/localdev
+```
+
+2. Update the [config file](tests/browser/di-ipv-config.yaml) with your deployed stack's public API ID:
+
+```yaml
+credentialIssuerConfigs:
+  - id: check-hmrc-dev
+    name: HMRC Check CRI local
+    jwksEndpoint: https://api.review-hc.dev.account.gov.uk/.well-known/jwks.json
+    useKeyRotation: true
+    authorizeUrl: http://localhost:5000/oauth2/authorize
+    tokenUrl: https://xxxxx.execute-api.eu-west-2.amazonaws.com/localdev/token
+    credentialUrl: https://xxxxx.execute-api.eu-west-2.amazonaws.com/localdev/credential/issue
+    audience: https://review-hc.dev.account.gov.uk
+    sendIdentityClaims: true
+    publicEncryptionJwkBase64: "..."
+    publicVCSigningVerificationJwkBase64: ".."
+    apiKeyEnvVar: API_KEY_CRI_DEV
+```
+
+3. Replace `xxxxx` with your actual public API ID in both `tokenUrl` and `credentialUrl`
+
+   **Example:** If your public API ID is `v3qbtrl07c`, update the URLs to:
+
+   ```yaml
+   tokenUrl: https://v3qbtrl07c.execute-api.eu-west-2.amazonaws.com/localdev/token
+   credentialUrl: https://v3qbtrl07c.execute-api.eu-west-2.amazonaws.com/localdev/credential/issue
+   ```
+
+### Running the services
+
+1. Start the IPV core stub:
+
+   ```bash
+   npm run ipv-core-stub
+   ```
+
+2. In a new terminal, build and start the Check HMRC frontend:
+
+   ```bash
+   npm run build && npm run dev
+   ```
+
+3. Access the core stub at: http://localhost:8085
+
 #### Dynatrace
 
 With the inclusion of dynatrace in the repository, local testing errors due to authentication. A possible solution to this is to use
