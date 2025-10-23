@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   mocks:
     image: outofcoffee/imposter:3.25.1
@@ -38,3 +37,22 @@ services:
     volumes:
       - ./reports:/reports
     network_mode: "host"
+
+  ipv-core-stub:
+    build:
+      context: ../../../ipv-stubs/di-ipv-core-stub/
+      dockerfile: Dockerfile-arm64
+      target: nodynatrace
+      no_cache: true
+    container_name: ipv-core-stub-hmrc
+    ports:
+      - "8085:8085"
+    environment:
+      - CORE_STUB_CONFIG_FILE=/app/config/di-ipv-config.yaml
+    env_file:
+      - ../../../ipv-config/stubs/di-ipv-core-stub/.env
+    volumes:
+      - ../../../ipv-config/stubs/di-ipv-core-stub:/app/config
+      - ../browser/di-ipv-config.yaml:/app/config/di-ipv-config.yaml
+    profiles:
+      - core-stub

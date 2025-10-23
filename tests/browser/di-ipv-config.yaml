@@ -1,0 +1,13 @@
+credentialIssuerConfigs:
+  - id: check-hmrc-dev
+    name: HMRC Check CRI local
+    jwksEndpoint: https://api.review-hc.dev.account.gov.uk/.well-known/jwks.json
+    useKeyRotation: true
+    authorizeUrl: http://localhost:5000/oauth2/authorize
+    tokenUrl: https://xxxxx.execute-api.eu-west-2.amazonaws.com/localdev/token
+    credentialUrl: https://xxxxx.execute-api.eu-west-2.amazonaws.com/localdev/credential/issue
+    audience: https://review-hc.dev.account.gov.uk
+    sendIdentityClaims: true
+    publicEncryptionJwkBase64: ewogICJrdHkiOiAiUlNBIiwKICAiZSI6ICJBUUFCIiwKICAibiI6ICJ5MGNOemJtbVNDQ2tZa2VRZWhqN2dfVkJOZUU5TkFiRmlCX3Z0SkltX3h4X1hQbG5YSTlxLTZ2OXc4ZmJ2Vi1xR05UbmU3UWRhOGxHMVZrOXkySmM4T3pqcmlILVBzbV9XcVFDRzMyNXBDcFczVXdNVVVaZTZrZVd3RlpnWVEyQXkyZ3RyM1k3YTJDcFpSOGZMNXVuMm1CNm9yajQwZ1l3YXRfSTQwODlETktpdTBmNGtuY3d6c200d3JycUQtZ3RnS3VsdkNFMEZaeEx4N2EydWxwNVl6UE1VVnpkUjVMRi1JbjNtSk9VaDZzZjhBTEZOOEV6Y0kyOVItUVVWRXY2UDkyS3hybTdmTzF6eTNkd21IS1lYOWFvb3QyNWtFeEttOGY3SFpjT2YwWk9hTk81SmJkZ1dxb0dsVmkyOGhnak81ZGdoaGU4UGQzQXlnMm5fYmRWWnciLAogICJhbGciOiAiRVMyNTYiLAogICJ1c2UiOiAiZW5jIgp9
+    publicVCSigningVerificationJwkBase64: eyJrdHkiOiJFQyIsImNydiI6IlAtMjU2IiwieCI6IkE4NG5VLVpMU0ZOczhWSTZWWGt1bnZXd1J4LVQzZ0FYdncySlBSclA3OGMiLCJ5IjoiRWxjUmJxa1hrLVhCbmhZQzU1aEFwTFk5b0duWkE1SDVNVWxxZTAyZ0dYQSJ9
+    apiKeyEnvVar: API_KEY_CRI_DEV
