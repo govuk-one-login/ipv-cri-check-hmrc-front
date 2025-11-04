@@ -7,6 +7,7 @@ const { DynamoDB } = require("@aws-sdk/client-dynamodb");
 const DynamoDBStore = require("connect-dynamodb")(session);
 const commonExpress = require("@govuk-one-login/di-ipv-cri-common-express");
 const frontendUi = require("@govuk-one-login/frontend-ui");
+const { logger } = require("./lib/logger.js");
 
 const setHeaders = commonExpress.lib.headers;
 const setScenarioHeaders = commonExpress.lib.scenarioHeaders;
@@ -31,20 +32,11 @@ const {
   SESSION_SECRET,
   SESSION_TABLE_NAME,
   SESSION_TTL,
-  LOG_LEVEL,
   OVERLOAD_PROTECTION,
 } = require("./lib/config.js");
 
 const { setup } =
   require("@govuk-one-login/di-ipv-cri-common-express").bootstrap;
-
-const loggerConfig = {
-  console: true,
-  consoleJSON: true,
-  consoleLevel: LOG_LEVEL,
-  appLevel: LOG_LEVEL,
-  app: false,
-};
 
 const dynamodb = new DynamoDB({
   region: AWS_REGION,
@@ -71,7 +63,7 @@ const { app, router } = setup({
   config: { APP_ROOT: __dirname },
   port: false, /// Disabling the bootstrap starting the server.
   host: "0.0.0.0",
-  logs: loggerConfig,
+  logs: logger,
   session: sessionConfig,
   helmet: helmetConfig,
   redis: SESSION_TABLE_NAME ? false : commonExpress.lib.redis(),
