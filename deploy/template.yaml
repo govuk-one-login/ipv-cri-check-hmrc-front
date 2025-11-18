@@ -49,6 +49,13 @@ Conditions:
   IsNotDevelopment: !Not
     - !Equals [!Ref Environment, dev]
 
+  IsDevBuildEnvironment: !Or
+    - !Equals [!Ref Environment, dev]
+    - !Equals [!Ref Environment, build]
+
+  IsNotDevBuildEnvironment: !Not
+    - !Condition IsDevBuildEnvironment
+
   IsProduction: !Equals [!Ref Environment, production]
 
   DeployAlarms: !Or
@@ -401,7 +408,7 @@ Resources:
 
   ECSLogsSubscriptionFilterCSLS:
     Type: AWS::Logs::SubscriptionFilter
-    Condition: IsNotDevelopment
+    Condition: IsNotDevBuildEnvironment
     Properties:
       DestinationArn:
         !FindInMap [PlatformConfiguration, !Ref Environment, CSLSEGRESS]
@@ -760,7 +767,7 @@ Resources:
 
   APIGWLogsSubscriptionFilterCSLS:
     Type: AWS::Logs::SubscriptionFilter
-    Condition: IsNotDevelopment
+    Condition: IsNotDevBuildEnvironment
     Properties:
       DestinationArn:
         !FindInMap [PlatformConfiguration, !Ref Environment, CSLSEGRESS]
