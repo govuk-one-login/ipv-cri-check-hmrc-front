@@ -16,7 +16,7 @@ The following quickstart process details how to install and run the browser test
 1. Install node dependencies:
 
    ```
-   npm install
+   npm ci
    ```
 
 ### Configuring the application

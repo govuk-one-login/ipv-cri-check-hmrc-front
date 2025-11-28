@@ -38,7 +38,7 @@ git clone https://github.com/alphagov/di-ipv-cri-check-hmrc-front && cd di-ipv-c
 2. Install node dependencies:
 
 ```
-npm install
+npm ci
 ```
 
 3. Build the assets
