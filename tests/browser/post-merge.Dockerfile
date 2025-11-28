@@ -5,9 +5,9 @@ RUN wget -O "awscliv2.zip" "https://awscli.amazonaws.com/awscli-exe-linux-x86_64
 
 WORKDIR /tests
 
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json .npmrc ./
 
-RUN npm install
+RUN npm ci
 
 COPY . ./
 

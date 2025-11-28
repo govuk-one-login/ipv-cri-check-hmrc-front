@@ -6,7 +6,7 @@ FROM arm64v8/node@${NODE_SHA} AS builder
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json .npmrc ./
 COPY /src ./src
 
 RUN npm ci && npm run build && npm prune
@@ -27,6 +27,7 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/package-lock.json ./
 COPY --from=builder /app/src ./src
+COPY --from=builder /app/.npmrc ./
 
 # Add in dynatrace layer
 COPY --from=dynatrace / /
