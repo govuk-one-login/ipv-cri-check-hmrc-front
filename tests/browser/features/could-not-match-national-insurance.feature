@@ -1,4 +1,4 @@
-@retry @post-merge
+@retry @post-merge @quality_gate_integration_test @quality_gate_regression_test @quality_gate_stack_test
 Feature: Could not match national insurance
   Retry on the NINO page
   Background:
