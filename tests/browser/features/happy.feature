@@ -1,3 +1,4 @@
+@quality_gate_integration_test @quality_gate_regression_test @quality_gate_stack_test
 Feature: Happy path
 
   Successful journey through the system and back to the RP
