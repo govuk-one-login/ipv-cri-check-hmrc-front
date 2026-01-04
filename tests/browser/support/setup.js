@@ -17,41 +17,26 @@ const browserTypes = {
   chromium,
   firefox,
   webkit,
+  //local only
   edge: {
     launch: (options) => chromium.launch({ ...options, channel: "msedge" }),
   },
 };
 
-const getBrowsersToLaunch = () => {
-  const browsers = process.env.BROWSERS || "chromium";
-  return browsers.split(",").map((b) => b.trim());
-};
-
 BeforeAll(async function () {
-  global.browsers = {};
+  const browserName = process.env.BROWSER || "chromium";
+  const browserType = browserTypes[browserName];
 
-  const browsersToLaunch = getBrowsersToLaunch();
+  if (!browserType) throw new Error(`Unsupported browser: ${browserName}`);
 
-  for (const browserName of browsersToLaunch) {
-    const browserType = browserTypes[browserName];
-
-    if (!browserType) {
-      throw new Error(`Unsupported browser: ${browserName}`);
-    }
-
-    global.browsers[browserName] = process.env.GITHUB_ACTIONS
-      ? await browserType.launch()
-      : await browserType.launch({
-          headless: false,
-          slowMo: 500,
-        });
-  }
+  global.browser = await browserType.launch({
+    headless: true,
+    slowMo: process.env.GITHUB_ACTIONS ? 0 : 500,
+  });
 });
 
 AfterAll(async function () {
-  for (const browser of Object.values(global.browsers)) {
-    await browser.close();
-  }
+  await global.browser.close();
 });
 
 Before(async function ({ pickle } = {}) {
@@ -73,20 +58,7 @@ Before(async function ({ pickle } = {}) {
 });
 
 Before(async function () {
-  const browserName = process.env.BROWSER || "chromium";
-
-  if (!global.browsers[browserName]) {
-    throw new Error(
-      `Browser "${browserName}" not launched. Available: ${Object.keys(
-        global.browsers
-      ).join(", ")}`
-    );
-  }
-
-  console.log(`NOTE: Running scenarios in browser: ${browserName}`);
-
-  this.browserName = browserName;
-  this.context = await global.browsers[browserName].newContext();
+  this.context = await global.browser.newContext();
   this.page = await this.context.newPage();
 });
 
