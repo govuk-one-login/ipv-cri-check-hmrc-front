@@ -83,6 +83,8 @@ Before(async function () {
     );
   }
 
+  console.log(`NOTE: Running scenarios in browser: ${browserName}`);
+
   this.browserName = browserName;
   this.context = await global.browsers[browserName].newContext();
   this.page = await this.context.newPage();
