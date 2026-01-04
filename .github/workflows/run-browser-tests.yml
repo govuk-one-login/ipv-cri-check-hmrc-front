@@ -14,22 +14,34 @@ defaults:
 permissions: {}
 
 jobs:
-  run-tests:
-    name: Browser
+  chrome:
+    name: Browser Tests via Chromium
     runs-on: ubuntu-latest
     steps:
       - name: Pull repository
         uses: actions/checkout@v4
-
       - name: Start Docker
         run: docker compose up web mocks --detach
-
       - name: Run Cucumber tests
         env:
-          BROWSERS: firefox,chromium
-          BROWESER: firefox
+          BROWSER: chromium
         run: docker compose up cucumber --exit-code-from cucumber
+      - name: Stop Docker
+        if: ${{ always() }}
+        run: docker compose down
 
+  firefox:
+    name: Browser Tests via Firefox
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull repository
+        uses: actions/checkout@v4
+      - name: Start Docker
+        run: docker compose up web mocks --detach
+      - name: Run Cucumber tests
+        env:
+          BROWSER: firefox
+        run: docker compose up cucumber --exit-code-from cucumber
       - name: Stop Docker
         if: ${{ always() }}
         run: docker compose down
