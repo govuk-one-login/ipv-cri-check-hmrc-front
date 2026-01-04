@@ -25,6 +25,9 @@ jobs:
         run: docker compose up web mocks --detach
 
       - name: Run Cucumber tests
+        env:
+          BROWSERS: chromium,firefox
+          BROWESER: chromium
         run: docker compose up cucumber --exit-code-from cucumber
 
       - name: Stop Docker
