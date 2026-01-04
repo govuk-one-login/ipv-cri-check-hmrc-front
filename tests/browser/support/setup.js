@@ -1,7 +1,7 @@
 require("dotenv").config();
 require("axios");
 
-const { chromium } = require("playwright");
+const { chromium, firefox, webkit } = require("playwright");
 
 const {
   Before,
@@ -11,27 +11,50 @@ const {
   setDefaultTimeout,
 } = require("@cucumber/cucumber");
 
-// FIXME This is large due to cold starts
 setDefaultTimeout(30 * 1000);
 
+const browserTypes = {
+  chromium,
+  firefox,
+  webkit,
+  edge: {
+    launch: (options) => chromium.launch({ ...options, channel: "msedge" }),
+  },
+};
+
+const getBrowsersToLaunch = () => {
+  const browsers = process.env.BROWSERS || "chromium";
+  return browsers.split(",").map((b) => b.trim());
+};
+
 BeforeAll(async function () {
-  // Browsers are expensive in Playwright so only create 1
-  global.browser = process.env.GITHUB_ACTIONS
-    ? await chromium.launch()
-    : await chromium.launch({
-        // Not headless so we can watch test runs
-        headless: false,
-        // Slow so we can see things happening
-        slowMo: 500,
-      });
+  global.browsers = {};
+
+  const browsersToLaunch = getBrowsersToLaunch();
+
+  for (const browserName of browsersToLaunch) {
+    const browserType = browserTypes[browserName];
+
+    if (!browserType) {
+      throw new Error(`Unsupported browser: ${browserName}`);
+    }
+
+    global.browsers[browserName] = process.env.GITHUB_ACTIONS
+      ? await browserType.launch()
+      : await browserType.launch({
+          headless: false,
+          slowMo: 500,
+        });
+  }
 });
 
 AfterAll(async function () {
-  await global.browser.close();
+  for (const browser of Object.values(global.browsers)) {
+    await browser.close();
+  }
 });
 
 Before(async function ({ pickle } = {}) {
-  // Only if USE_LOCAL_API do we use the @mock-api -> client_id mapping
   if (
     !(
       process.env.USE_LOCAL_API === "true" ||
@@ -41,26 +64,30 @@ Before(async function ({ pickle } = {}) {
     return;
   }
 
-  const tags = pickle.tags || [];
-  const tag = tags.find((tag) => tag.name.startsWith("@mock-api:"));
+  const tags = pickle?.tags || [];
+  const tag = tags.find((t) => t.name.startsWith("@mock-api:"));
 
-  if (!tag) {
-    return;
-  }
+  if (!tag) return;
 
-  const header = tag?.name.substring(10);
-
-  this.TESTING_CLIENT_ID = header;
+  this.TESTING_CLIENT_ID = tag.name.substring(10);
 });
 
-// Create a new test context and page per scenario
 Before(async function () {
-  this.context = await global.browser.newContext({});
+  const browserName = process.env.BROWSER || "chromium";
 
+  if (!global.browsers[browserName]) {
+    throw new Error(
+      `Browser "${browserName}" not launched. Available: ${Object.keys(
+        global.browsers
+      ).join(", ")}`
+    );
+  }
+
+  this.browserName = browserName;
+  this.context = await global.browsers[browserName].newContext();
   this.page = await this.context.newPage();
 });
 
-// Cleanup after each scenario
 After(async function () {
   await this.page.close();
   await this.context.close();
