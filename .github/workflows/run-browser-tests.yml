@@ -27,7 +27,7 @@ jobs:
       - name: Run Cucumber tests
         env:
           BROWSERS: chromium,firefox
-          BROWESER: chromium
+          BROWESER: firefox
         run: docker compose up cucumber --exit-code-from cucumber
 
       - name: Stop Docker
