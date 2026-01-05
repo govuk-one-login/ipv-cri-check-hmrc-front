@@ -14,35 +14,28 @@ defaults:
 permissions: {}
 
 jobs:
-  chrome:
-    name: Browser Tests via Chromium
+  run-tests:
+    name: Browser Tests (${{ matrix.browser }})
     runs-on: ubuntu-latest
-    steps:
-      - name: Pull repository
-        uses: actions/checkout@v4
-      - name: Start Docker
-        run: docker compose up web mocks --detach
-      - name: Run Cucumber tests
-        env:
-          BROWSER: chromium
-        run: docker compose up cucumber --exit-code-from cucumber
-      - name: Stop Docker
-        if: ${{ always() }}
-        run: docker compose down
 
-  firefox:
-    name: Browser Tests via Firefox
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox]
+
     steps:
       - name: Pull repository
         uses: actions/checkout@v4
+
       - name: Start Docker
         run: docker compose up web mocks --detach
+
       - name: Run Cucumber tests
         env:
-          BROWSERS: firefox,chromium
-          BROWSER: firefox
+          BROWSERS: chromium,firefox
+          BROWSER: ${{ matrix.browser }}
         run: docker compose up cucumber --exit-code-from cucumber
+
       - name: Stop Docker
-        if: ${{ always() }}
+        if: always()
         run: docker compose down

@@ -28,7 +28,7 @@ BeforeAll(async function () {
   const browserType = browserTypes[browserName];
 
   if (!browserType) throw new Error(`Unsupported browser: ${browserName}`);
-  
+
   console.log(`NOTE::Running scenarios in browser type: ${browserName}`);
   global.browser = await browserType.launch({
     headless: true,
