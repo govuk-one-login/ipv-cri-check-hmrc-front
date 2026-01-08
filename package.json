@@ -35,7 +35,7 @@
     "cfenv": "1.2.4",
     "connect-dynamodb": "3.0.3",
     "dotenv": "16.4.5",
-    "express": "4.21.2",
+    "express": "4.22.1",
     "express-async-errors": "3.1.1",
     "express-session": "1.18.2",
     "govuk-frontend": "4.10.1",
@@ -58,5 +58,8 @@
     "nodemon": "3.1.0",
     "sass": "1.77.6",
     "uglify-js": "3.17.4"
+  },
+  "overrides": {
+    "js-yaml": "4.1.1"
   }
 }
