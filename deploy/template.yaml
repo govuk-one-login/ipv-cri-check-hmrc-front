@@ -1509,7 +1509,7 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmDescription: !Sub
-        - "Address ${Environment} SANDRA TESTING!!! lambda errors. Runbook: ${SupportManualURL}"
+        - "Address ${Environment} SANDRA TESTING UPDATEEEE!!! lambda errors. Runbook: ${SupportManualURL}"
         - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
