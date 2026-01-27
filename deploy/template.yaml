@@ -1465,6 +1465,7 @@ Resources:
     Properties:
       AlarmName: FrontTargetGroup5xxPercentAlarm
       AlarmDescription: >
+        SANDRA TESTING!!
         The number of HTTP 5XX server error codes that originate from the
         target group is greater than 5% of all traffic.
       EvaluationPeriods: 2
@@ -1472,6 +1473,10 @@ Resources:
       Threshold: 0
       ComparisonOperator: GreaterThanThreshold
       TreatMissingData: breaching
+      AlarmActions:
+        - !ImportValue platform-alarm-critical-alert-topic
+      OKActions:
+        - !ImportValue platform-alarm-critical-alert-topic
       Metrics:
         - Id: e1
           Label: ErrorPercent
