@@ -1528,6 +1528,30 @@ Resources:
       ComparisonOperator: GreaterThanThreshold
       TreatMissingData: breaching
 
+
+  HMRCHECKLambdaErrors2:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: !Sub
+        - "2 ${Environment} SANDRA TESTING UPDATEEEE2!!! lambda errors. Runbook: ${SupportManualURL}"
+        - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
+      ActionsEnabled: true
+      AlarmActions:
+        - !ImportValue platform-alarm-critical-alert-topic
+      OKActions:
+        - !ImportValue platform-alarm-critical-alert-topic
+      InsufficientDataActions: []
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Statistic: Sum
+      Dimensions: []
+      Period: 300
+      DatapointsToAlarm: 3
+      EvaluationPeriods: 3
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: breaching
+
   ECSBlueGreenDeploymentStack:
     Type: AWS::CloudFormation::Stack
     Condition: UseCanaryDeployment
