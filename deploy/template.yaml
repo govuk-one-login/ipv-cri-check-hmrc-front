@@ -1469,9 +1469,9 @@ Resources:
         target group is greater than 5% of all traffic.
       EvaluationPeriods: 2
       DatapointsToAlarm: 2
-      Threshold: 5
+      Threshold: 0
       ComparisonOperator: GreaterThanThreshold
-      TreatMissingData: notBreaching
+      TreatMissingData: breaching
       Metrics:
         - Id: e1
           Label: ErrorPercent
