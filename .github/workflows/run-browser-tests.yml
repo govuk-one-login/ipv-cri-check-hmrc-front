@@ -21,11 +21,62 @@ jobs:
       - name: Pull repository
         uses: actions/checkout@v4
 
+      - name: Show Docker version
+        run: docker --version && docker compose version
+        working-directory: .
+
       - name: Start Docker
         run: docker compose up web mocks --detach
 
+      - name: Wait for services and test connectivity
+        run: |
+          echo "--- Docker container status ---"
+          docker ps -a
+          echo ""
+          echo "--- Ports in use ---"
+          ss -tlnp | grep -E '8080|5050' || echo "No listeners on 8080/5050 yet"
+          echo ""
+          echo "Waiting for mock service to be ready..."
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:8080/system/status > /dev/null 2>&1; then
+              echo "Mock API is ready (attempt $i)"
+              break
+            fi
+            echo "Attempt $i: Mock not ready yet..."
+            sleep 2
+          done
+          echo ""
+          echo "Waiting for web service to be ready..."
+          for i in $(seq 1 15); do
+            if curl -s http://localhost:5050/ > /dev/null 2>&1; then
+              echo "Web app is ready (attempt $i)"
+              break
+            fi
+            echo "Attempt $i: Web not ready yet..."
+            sleep 2
+          done
+          echo ""
+          echo "--- Ports in use (after wait) ---"
+          ss -tlnp | grep -E '8080|5050' || true
+          echo ""
+          echo "--- Mock health check ---"
+          curl -sv http://localhost:8080/system/status 2>&1 || true
+          echo ""
+          echo "--- Test POST to /session ---"
+          curl -sv -X POST http://localhost:8080/session \
+            -H "Content-Type: application/json" \
+            -d '{"client_id":"success","request":"lorem"}' 2>&1 || true
+          echo ""
+          echo "--- Test OAuth authorize endpoint (follow redirects) ---"
+          curl -sv -L 'http://localhost:5050/oauth2/authorize?request=lorem&client_id=success' 2>&1 | head -100 || true
+        working-directory: .
+
       - name: Run Cucumber tests
         run: docker compose up cucumber --exit-code-from cucumber
+
+      - name: Show container logs
+        if: ${{ always() }}
+        run: docker compose logs web mocks 2>&1
 
       - name: Stop Docker
         if: ${{ always() }}
