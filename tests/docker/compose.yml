@@ -5,6 +5,10 @@ services:
       - "../imposter:/opt/imposter/config"
     ports:
       - "8050:8080"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     network_mode: "host"
 
   web:
