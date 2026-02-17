@@ -5,7 +5,10 @@ const { expect } = require("chai");
 Then(/^they should see the national insurance number page$/, async function () {
   const ninoPage = new NinoPage(this.page);
 
-  expect(ninoPage.isCurrentPage()).to.be.true;
+  const currentUrl = this.page.url();
+  console.log(`[DEBUG] Current URL: ${currentUrl}`);
+  console.log(`[DEBUG] Page content: ${await this.page.content().then(c => c.substring(0, 500))}`);
+  expect(ninoPage.isCurrentPage(), `Expected /enter-national-insurance-number but was at ${currentUrl}`).to.be.true;
 });
 
 Then("they continue from national insurance number", async function () {
