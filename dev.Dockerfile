@@ -13,11 +13,7 @@ RUN npm ci && npm run build && npm prune
 
 FROM node:22.4.1-alpine3.19@${NODE_SHA} AS final
 
-RUN <<COMMANDS
-  apt-get update -y
-  apt-get install -y --no-install-recommends curl tini
-  apt-get clean
-COMMANDS
+RUN apk --no-cache upgrade && apk add --no-cache tini curl
 
 WORKDIR /app
 
