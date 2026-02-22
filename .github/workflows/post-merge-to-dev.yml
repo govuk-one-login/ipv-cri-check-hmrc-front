@@ -40,3 +40,4 @@ jobs:
           dockerfile: dev.Dockerfile
           role-to-assume-arn: ${{ secrets.DEV_GH_ACTIONS_ROLE_ARN }}
           ecr-repo-name: ${{ secrets.DEV_ECR_NAME_FRONT }}
+          docker-platform: linux/amd64
