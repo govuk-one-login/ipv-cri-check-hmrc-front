@@ -69,7 +69,7 @@ In order to successfully run the application, the following things are required:
 
 The app will run on port 5000 by default and be available at [http://localhost:5000](http://localhost:5000).
 
-##### In development mode
+##### In development mode test
 
 To run the server with continuous build mode:
 
