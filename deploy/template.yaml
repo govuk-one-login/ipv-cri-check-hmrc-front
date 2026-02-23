@@ -564,7 +564,7 @@ Resources:
       RequiresCompatibilities:
         - FARGATE
       RuntimePlatform:
-        CpuArchitecture: !If [EnableSpotArmInstance, "ARM64", "X86_64"]
+        CpuArchitecture: "X86_64"
       TaskRoleArn: !GetAtt ECSTaskRole.Arn
       Tags:
         - Key: Name
