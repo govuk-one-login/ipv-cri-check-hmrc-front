@@ -11,7 +11,7 @@ COPY /src ./src
 
 RUN npm ci && npm run build && npm prune
 
-FROM node:22.4.1-alpine3.19@${NODE_SHA} AS final
+FROM --platform=linux/amd64 node:22.4.1-alpine3.19@${NODE_SHA} AS final
 
 RUN apk --no-cache upgrade && apk add --no-cache tini curl
 
