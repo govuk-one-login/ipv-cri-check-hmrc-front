@@ -58,6 +58,8 @@ Conditions:
 
   IsProduction: !Equals [!Ref Environment, production]
 
+  IsProdEnvironment: !Equals [!Ref Environment, production]
+
   DeployAlarms: !Or
     - !Condition IsNotDevelopment
     - !Equals [!Ref DeployAlarmsInDevEnvironment, "true"]
