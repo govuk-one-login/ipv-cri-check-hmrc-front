@@ -69,8 +69,6 @@ Conditions:
   UseCanaryDeployment: !Not
     - !Equals [!Ref DeploymentStrategy, "None"]
 
-  EnableSpotArmInstance: !Equals [!Ref Environment, dev]
-
   IsProductionOrIntegrationEnvironment: !Or
     - !Equals [!Ref Environment, production]
     - !Equals [!Ref Environment, integration]
@@ -332,7 +330,7 @@ Resources:
         - Name: containerInsights
           Value: enabled
       CapacityProviders:
-        - !If [EnableSpotArmInstance, "FARGATE_SPOT", "FARGATE"]
+        - "FARGATE"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ECSCluster"
@@ -363,8 +361,8 @@ Resources:
         - MaximumPercent: 200
           MinimumHealthyPercent: 50
           DeploymentCircuitBreaker:
-            Enable: !If [EnableSpotArmInstance, FALSE, TRUE]
-            Rollback: !If [EnableSpotArmInstance, FALSE, TRUE]
+            Enable: TRUE
+            Rollback: TRUE
       EnableECSManagedTags: false
       HealthCheckGracePeriodSeconds: 60
       LaunchType: FARGATE
