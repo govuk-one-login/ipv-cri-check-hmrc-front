@@ -1,0 +1,118 @@
+name: example
+on:
+  pull_request:
+  #    types:
+  #      - opened
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-and-test:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: eu-west-2
+      STACK_PREFIX: test
+      REPO_NAME: ${{ github.event.repository.name }}-frontend-${{ github.event.pull_request.number || github.run_id }}
+      IMAGE_TAG: ${{ github.sha }}
+    steps:
+      - name: Checkout Current Repository
+        uses: actions/checkout@v4
+
+      - name: Assume AWS Role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.DEV_GH_ACTIONS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: GitHubActions-${{ github.run_id }}
+          role-duration-seconds: 3600
+
+      - name: Checkout API Repository
+        uses: actions/checkout@v4
+        with:
+          repository: govuk-one-login/ipv-cri-check-hmrc-api
+          ref: main
+          path: ipv-cri-check-hmrc-api
+
+      - name: Build API
+        run: |
+          mkdir -p api
+          sam build -t ipv-cri-check-hmrc-api/infrastructure/template.yaml -b api/
+
+      - name: Deploy API
+        run: |
+          sam deploy \
+            --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
+            --no-fail-on-empty-changeset \
+            --no-confirm-changeset \
+            --resolve-s3 \
+            --template-file api/.aws-sam/build/template.yaml \
+            --stack-name ${{ env.STACK_PREFIX }}-api-${{ github.event.pull_request.number || github.run_id }} \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Fetch PublicAPIGatewayId
+        id: fetch-api-id
+        run: |
+          PRIVATE_API_GATEWAY_ID=$(aws cloudformation describe-stacks \
+            --stack-name ${{ env.STACK_PREFIX }}-api-${{ github.event.pull_request.number || github.run_id }} \
+            --query "Stacks[0].Outputs[?OutputKey=='PrivateAPIGatewayId'].OutputValue" \
+            --output text)
+          echo "PRIVATE_API_GATEWAY_ID=$PRIVATE_API_GATEWAY_ID" >> $GITHUB_ENV
+
+      - name: Build Frontend
+        run: |
+          mkdir -p frontend
+          sam build -t deploy/template.yaml -b frontend/
+
+      - name: Create ECR Repository
+        run: |
+          aws ecr create-repository \
+            --repository-name ${{ env.REPO_NAME }} \
+            --region ${{ env.AWS_REGION }} \
+            --image-scanning-configuration scanOnPush=true \
+            --encryption-configuration encryptionType=AES256 || echo "Repository already exists"
+
+      - name: Get ECR Repository URL
+        id: get-ecr-url
+        run: |
+          REPO_URI=$(aws ecr describe-repositories \
+            --repository-names ${{ env.REPO_NAME }} \
+            --region ${{ env.AWS_REGION }} \
+            --query "repositories[0].repositoryUri" \
+            --output text)
+          echo "REPO_URI=$REPO_URI" >> $GITHUB_ENV
+
+      - name: Build and Push Frontend Image
+        run: |
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login \
+            --username AWS --password-stdin ${{ env.REPO_URI }}
+          docker build -t ${{ env.REPO_NAME }}:${{ env.IMAGE_TAG }} .
+          docker tag ${{ env.REPO_NAME }}:${{ env.IMAGE_TAG }} ${{ env.REPO_URI }}:${{ env.IMAGE_TAG }}
+          docker push ${{ env.REPO_URI }}:${{ env.IMAGE_TAG }}
+
+      - name: Deploy Frontend
+        run: |
+          sam deploy \
+            --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
+            --no-fail-on-empty-changeset \
+            --no-confirm-changeset \
+            --resolve-s3 \
+            --template-file frontend/.aws-sam/build/template.yaml \
+            --stack-name ${{ env.STACK_PREFIX }}-frontend-${{ github.event.pull_request.number || github.run_id }} \
+            --parameter-overrides \
+              Environment=localdev \
+              VpcStackName=cri-vpc \
+              CRIPrivateApiGatewayId=${{ env.PRIVATE_API_GATEWAY_ID }} \
+              ContainerImageName=${{ env.REPO_URI }}:${{ env.IMAGE_TAG }} \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Run Tests
+        env:
+          API_STACK: ${{ env.STACK_PREFIX }}-api-${{ github.event.pull_request.number || github.run_id }}
+          FRONTEND_STACK: ${{ env.STACK_PREFIX }}-frontend-${{ github.event.pull_request.number || github.run_id }}
+        run: |
+          npm ci
+          npm run test
