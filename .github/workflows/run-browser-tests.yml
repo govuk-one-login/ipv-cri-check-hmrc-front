@@ -15,8 +15,14 @@ permissions: {}
 
 jobs:
   run-tests:
-    name: Browser
+    name: Browser Tests (${{ matrix.browser }})
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox]
+
     steps:
       - name: Pull repository
         uses: actions/checkout@v4
@@ -25,8 +31,11 @@ jobs:
         run: docker compose up web mocks --detach
 
       - name: Run Cucumber tests
+        env:
+          BROWSERS: chromium,firefox
+          BROWSER: ${{ matrix.browser }}
         run: docker compose up cucumber --exit-code-from cucumber
 
       - name: Stop Docker
-        if: ${{ always() }}
+        if: always()
         run: docker compose down
