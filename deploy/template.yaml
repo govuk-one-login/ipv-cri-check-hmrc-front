@@ -437,9 +437,11 @@ Resources:
         - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       OKActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       InsufficientDataActions: []
       MetricName: ECSFatalerror-message
       Namespace: !Sub "${AWS::StackName}/LogMessages"
@@ -794,9 +796,11 @@ Resources:
         - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       OKActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       InsufficientDataActions: []
       MetricName: APIGWFatalerror-message
       Namespace: !Sub "${AWS::StackName}/LogMessages"
@@ -967,9 +971,11 @@ Resources:
         - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       OKActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       EvaluationPeriods: 5
       DatapointsToAlarm: 2
       Threshold: 80
@@ -1161,10 +1167,12 @@ Resources:
         - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       OKActions:
         - !ImportValue build-notifications-WarningAlertsTopicArn
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       InsufficientDataActions:
         - !ImportValue build-notifications-WarningAlertsTopicArn
       MetricName: TaskCount
@@ -1189,7 +1197,8 @@ Resources:
         - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       OKActions: []
       InsufficientDataActions: []
       MetricName: TaskCount
@@ -1214,7 +1223,8 @@ Resources:
         - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: true
       AlarmActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       OKActions: []
       InsufficientDataActions: []
       MetricName: HTTPCode_Target_5XX_Count
@@ -1308,9 +1318,11 @@ Resources:
         - SupportManualURL: !FindInMap [StaticVariables, Urls, SupportManualURL]
       ActionsEnabled: false # to be enabled once proved stable in production
       AlarmActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       OKActions:
-        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !ImportValue build-notifications-CriticalAlertsTopicArn]
+        - !ImportValue build-notifications-CriticalAlertsTopicArn
+        - !If [IsProdEnvironment, !ImportValue build-notifications-PagerDutySNSTopicArn, !Ref "AWS::NoValue"]
       InsufficientDataActions: []
       EvaluationPeriods: 1
       DatapointsToAlarm: 1
