@@ -24,6 +24,8 @@ Parameters:
       The name of the stack that defines the VPC in which this container will
       run.
     Type: String
+  SpokeVpcStackName:
+    Default: "spoke-vpc"
   PermissionsBoundary:
     Description: "The ARN of the permissions boundary to apply when creating IAM roles"
     Type: String
@@ -141,7 +143,7 @@ Resources:
           IpProtocol: tcp
           ToPort: 80
       VpcId:
-        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${SpokeVpcStackName}-VpcId"
 
   LoadBalancerSGEgressToECSSecurityGroup:
     Type: "AWS::EC2::SecurityGroupEgress"
@@ -166,7 +168,7 @@ Resources:
           Description: Allow all outbound traffic by default
           IpProtocol: "-1"
       VpcId:
-        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${SpokeVpcStackName}-VpcId"
 
   ECSSecurityGroupIngressFromLoadBalancer:
     Type: "AWS::EC2::SecurityGroupIngress"
@@ -240,8 +242,9 @@ Resources:
       SecurityGroups:
         - !GetAtt LoadBalancerSG.GroupId
       Subnets:
-        - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
-        - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdB"
+        - Fn::ImportValue: !Sub "${SpokeVpcStackName}-PrivateSubnetIdA"
+        - Fn::ImportValue: !Sub "${SpokeVpcStackName}-PrivateSubnetIdB"
+        - Fn::ImportValue: !Sub "${SpokeVpcStackName}-PrivateSubnetIdC"
       Type: application
       LoadBalancerAttributes:
         - Key: routing.http.drop_invalid_header_fields.enabled
@@ -285,7 +288,7 @@ Resources:
       Protocol: HTTP
       TargetType: ip
       VpcId:
-        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${SpokeVpcStackName}-VpcId"
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 30
@@ -305,7 +308,7 @@ Resources:
       Protocol: HTTP
       TargetType: ip
       VpcId:
-        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${SpokeVpcStackName}-VpcId"
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 30
@@ -382,6 +385,7 @@ Resources:
             Subnets:
               - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
               - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdB"
+              - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdC"
       TaskDefinition: !If
         - UseCanaryDeployment
         - !Ref AWS::NoValue
@@ -467,7 +471,7 @@ Resources:
                 - APIGatewayId:
                     Fn::ImportValue: check-hmrc-cri-api-PrivateApiGatewayId
                   VpceId:
-                    Fn::ImportValue: cri-vpc-ExecuteApiGatewayEndpointId
+                    Fn::ImportValue: spoke-vpc-ExecuteApiGatewayEndpointId
                   Environment: !Ref Environment
             - Name: EXTERNAL_WEBSITE_HOST
               Value: !GetAtt ApiGwHttpEndpoint.ApiEndpoint
@@ -689,8 +693,9 @@ Resources:
     Properties:
       Name: ApiGwVpcLinkToLoadBalancer
       SubnetIds:
-        - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdA
-        - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdB
+        - Fn::ImportValue: !Sub ${SpokeVpcStackName}-PrivateSubnetIdA
+        - Fn::ImportValue: !Sub ${SpokeVpcStackName}-PrivateSubnetIdB
+        - Fn::ImportValue: !Sub ${SpokeVpcStackName}-PrivateSubnetIdC
       SecurityGroupIds: []
 
   ApiGwHttpEndpoint:
@@ -711,7 +716,7 @@ Resources:
       ApiId: !Ref ApiGwHttpEndpoint
       IntegrationType: HTTP_PROXY
       ConnectionId:
-        Fn::ImportValue: !Sub "${VpcStackName}-VpcLinkId"
+        Fn::ImportValue: !Sub "${SpokeVpcStackName}-VpcLinkId"
       ConnectionType: VPC_LINK
       IntegrationMethod: ANY
       IntegrationUri: !Ref LoadBalancerListener
@@ -1523,7 +1528,7 @@ Resources:
         TGHealthCheckTimeoutSeconds: 2
         TGPort: 8080
         TargetGroupName: !GetAtt LoadBalancerListenerTargetGroupECS.TargetGroupName
-        VpcId: !Sub ${VpcStackName}-VpcId
+        VpcId: !Sub ${SpokeVpcStackName}-VpcId
 
 Outputs:
   StackName:
