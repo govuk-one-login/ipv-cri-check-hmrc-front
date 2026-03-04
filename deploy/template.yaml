@@ -39,6 +39,14 @@ Parameters:
     Description: Asserts that lambdas are signed when deployed.
     Default: "none"
 
+  CRIPrivateApiGatewayId:
+    Type: String
+    Default: "check-hmrc-cri-api-PrivateApiGatewayId"
+
+  ContainerImageName:
+    Type: String
+    Default: "CONTAINER-IMAGE-PLACEHOLDER"
+
   DeploymentStrategy:
     Description: "Predefined deployment configuration for ECS application"
     Type: String
@@ -74,6 +82,10 @@ Conditions:
     - !Equals [!Ref Environment, integration]
   IsNotProductionOrIntegrationEnvironment:
     !Not [!Condition IsProductionOrIntegrationEnvironment]
+
+  CreateDomainResources: !Equals [!Ref Environment, dev]
+  CreateCloudFrontAssociation: !Not
+    - !Equals [!Ref Environment, dev]
 
 Mappings:
   StaticVariables:
@@ -457,7 +469,7 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Essential: true
-          Image: CONTAINER-IMAGE-PLACEHOLDER
+          Image: !Sub ${ContainerImageName}
           Name: app
           ReadonlyRootFilesystem: true
           Environment:
@@ -465,7 +477,7 @@ Resources:
               Value: !Sub
                 - "https://${APIGatewayId}-${VpceId}.execute-api.${AWS::Region}.amazonaws.com/${Environment}"
                 - APIGatewayId:
-                    Fn::ImportValue: check-hmrc-cri-api-PrivateApiGatewayId
+                    Fn::ImportValue: !Ref CRIPrivateApiGatewayId
                   VpceId:
                     Fn::ImportValue: cri-vpc-ExecuteApiGatewayEndpointId
                   Environment: !Ref Environment
@@ -808,6 +820,7 @@ Resources:
       TreatMissingData: notBreaching
 
   CloudFrontWAFv2ACLAssociation:
+    Condition: CreateCloudFrontAssociation
     Type: AWS::WAFv2::WebACLAssociation
     Properties:
       ResourceArn: !Ref LoadBalancer
@@ -1524,6 +1537,48 @@ Resources:
         TGPort: 8080
         TargetGroupName: !GetAtt LoadBalancerListenerTargetGroupECS.TargetGroupName
         VpcId: !Sub ${VpcStackName}-VpcId
+
+  CustomDomain:
+    Condition: CreateDomainResources
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: !Sub ${AWS::StackName}.review-hc.${Environment}.account.gov.uk
+      DomainNameConfigurations:
+        - CertificateArn: !Ref CustomExternalCertificate
+          EndpointType: REGIONAL
+          SecurityPolicy: TLS_1_2
+
+  CustomExternalCertificate:
+    Condition: CreateDomainResources
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub ${AWS::StackName}.review-hc.${Environment}.account.gov.uk
+      SubjectAlternativeNames:
+        - !Sub ${AWS::StackName}.review-hc.${Environment}.account.gov.uk
+      DomainValidationOptions:
+        - DomainName: !Sub ${AWS::StackName}.review-hc.${Environment}.account.gov.uk
+          HostedZoneId: !ImportValue PublicHostedZoneId
+      ValidationMethod: DNS
+
+  CustomApiDomainRecord:
+    Condition: CreateDomainResources
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Ref CustomDomain
+      Type: A
+      HostedZoneId: !ImportValue PublicHostedZoneId
+      AliasTarget:
+        DNSName: !GetAtt CustomDomain.RegionalDomainName
+        HostedZoneId: !GetAtt CustomDomain.RegionalHostedZoneId
+        EvaluateTargetHealth: false
+
+  CustomApiBasePathMapping:
+    Condition: CreateDomainResources
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Properties:
+      ApiId: !Ref ApiGwHttpEndpoint
+      DomainName: !Ref CustomDomain
+      Stage: !Ref APIStageDefault
 
 Outputs:
   StackName:
