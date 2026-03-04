@@ -58,8 +58,6 @@ Conditions:
 
   IsProduction: !Equals [!Ref Environment, production]
 
-  IsProdEnvironment: !Equals [!Ref Environment, production]
-
   DeployAlarms: !Or
     - !Condition IsNotDevelopment
     - !Equals [!Ref DeployAlarmsInDevEnvironment, "true"]
@@ -439,14 +437,14 @@ Resources:
       AlarmActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
       OKActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
@@ -806,14 +804,14 @@ Resources:
       AlarmActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
       OKActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
@@ -989,14 +987,14 @@ Resources:
       AlarmActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
       OKActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
@@ -1193,7 +1191,7 @@ Resources:
       AlarmActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
@@ -1201,7 +1199,7 @@ Resources:
         - !ImportValue build-notifications-WarningAlertsTopicArn
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
@@ -1231,7 +1229,7 @@ Resources:
       AlarmActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
@@ -1261,7 +1259,7 @@ Resources:
       AlarmActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
@@ -1360,14 +1358,14 @@ Resources:
       AlarmActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
       OKActions:
         - !ImportValue build-notifications-CriticalAlertsTopicArn
         - !If [
-            IsProdEnvironment,
+            IsProduction,
             !ImportValue build-notifications-PagerDutySNSTopicArn,
             !Ref "AWS::NoValue",
           ]
