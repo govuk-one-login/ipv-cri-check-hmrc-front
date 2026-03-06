@@ -26,6 +26,5 @@
 | GA4_ENABLED                 | Feature flag to enable GA4                                                                | true           |
 | UA_CONTAINER_ID             | Container ID for Universal Analytics, required for UA to work correctly                   | GTM-TK92W68    |
 | UA_ENABLED                  | Feature flag to enable UA                                                                 | false          |
-| ANALYTICS_DATA_SENSITIVE    | Feature flag for analyticsDataSensitive                                                   | false          |
 | LOG_LEVEL                   | Determines the log level for the application                                              | request        |
 | MAY_2025_REBRAND_ENABLED    | Feature flag to enable the May 2025 GOV.UK branding changes                               | false          |
