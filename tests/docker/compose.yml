@@ -36,6 +36,7 @@ services:
       GITHUB_ACTIONS: true
       WEBSITE_HOST: http://localhost:5050
       RELYING_PARTY_URL: "http://localhost:8080"
+      BROWSER: ${BROWSER:-chromium}
     volumes:
       - ./reports:/reports
     network_mode: "host"
