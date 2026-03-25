@@ -939,7 +939,7 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !Ref StepScaleInPolicy
-      AlarmDescription: !Sub "FrontClusterUnder60PercentCPU"
+      AlarmDescription: !Sub "FrontClusterUnder30PercentCPU"
       ComparisonOperator: "LessThanThreshold"
       DatapointsToAlarm: "5"
       Dimensions:
@@ -953,7 +953,7 @@ Resources:
       Namespace: "AWS/ECS"
       Statistic: "Average"
       Period: "60"
-      Threshold: "60"
+      Threshold: "30"
 
   SessionsTable:
     Type: AWS::DynamoDB::Table

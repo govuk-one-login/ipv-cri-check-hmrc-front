@@ -130,3 +130,5 @@ dist
 .pnp.*
 
 .aws-sam
+
+.vscode

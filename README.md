@@ -131,6 +131,12 @@ Browser tests are run from the [tests/browser](./tests/browser/) folder, with ap
 
 Post merge tests can be run locally using the command `npm run test:browser -- --tags @post-merge` from the [tests/browser](./tests/browser/) folder.
 
+#### Running browser tests on different browser types
+
+The following browserType are: `firefox`, `chromium` and `edge`.
+
+You can add the `BROWER` variable to the .env file with the above browser type and run `npm run test:browser`.
+
 ### Running the application in Docker
 
 Docker allows performance testing to be performed locally against the Node system, we can containerise the frontend application and configure it to point to a
