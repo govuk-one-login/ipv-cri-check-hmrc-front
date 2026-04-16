@@ -29,7 +29,7 @@ module.exports = {
     DEVICE_INTELLIGENCE_DOMAIN:
       process.env.DEVICE_INTELLIGENCE_DOMAIN || "account.gov.uk",
   },
-  LOG_LEVEL: process.env.LOG_LEVEL || "request",
+  LOG_LEVEL: process.env.LOG_LEVEL || "info",
   AWS_REGION: process.env.AWS_REGION || "eu-west-2",
   PORT: process.env.PORT || 5000,
   SESSION_SECRET: process.env.SESSION_SECRET,
