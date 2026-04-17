@@ -17,4 +17,8 @@ WORKDIR /app/tests/browser
 
 COPY tests/browser ./
 
-CMD [ "./run-tests-post-merge.sh" ]
+# sam-deploy-pipeline expects to be able to execute a file called run-tests.sh at the root of the filesystem
+# https://github.com/govuk-one-login/devplatform-deploy/blob/main/sam-deploy-pipeline/template.yaml
+RUN cp run-tests-post-merge.sh /run-tests.sh
+
+CMD [ "/run-tests.sh" ]
