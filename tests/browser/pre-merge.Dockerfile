@@ -1,11 +1,17 @@
 FROM mcr.microsoft.com/playwright:v1.55.1-jammy
 
-WORKDIR /tests
+WORKDIR /app
 
 COPY package.json package-lock.json .npmrc ./
 
-RUN npm ci
+RUN mkdir -p tests/browser
 
-COPY . ./
+COPY tests/browser/package.json ./tests/browser
 
-CMD ["./run-tests-pre-merge.sh"]
+RUN npm ci --workspace tests/browser
+
+WORKDIR /app/tests/browser
+
+COPY tests/browser ./
+
+CMD [ "./run-tests-pre-merge.sh" ]

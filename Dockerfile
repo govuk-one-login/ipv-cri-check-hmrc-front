@@ -1,5 +1,6 @@
-ARG NODE_SHA=sha256:67225d40d3fb36314e392846effda04b95c973bf52e44ea064a8e0015c83056e
-FROM node:22.4.1-alpine3.19@${NODE_SHA} AS builder
+# https://hub.docker.com/layers/library/node/22-alpine/images/sha256-cb15fca92530d7ac113467696cf1001208dac49c3c64355fd1348c11a88ddf8f
+ARG NODE_SHA=sha256:8ea2348b068a9544dae7317b4f3aafcdc032df1647bb7d768a05a5cad1a7683f
+FROM node:22-alpine@${NODE_SHA} AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json .npmrc ./
@@ -7,7 +8,7 @@ COPY /src ./src
 
 RUN npm ci && npm run build && npm prune
 
-FROM node:22.4.1-alpine3.19@${NODE_SHA} AS final
+FROM node:22-alpine@${NODE_SHA} AS final
 RUN apk --no-cache upgrade && apk add --no-cache tini curl
 
 WORKDIR /app
