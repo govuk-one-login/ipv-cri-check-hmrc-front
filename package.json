@@ -2,6 +2,9 @@
   "name": "di-ipv-cri-check-hmrc-front",
   "description": "Frontend for the Check HMRC Credential Issuer",
   "license": "MIT",
+  "workspaces": [
+    "tests/browser"
+  ],
   "scripts": {
     "start": "node src/app.js",
     "dev": "NODE_ENV=development nodemon src/app.js",
