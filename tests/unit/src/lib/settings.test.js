@@ -1,3 +1,5 @@
+import { vi, beforeEach, describe, it, expect } from "vitest";
+
 const {
   setAPIConfig,
   setOAuthPaths,
@@ -8,7 +10,7 @@ describe("settings", () => {
 
   beforeEach(() => {
     app = {
-      set: jest.fn(),
+      set: vi.fn(),
     };
   });
 

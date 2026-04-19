@@ -2,7 +2,7 @@ const {
   isValidNino,
   invalidCharacters,
 } = require("../../../../src/lib/validator");
-const { expect } = require("chai");
+import { describe, expect, test } from "vitest";
 
 const good_edge_case_ninos = [
   "CA283902A",
