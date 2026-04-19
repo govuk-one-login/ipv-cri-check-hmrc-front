@@ -123,7 +123,7 @@ Unit tests can be run from the root of the project using:
 npm run dev
 ```
 
-They use Jest as the test runner, which is configured using [jest.config.js](./jest.config.js)
+They use Vitest as the test runner, which is configured using [vitest.config.js](./vitest.config.js)
 
 #### Browser tests
 

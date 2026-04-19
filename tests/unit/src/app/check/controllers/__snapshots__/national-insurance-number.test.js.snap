@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`national insurance number > #saveValues > matches snapshots with the correct parameters 1`] = `
+{
+  "status": 201,
+}
+`;
