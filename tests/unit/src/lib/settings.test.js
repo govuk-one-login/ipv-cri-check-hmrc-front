@@ -1,3 +1,4 @@
+import { describe, beforeEach, it, expect, mock } from "bun:test";
 const {
   setAPIConfig,
   setOAuthPaths,
@@ -8,7 +9,7 @@ describe("settings", () => {
 
   beforeEach(() => {
     app = {
-      set: jest.fn(),
+      set: mock(),
     };
   });
 

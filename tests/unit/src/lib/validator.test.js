@@ -1,3 +1,4 @@
+import { describe } from "bun:test";
 const {
   isValidNino,
   invalidCharacters,

@@ -1,3 +1,4 @@
+import { describe, beforeEach, it, expect, mock } from "bun:test";
 const BaseController = require("hmpo-form-wizard").Controller;
 const Controller = require("../../../../../../src/app/check/controllers/abandon");
 
@@ -23,7 +24,7 @@ describe("abandon", () => {
   describe("#saveValues", () => {
     beforeEach(() => {
       req.session.tokenId = "session-id";
-      req.axios.post = jest.fn();
+      req.axios.post = mock();
       req.form.values.nationalInsuranceNumber = "AA12";
     });
 
@@ -45,7 +46,7 @@ describe("abandon", () => {
 
     describe("on API success", () => {
       it("should call next", async () => {
-        req.axios.post = jest.fn().mockResolvedValue({});
+        req.axios.post = mock().mockResolvedValue({});
 
         await controller.saveValues(req, res, next);
 
