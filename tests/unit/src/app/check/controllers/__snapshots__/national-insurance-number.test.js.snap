@@ -1,0 +1,7 @@
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
+
+exports[`national insurance number #saveValues with 2xx status matches snapshots with the correct parameters 1`] = `
+{
+  "status": 201,
+}
+`;
