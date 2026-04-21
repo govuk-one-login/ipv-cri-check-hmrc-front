@@ -1,4 +1,5 @@
 import { describe, beforeEach, it, expect, mock } from "bun:test";
+import { createDefaultReqResNext } from "../../../../lib/helpers";
 const BaseController = require("hmpo-form-wizard").Controller;
 const Controller = require("../../../../../../src/app/check/controllers/enter-national-insurance-number");
 
@@ -13,6 +14,11 @@ describe("national insurance number", () => {
 
   beforeEach(() => {
     controller = new Controller({ route: "/test" });
+    const setup = createDefaultReqResNext();
+
+    global.req = setup.req;
+    global.res = setup.res;
+    global.next = setup.next;
   });
 
   it("should be an instance of BaseController", () => {
