@@ -32,13 +32,13 @@ describe("Session Check Middleware", () => {
 
     await sessionCheckMiddleware(req, res, next);
 
-    assert(next).toHaveBeenCalledTimes(1);
-    assert(next).toHaveBeenCalledWith(
-      new Error("Request is missing session data")
-    );
-    expect(next).toHaveBeenCalledWith(
-      expect.objectContaining({ code: "MISSING_SESSION_DATA", status: 401 })
-    );
+    assert.strictEqual(next.mock.callCount(), 1);
+    const error = next.mock.calls[0].arguments;
+    assert.ok(error instanceof Error);
+    assert.strictEqual(error.message, "Request is missing session data");
+
+    assert.strictEqual(error.code, "MISSING_SESSION_DATA");
+    assert.strictEqual(error.status, 401);
   });
 
   it("should call next with an error when no req.session.tokenId value present", async () => {

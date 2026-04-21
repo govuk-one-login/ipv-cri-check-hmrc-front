@@ -10,7 +10,7 @@ const {
   },
 } = require("../../../../../../src/lib/config");
 
-jest.mock();
+// jest.mock();
 describe("national insurance number", () => {
   let controller;
 
@@ -58,12 +58,19 @@ describe("national insurance number", () => {
     });
 
     describe("with 2xx status", () => {
+      it("matches snapshot", async (t) => {
+        await controller.saveValues(req, res, next);
+        req.axios.post = t.mock.fn();
+        t.assert.snapshot({ status: 201 });
+      });
+
       it('should set "showRetryErrorSummary" to false', async () => {
         req.axios.post = t.mock.fn().mockResolvedValue({ status: 201 });
 
         await controller.saveValues(req, res, next);
 
-        assert(req.session.redirectToRetry).toBeFalsy();
+        assert.equal(req.session.redirectToRetry, false);
+        // assert(req.session.redirectToRetry).toBeFalsy();
         assert(controller.hasRedirectToRetryShowing(req)).toBeFalsy();
       });
     });

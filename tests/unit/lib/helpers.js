@@ -1,10 +1,33 @@
-const { mockRequest, mockResponse } = require("jest-mock-req-res");
-
+import { mock, beforeEach } from "node:test";
 const JourneyModel = require("hmpo-form-wizard/lib/journey-model");
 const WizardModel = require("hmpo-form-wizard/lib/wizard-model.js");
 
+const mockRequest = (overrides = {}) => ({
+  body: {},
+  params: {},
+  query: {},
+  headers: {},
+  form: {},
+  session: {},
+  ...overrides,
+});
+
+const mockResponse = (overrides = {}) => {
+  return {
+    status: mock.fn(() => res),
+    statusCode: mock.fn(() => res),
+    message: mock.fn(() => res),
+    json: mock.fn(() => res),
+    send: mock.fn(() => res),
+    redirect: mock.fn(() => res),
+    render: mock.fn(() => res),
+    locals: {},
+    ...overrides,
+  };
+};
+
 /* global createDefaultReqResNext */
-global.createDefaultReqResNext = () => {
+export const createDefaultReqResNext = () => {
   const req = mockRequest({
     form: {
       options: {
@@ -13,9 +36,9 @@ global.createDefaultReqResNext = () => {
       values: {},
     },
     axios: {
-      get: t.mock.fn(),
-      post: t.mock.fn(),
-      put: t.mock.fn(),
+      get: this.mock.fn(),
+      post: this.mock.fn(),
+      put: this.mock.fn(),
     },
     session: {
       "hmpo-wizard-previous": {},
@@ -46,7 +69,7 @@ global.createDefaultReqResNext = () => {
   };
 };
 
-global.beforeEach(() => {
+beforeEach(() => {
   const setup = createDefaultReqResNext();
 
   global.req = setup.req;

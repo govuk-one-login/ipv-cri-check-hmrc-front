@@ -83,55 +83,49 @@ const bad_length_ninos = [
 ];
 
 describe("should fail all the bad ninos", () => {
-  test.each(bad_prefixes_ninos)(
-    "given bad prefix nino of %p, returns false",
-    (ninoArg) => {
+  for (const ninoArg of bad_prefixes_ninos) {
+    test("given bad prefix nino of %p, returns false", async () => {
       const invalidCharResult = invalidCharacters(ninoArg);
 
       assert.equal(invalidCharResult, false);
-    }
-  );
-  test.each(bad_unused_prefixes_ninos)(
-    "given unused prefix nino of %p, returns false",
-    (ninoArg) => {
+    });
+  }
+  for (const ninoArg of bad_unused_prefixes_ninos) {
+    test("given unused prefix nino of %p, returns false", async () => {
       const invalidCharResult = invalidCharacters(ninoArg);
 
       assert.equal(invalidCharResult, false);
-    }
-  );
-  test.each(bad_suffixes_ninos)(
-    "given bad suffix nino of %p, returns false",
-    (ninoArg) => {
+    });
+  }
+  for (const ninoArg of bad_suffixes_ninos) {
+    test("given bad suffix nino of %p, returns false", async () => {
       const invalidCharResult = invalidCharacters(ninoArg);
 
       assert.equal(invalidCharResult, false);
-    }
-  );
-  test.each(bad_length_ninos)(
-    "given bad length nino of %p, returns false",
-    (ninoArg) => {
+    });
+  }
+  for (const ninoArg of bad_length_ninos) {
+    test("given bad length nino of %p, returns false", async () => {
       const result = isValidNino(ninoArg);
 
       assert.equal(result, false);
-    }
-  );
+    });
+  }
 });
 
 describe("should return all the good ninos", () => {
-  test.each(good_edge_case_ninos)(
-    "isValidNino returns true for the given nino of %p",
-    (ninoArg) => {
+  for (const ninoArg of good_edge_case_ninos) {
+    test("isValidNino returns true for the given nino of %p", async () => {
       const result = isValidNino(ninoArg);
 
       assert.equal(result, true);
-    }
-  );
-  test.each(good_edge_case_ninos)(
-    "invalidCharacters returns true for the given nino of %p",
-    (ninoArg) => {
+    });
+  }
+  for (const ninoArg of good_edge_case_ninos) {
+    test("invalidCharacters returns true for the given nino of %p", async () => {
       const result = invalidCharacters(ninoArg);
 
       assert.equal(result, true);
-    }
-  );
+    });
+  }
 });

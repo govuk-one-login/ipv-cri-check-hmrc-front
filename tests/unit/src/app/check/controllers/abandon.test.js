@@ -1,5 +1,6 @@
 import { describe, beforeEach, it } from "node:test";
 import assert from "node:assert";
+import { createDefaultReqResNext } from "../../../../lib/helpers";
 
 const BaseController = require("hmpo-form-wizard").Controller;
 const Controller = require("../../../../../../src/app/check/controllers/abandon");
@@ -15,6 +16,11 @@ describe("abandon", () => {
 
   beforeEach(() => {
     controller = new Controller({ route: "/test" });
+    const setup = createDefaultReqResNext();
+
+    global.req = setup.req;
+    global.res = setup.res;
+    global.next = setup.next;
   });
 
   it("should be an instance of BaseController", () => {
@@ -23,7 +29,7 @@ describe("abandon", () => {
   });
 
   describe("#saveValues", () => {
-    beforeEach(() => {
+    beforeEach((t) => {
       req.session.tokenId = "session-id";
       req.axios.post = t.mock.fn();
       req.form.values.nationalInsuranceNumber = "AA12";
@@ -66,7 +72,7 @@ describe("abandon", () => {
     });
 
     describe("on API failure", () => {
-      it("should call next with error", async () => {
+      it("should call next with error", async (t) => {
         const error = new Error("Async error message");
         req.axios.post = t.mock.fn().mockRejectedValue(error);
 
