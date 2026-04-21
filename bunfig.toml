@@ -1,0 +1,3 @@
+[test]
+preload = ["./tests/unit/lib/setup.ts"]
+timeout = 10000

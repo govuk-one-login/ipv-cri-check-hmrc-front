@@ -123,8 +123,6 @@ Unit tests can be run from the root of the project using:
 npm run dev
 ```
 
-They use Jest as the test runner, which is configured using [jest.config.js](./jest.config.js)
-
 #### Browser tests
 
 Browser tests are run from the [tests/browser](./tests/browser/) folder, with appropriate quick start documentation located there.subfolder of this project, with more details available there.

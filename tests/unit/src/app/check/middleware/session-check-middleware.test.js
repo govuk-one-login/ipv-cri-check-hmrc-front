@@ -1,6 +1,16 @@
+import { describe, it, expect, beforeEach } from "bun:test";
+import { createDefaultReqResNext } from "../../../../lib/helpers";
 const {
   sessionCheckMiddleware,
 } = require("../../../../../../src/app/check/middleware/session-check-middleware");
+
+beforeEach(() => {
+  const setup = createDefaultReqResNext();
+
+  global.req = setup.req;
+  global.res = setup.res;
+  global.next = setup.next;
+});
 
 describe("Session Check Middleware", () => {
   it("should call next with no error", async () => {
@@ -30,6 +40,7 @@ describe("Session Check Middleware", () => {
 
     await sessionCheckMiddleware(req, res, next);
 
+    console.log("tester", next.mock.calls);
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(
       new Error("Request is missing session data")
