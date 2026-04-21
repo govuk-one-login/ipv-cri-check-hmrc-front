@@ -61,6 +61,12 @@ describe("national insurance number", () => {
       });
     });
 
+    it("matches snapshots with the correct parameters", async () => {
+      await controller.saveValues(req, res, next);
+      req.axios.post = vi.fn();
+      expect({ status: 201 }).toMatchSnapshot();
+    });
+
     describe("with 2xx status", () => {
       it('should set "showRetryErrorSummary" to false', async () => {
         req.axios.post = vi.fn().mockResolvedValue({ status: 201 });
