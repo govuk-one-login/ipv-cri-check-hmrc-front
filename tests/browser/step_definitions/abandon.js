@@ -1,6 +1,6 @@
 const { Then, When, Given } = require("@cucumber/cucumber");
 const { AbandonPage, RelyingPartyPage } = require("../pages");
-const { expect, assert } = require("chai");
+const assert = require("node:assert");
 
 Given("they choose to abandon", async function () {
   const abandonPage = new AbandonPage(this.page);
@@ -19,28 +19,27 @@ When("they click continue from abandon", async function () {
 
 Then("they should see the abandon page", function () {
   const abandonPage = new AbandonPage(this.page);
-  expect(abandonPage.isCurrentPage()).to.be.true;
+  assert.strictEqual(abandonPage.isCurrentPage(), true);
 });
 
 Then("they should see abandon validation messages", function () {
   const abandonPage = new AbandonPage(this.page);
-  expect(abandonPage.isCurrentPage()).to.be.true;
-
-  expect(abandonPage.hasErrorSummary).to.not.be.false;
+  assert.strictEqual(abandonPage.isCurrentPage(), true);
+  assert.ok(abandonPage.hasErrorSummary());
 });
 
 Then("they should be redirected as access denied", function () {
   const rpPage = new RelyingPartyPage(this.page);
 
-  expect(rpPage.isRelyingPartyServer()).to.be.true;
+  assert.strictEqual(rpPage.isRelyingPartyServer(), true);
   const { searchParams } = new URL(rpPage.page.url());
-  assert.equal(searchParams.get("error"), "access_denied");
+  assert.strictEqual(searchParams.get("error"), "access_denied");
 });
 
 Then("they should be redirected as an error", function () {
   const rpPage = new RelyingPartyPage(this.page);
 
-  expect(rpPage.isRelyingPartyServer()).to.be.true;
+  assert.strictEqual(rpPage.isRelyingPartyServer(), true);
   const { searchParams } = new URL(rpPage.page.url());
-  assert.equal(searchParams.get("error"), "server_error");
+  assert.strictEqual(searchParams.get("error"), "server_error");
 });
