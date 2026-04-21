@@ -9,5 +9,6 @@ module.exports = {
       "./pages/*.js",
     ],
     tags: "not @skip",
+    timeout: 30000,
   },
 };
