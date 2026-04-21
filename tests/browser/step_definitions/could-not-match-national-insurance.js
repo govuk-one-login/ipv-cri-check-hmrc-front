@@ -3,7 +3,7 @@ const {
   CouldNotMatchNationalInsurancePage,
   RelyingPartyPage,
 } = require("../pages");
-const { expect, assert } = require("chai");
+const assert = require("node:assert");
 
 When(
   "they click continue could not match national insurance number",
@@ -34,7 +34,7 @@ When(
 
 Then("they should be redirected to access_denied", function () {
   const rpPage = new RelyingPartyPage(this.page);
-  expect(rpPage.isRelyingPartyServer()).to.be.true;
+  assert.strictEqual(rpPage.isRelyingPartyServer(), true);
   const { searchParams } = new URL(rpPage.page.url());
   assert.equal(searchParams.get("error"), "access_denied");
 });
@@ -44,9 +44,12 @@ Then(
   function () {
     const couldNotMatchNationalInsurancePage =
       new CouldNotMatchNationalInsurancePage(this.page);
-    expect(couldNotMatchNationalInsurancePage.isCurrentPage()).to.be.true;
+    assert.strictEqual(
+      couldNotMatchNationalInsurancePage.isCurrentPage(),
+      true
+    );
 
-    expect(couldNotMatchNationalInsurancePage.hasErrorSummary).to.not.be.false;
+    assert.ok(couldNotMatchNationalInsurancePage.hasErrorSummary());
   }
 );
 
@@ -55,6 +58,9 @@ Then(
   async function () {
     const couldNotMatchNationalInsurancePage =
       new CouldNotMatchNationalInsurancePage(this.page);
-    expect(couldNotMatchNationalInsurancePage.isCurrentPage()).to.be.true;
+    assert.strictEqual(
+      couldNotMatchNationalInsurancePage.isCurrentPage(),
+      true
+    );
   }
 );

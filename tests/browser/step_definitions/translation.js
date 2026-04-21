@@ -1,7 +1,7 @@
-// Steps for any background tasks we need to do pre tests
+// Steps for any background tasks we need to do pre-tests
 const { Given, When, Then } = require("@cucumber/cucumber");
 const { ErrorPage } = require("../pages");
-const { expect } = require("chai");
+const assert = require("node:assert");
 
 Given("they start with {string}", async function (lang) {
   await setLanguageCookie(lang, this.page.url(), this.context);
@@ -26,14 +26,15 @@ Then(/^the page's language property should be "(.*)"$/, async function (lang) {
   const hasLanguageCorrectCode = await this.page
     .locator(`html[lang="${code}"]`)
     .count();
-  expect(hasLanguageCorrectCode).to.equal(1);
+  assert.strictEqual(hasLanguageCorrectCode, 1);
 });
 
 Then(/^they (?:should )?see(?:ed)? the page in "(.*)"$/, async function (lang) {
   const errorPage = new ErrorPage(this.page);
   const errorTitle = await errorPage.getErrorTitle();
 
-  expect(errorTitle).to.equal(
+  assert.strictEqual(
+    errorTitle,
     errorPage.getLocalisedSomethingWentWrongMessage(lang)
   );
 });

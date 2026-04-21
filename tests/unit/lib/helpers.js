@@ -1,10 +1,33 @@
-const { mockRequest, mockResponse } = require("jest-mock-req-res");
+import { vi } from "vitest";
 
 const JourneyModel = require("hmpo-form-wizard/lib/journey-model");
 const WizardModel = require("hmpo-form-wizard/lib/wizard-model.js");
 
+const mockRequest = (overrides = {}) => ({
+  body: {},
+  params: {},
+  query: {},
+  headers: {},
+  form: {},
+  session: {},
+  ...overrides,
+});
+
+const mockResponse = (overrides = {}) => {
+  return {
+    status: vi.fn().mockReturnThis(),
+    statusCode: vi.fn().mockReturnThis(),
+    message: vi.fn().mockReturnThis(),
+    json: vi.fn().mockReturnThis(),
+    send: vi.fn().mockReturnThis(),
+    redirect: vi.fn().mockReturnThis(),
+    render: vi.fn().mockReturnThis(),
+    locals: {},
+    ...overrides,
+  };
+};
 /* global createDefaultReqResNext */
-global.createDefaultReqResNext = () => {
+export const createDefaultReqResNext = () => {
   const req = mockRequest({
     form: {
       options: {
@@ -13,9 +36,9 @@ global.createDefaultReqResNext = () => {
       values: {},
     },
     axios: {
-      get: jest.fn(),
-      post: jest.fn(),
-      put: jest.fn(),
+      get: vi.fn(),
+      post: vi.fn(),
+      put: vi.fn(),
     },
     session: {
       "hmpo-wizard-previous": {},
@@ -38,18 +61,10 @@ global.createDefaultReqResNext = () => {
   });
 
   const res = mockResponse({});
-  const next = jest.fn();
+  const next = vi.fn();
   return {
     req,
     res,
     next,
   };
 };
-
-global.beforeEach(() => {
-  const setup = createDefaultReqResNext();
-
-  global.req = setup.req;
-  global.res = setup.res;
-  global.next = setup.next;
-});

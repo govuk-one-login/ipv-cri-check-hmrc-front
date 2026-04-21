@@ -1,5 +1,5 @@
 const { Then } = require("@cucumber/cucumber");
-const { expect } = require("chai");
+const assert = require("node:assert");
 
 Then("the {word} cookie has been set", async function (cookieName) {
   const deadline = Date.now() + 5000;
@@ -13,6 +13,5 @@ Then("the {word} cookie has been set", async function (cookieName) {
     if (cookie) break;
     await this.page.waitForTimeout(150);
   }
-
-  expect(cookie, `Cookie ${cookieName} not found within 5s`).to.exist;
+  assert.ok(cookie, `Cookie ${cookieName} not found within 5s`);
 });

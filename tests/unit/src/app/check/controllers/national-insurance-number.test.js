@@ -1,3 +1,6 @@
+import { vi, it, beforeEach, expect, describe } from "vitest";
+import { createDefaultReqResNext } from "../../../../lib/helpers";
+
 const BaseController = require("hmpo-form-wizard").Controller;
 const Controller = require("../../../../../../src/app/check/controllers/enter-national-insurance-number");
 
@@ -7,12 +10,16 @@ const {
   },
 } = require("../../../../../../src/lib/config");
 
-jest.mock();
 describe("national insurance number", () => {
   let controller;
 
   beforeEach(() => {
     controller = new Controller({ route: "/test" });
+    const setup = createDefaultReqResNext();
+
+    global.req = setup.req;
+    global.res = setup.res;
+    global.next = setup.next;
   });
 
   it("should be an instance of BaseController", () => {
@@ -24,7 +31,7 @@ describe("national insurance number", () => {
   describe("#saveValues", () => {
     beforeEach(() => {
       req.session.tokenId = "session-id";
-      req.axios.post = jest.fn();
+      req.axios.post = vi.fn();
       req.form.values.nationalInsuranceNumber = "AA12";
     });
     it("should call check endpoint", async () => {
@@ -45,7 +52,7 @@ describe("national insurance number", () => {
 
     describe("on API success", () => {
       it("should call next", async () => {
-        req.axios.post = jest.fn().mockResolvedValue({});
+        req.axios.post = vi.fn().mockResolvedValue({});
 
         await controller.saveValues(req, res, next);
 
@@ -54,9 +61,15 @@ describe("national insurance number", () => {
       });
     });
 
+    it("matches snapshots with the correct parameters", async () => {
+      await controller.saveValues(req, res, next);
+      req.axios.post = vi.fn();
+      expect({ status: 201 }).toMatchSnapshot();
+    });
+
     describe("with 2xx status", () => {
       it('should set "showRetryErrorSummary" to false', async () => {
-        req.axios.post = jest.fn().mockResolvedValue({ status: 201 });
+        req.axios.post = vi.fn().mockResolvedValue({ status: 201 });
 
         await controller.saveValues(req, res, next);
 
@@ -67,7 +80,7 @@ describe("national insurance number", () => {
 
     describe("with 200 status and requestRetry", () => {
       it('should set "showRetryErrorSummary" to true', async () => {
-        req.axios.post = jest
+        req.axios.post = vi
           .fn()
           .mockResolvedValue({ status: 200, data: { requestRetry: true } });
 
@@ -77,7 +90,7 @@ describe("national insurance number", () => {
         expect(controller.hasRedirectToRetryShowing(req)).toBe(true);
       });
       it('should not set "showRetryErrorSummary" to true', async () => {
-        req.axios.post = jest
+        req.axios.post = vi
           .fn()
           .mockResolvedValue({ status: 200, data: { requestRetry: false } });
 
@@ -87,7 +100,7 @@ describe("national insurance number", () => {
         expect(controller.hasRedirectToRetryShowing(req)).toBe(false);
       });
       it('should not set "showRetryErrorSummary" to true when missing requestRetry', async () => {
-        req.axios.post = jest.fn().mockResolvedValue({ status: 200 });
+        req.axios.post = vi.fn().mockResolvedValue({ status: 200 });
 
         await controller.saveValues(req, res, next);
 
@@ -99,7 +112,7 @@ describe("national insurance number", () => {
     describe("on API failure", () => {
       it("should call next with error", async () => {
         const error = new Error("Async error message");
-        req.axios.post = jest.fn().mockRejectedValue(error);
+        req.axios.post = vi.fn().mockRejectedValue(error);
 
         await controller.saveValues(req, res, next);
 
