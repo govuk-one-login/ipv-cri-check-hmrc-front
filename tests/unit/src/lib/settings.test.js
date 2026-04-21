@@ -1,3 +1,6 @@
+import { describe, beforeEach, it } from "node:test";
+import assert from "node:assert";
+
 const {
   setAPIConfig,
   setOAuthPaths,
@@ -6,9 +9,9 @@ const {
 describe("settings", () => {
   let app;
 
-  beforeEach(() => {
+  beforeEach((t) => {
     app = {
-      set: jest.fn(),
+      set: t.mock.fn(),
     };
   });
 
@@ -16,36 +19,38 @@ describe("settings", () => {
     it("should set 'API.API_BASE_URL", () => {
       setAPIConfig({ app, baseUrl: "http://example.com" });
 
-      expect(app.set).toHaveBeenCalledWith(
+      assert.deepStrictEqual(app.set.mock.calls[0].arguments, [
         "API.BASE_URL",
-        "http://example.com"
-      );
+        "http://example.com",
+      ]);
     });
 
     it("should set 'API.PATHS.SESSION", () => {
       setAPIConfig({ app, sessionPath: "/api/session" });
 
-      expect(app.set).toHaveBeenCalledWith("API.PATHS.SESSION", "/api/session");
+      assert.deepStrictEqual(app.set.mock.calls[0].arguments, [
+        "API.PATHS.SESSION",
+        "/api/session",
+      ]);
     });
 
     it("should set 'API.PATHS.AUTHORIZATION", () => {
       setAPIConfig({ app, authorizationPath: "/api/authorization" });
 
-      expect(app.set).toHaveBeenCalledWith(
+      assert.deepStrictEqual(app.set.mock.calls[0].arguments, [
         "API.PATHS.AUTHORIZATION",
-        "/api/authorization"
-      );
+        "/api/authorization",
+      ]);
     });
   });
 
   describe("setOAuthPaths", () => {
     it("should set 'APP.PATHS.ENTRYPOINT", () => {
       setOAuthPaths({ app, entryPointPath: "/website/subpath" });
-
-      expect(app.set).toHaveBeenCalledWith(
+      assert.deepStrictEqual(app.set.mock.calls[0].arguments, [
         "APP.PATHS.ENTRYPOINT",
-        "/website/subpath"
-      );
+        "/website/subpath",
+      ]);
     });
   });
 });
