@@ -1,3 +1,6 @@
+import { describe, beforeEach, it } from "node:test";
+import assert from "node:assert";
+
 const {
   setAPIConfig,
   setOAuthPaths,
@@ -8,7 +11,7 @@ describe("settings", () => {
 
   beforeEach(() => {
     app = {
-      set: jest.fn(),
+      set: t.mock.fn(),
     };
   });
 
@@ -25,13 +28,13 @@ describe("settings", () => {
     it("should set 'API.PATHS.SESSION", () => {
       setAPIConfig({ app, sessionPath: "/api/session" });
 
-      expect(app.set).toHaveBeenCalledWith("API.PATHS.SESSION", "/api/session");
+      assert(app.set).toHaveBeenCalledWith("API.PATHS.SESSION", "/api/session");
     });
 
     it("should set 'API.PATHS.AUTHORIZATION", () => {
       setAPIConfig({ app, authorizationPath: "/api/authorization" });
 
-      expect(app.set).toHaveBeenCalledWith(
+      assert(app.set).toHaveBeenCalledWith(
         "API.PATHS.AUTHORIZATION",
         "/api/authorization"
       );
@@ -42,7 +45,7 @@ describe("settings", () => {
     it("should set 'APP.PATHS.ENTRYPOINT", () => {
       setOAuthPaths({ app, entryPointPath: "/website/subpath" });
 
-      expect(app.set).toHaveBeenCalledWith(
+      assert(app.set).toHaveBeenCalledWith(
         "APP.PATHS.ENTRYPOINT",
         "/website/subpath"
       );

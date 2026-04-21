@@ -1,3 +1,5 @@
+import { describe, it, beforeEach } from "node:test";
+import assert from "node:assert";
 const {
   sessionCheckMiddleware,
 } = require("../../../../../../src/app/check/middleware/session-check-middleware");
@@ -9,18 +11,18 @@ describe("Session Check Middleware", () => {
 
     await sessionCheckMiddleware(req, res, next);
 
-    expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith();
+    assert(next).toHaveBeenCalledTimes(1);
+    assert(next).toHaveBeenCalledWith();
   });
 
   it("should call next with a error with the code MISSING_AUTHPARAMS", async () => {
     await sessionCheckMiddleware(req, res, next);
 
-    expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith(
+    assert(next).toHaveBeenCalledTimes(1);
+    assert(next).toHaveBeenCalledWith(
       new Error("Request is missing session data")
     );
-    expect(next).toHaveBeenCalledWith(
+    assert(next).toHaveBeenCalledWith(
       expect.objectContaining({ code: "MISSING_SESSION_DATA", status: 401 })
     );
   });
@@ -30,8 +32,8 @@ describe("Session Check Middleware", () => {
 
     await sessionCheckMiddleware(req, res, next);
 
-    expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith(
+    assert(next).toHaveBeenCalledTimes(1);
+    assert(next).toHaveBeenCalledWith(
       new Error("Request is missing session data")
     );
     expect(next).toHaveBeenCalledWith(
@@ -44,11 +46,11 @@ describe("Session Check Middleware", () => {
 
     await sessionCheckMiddleware(req, res, next);
 
-    expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith(
+    assert(next).toHaveBeenCalledTimes(1);
+    assert(next).toHaveBeenCalledWith(
       new Error("Request is missing session data")
     );
-    expect(next).toHaveBeenCalledWith(
+    assert(next).toHaveBeenCalledWith(
       expect.objectContaining({ code: "MISSING_SESSION_DATA" })
     );
   });
@@ -58,11 +60,11 @@ describe("Session Check Middleware", () => {
 
     await sessionCheckMiddleware(req, res, next);
 
-    expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith(
+    assert(next).toHaveBeenCalledTimes(1);
+    assert(next).toHaveBeenCalledWith(
       new Error("Request is missing session data")
     );
-    expect(next).toHaveBeenCalledWith(
+    assert(next).toHaveBeenCalledWith(
       expect.objectContaining({ code: "MISSING_SESSION_DATA", status: 401 })
     );
   });

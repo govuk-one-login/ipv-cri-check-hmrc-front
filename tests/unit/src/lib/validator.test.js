@@ -1,8 +1,9 @@
+import { describe, test } from "node:test";
+import assert from "node:assert";
 const {
   isValidNino,
   invalidCharacters,
 } = require("../../../../src/lib/validator");
-const { expect } = require("chai");
 
 const good_edge_case_ninos = [
   "CA283902A",
@@ -87,7 +88,7 @@ describe("should fail all the bad ninos", () => {
     (ninoArg) => {
       const invalidCharResult = invalidCharacters(ninoArg);
 
-      expect(invalidCharResult).to.be.false;
+      assert.equal(invalidCharResult, false);
     }
   );
   test.each(bad_unused_prefixes_ninos)(
@@ -95,7 +96,7 @@ describe("should fail all the bad ninos", () => {
     (ninoArg) => {
       const invalidCharResult = invalidCharacters(ninoArg);
 
-      expect(invalidCharResult).to.be.false;
+      assert.equal(invalidCharResult, false);
     }
   );
   test.each(bad_suffixes_ninos)(
@@ -103,7 +104,7 @@ describe("should fail all the bad ninos", () => {
     (ninoArg) => {
       const invalidCharResult = invalidCharacters(ninoArg);
 
-      expect(invalidCharResult).to.be.false;
+      assert.equal(invalidCharResult, false);
     }
   );
   test.each(bad_length_ninos)(
@@ -111,7 +112,7 @@ describe("should fail all the bad ninos", () => {
     (ninoArg) => {
       const result = isValidNino(ninoArg);
 
-      expect(result).to.be.false;
+      assert.equal(result, false);
     }
   );
 });
@@ -122,7 +123,7 @@ describe("should return all the good ninos", () => {
     (ninoArg) => {
       const result = isValidNino(ninoArg);
 
-      expect(result).to.be.true;
+      assert.equal(result, true);
     }
   );
   test.each(good_edge_case_ninos)(
@@ -130,7 +131,7 @@ describe("should return all the good ninos", () => {
     (ninoArg) => {
       const result = invalidCharacters(ninoArg);
 
-      expect(result).to.be.true;
+      assert.equal(result, true);
     }
   );
 });

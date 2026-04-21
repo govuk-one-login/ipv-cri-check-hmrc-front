@@ -13,9 +13,9 @@ global.createDefaultReqResNext = () => {
       values: {},
     },
     axios: {
-      get: jest.fn(),
-      post: jest.fn(),
-      put: jest.fn(),
+      get: t.mock.fn(),
+      post: t.mock.fn(),
+      put: t.mock.fn(),
     },
     session: {
       "hmpo-wizard-previous": {},
@@ -38,7 +38,7 @@ global.createDefaultReqResNext = () => {
   });
 
   const res = mockResponse({});
-  const next = jest.fn();
+  const next = t.mock.fn();
   return {
     req,
     res,

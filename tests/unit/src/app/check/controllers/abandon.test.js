@@ -1,3 +1,6 @@
+import { describe, beforeEach, it } from "node:test";
+import assert from "node:assert";
+
 const BaseController = require("hmpo-form-wizard").Controller;
 const Controller = require("../../../../../../src/app/check/controllers/abandon");
 
@@ -16,53 +19,61 @@ describe("abandon", () => {
 
   it("should be an instance of BaseController", () => {
     controller = new Controller({ route: "/test" });
-
-    expect(controller).toBeInstanceOf(BaseController);
+    assert.ok(controller instanceof BaseController);
   });
 
   describe("#saveValues", () => {
     beforeEach(() => {
       req.session.tokenId = "session-id";
-      req.axios.post = jest.fn();
+      req.axios.post = t.mock.fn();
       req.form.values.nationalInsuranceNumber = "AA12";
     });
 
     it("should call abandon endpoint", async () => {
       await controller.saveValues(req, res, next);
 
-      expect(req.axios.post).toHaveBeenCalledWith(
-        ABANDON,
-        {},
-        {
-          headers: {
-            "session-id": req.session.tokenId,
-            "Content-Type": "application/json",
-            "txma-audit-encoded": "dummy-txma-header",
-          },
-        }
-      );
+      assert.equal(req.axios.post, ABANDON, {});
+      assert.equal(req.axios.post, {
+        headers: {
+          "session-id": req.session.tokenId,
+          "Content-Type": "application/json",
+          "txma-audit-encoded": "dummy-txma-header",
+        },
+      });
+
+      // assert(req.axios.post).toHaveBeenCalledWith(
+      //   ABANDON,
+      //   {},
+      //   {
+      //     headers: {
+      //       "session-id": req.session.tokenId,
+      //       "Content-Type": "application/json",
+      //       "txma-audit-encoded": "dummy-txma-header",
+      //     },
+      //   }
+      // );
     });
 
     describe("on API success", () => {
       it("should call next", async () => {
-        req.axios.post = jest.fn().mockResolvedValue({});
+        req.axios.post = t.mock.fn().mockResolvedValue({});
 
         await controller.saveValues(req, res, next);
 
-        expect(next).toHaveBeenCalledTimes(1);
-        expect(next).toHaveBeenCalledWith();
+        assert(next).toHaveBeenCalledTimes(1);
+        assert(next).toHaveBeenCalledWith();
       });
     });
 
     describe("on API failure", () => {
       it("should call next with error", async () => {
         const error = new Error("Async error message");
-        req.axios.post = jest.fn().mockRejectedValue(error);
+        req.axios.post = t.mock.fn().mockRejectedValue(error);
 
         await controller.saveValues(req, res, next);
 
-        expect(next).toHaveBeenCalledTimes(1);
-        expect(next).toHaveBeenCalledWith(error);
+        assert(next).toHaveBeenCalledTimes(1);
+        assert(next).toHaveBeenCalledWith(error);
       });
     });
   });
