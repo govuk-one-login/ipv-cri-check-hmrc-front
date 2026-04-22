@@ -97,7 +97,7 @@ This is configured in the frontend application using the `API_BASE_URL` environm
 
 A standalone mock of the [api](https://github.com/alphagov/di-ipv-cri-check-hmrc-api) is provided using a combination of the API's OpenAPI config and hand-crafted Imposter scenarios.
 
-More details on how to run this are in the [Imposter folder](./tests/imposter/).
+More details on how to run this are in the [Imposter folder](./test/imposter/).
 
 When connecting to a mock API both the `client_id` and `request` parameters are determined by the data in the Imposter configuration files. The `client_id` is used for determining what data to return to the frontend, and the request parameter is ignored.
 
@@ -127,9 +127,9 @@ They use Jest as the test runner, which is configured using [jest.config.js](./j
 
 #### Browser tests
 
-Browser tests are run from the [tests/browser](./tests/browser/) folder, with appropriate quick start documentation located there.subfolder of this project, with more details available there.
+Browser tests are run from the [test/browser](./test/browser/) folder, with appropriate quick start documentation located there.subfolder of this project, with more details available there.
 
-Post merge tests can be run locally using the command `npm run test:browser -- --tags @post-merge` from the [tests/browser](./tests/browser/) folder.
+Post merge tests can be run locally using the command `npm run test:browser -- --tags @post-merge` from the [test/browser](./test/browser/) folder.
 
 #### Running browser tests on different browser types
 
@@ -208,7 +208,7 @@ Replace `xxxxx` with your actual private API ID.
 API_BASE_URL=https://75dre0xy11.execute-api.eu-west-2.amazonaws.com/localdev
 ```
 
-2. Update the [config file](tests/browser/di-ipv-config.yaml) with your deployed stack's public API ID:
+2. Update the [config file](test/browser/di-ipv-config.yaml) with your deployed stack's public API ID:
 
 ```yaml
 credentialIssuerConfigs:

@@ -28,7 +28,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: "tests/unit/**/*",
+      files: "test/unit/**/*",
       plugins: ["jest"],
       extends: ["plugin:jest/style", "plugin:jest/recommended"],
       globals: {
@@ -38,7 +38,7 @@ module.exports = {
       },
     },
     {
-      files: "tests/**/*",
+      files: "test/**/*",
       rules: {
         "no-unused-vars": [
           "error",
