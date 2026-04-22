@@ -9,11 +9,11 @@ COPY package.json package-lock.json .npmrc ./
 
 RUN mkdir -p test/browser
 
-COPY tests/browser/package.json ./test/browser
+COPY test/browser/package.json ./test/browser
 
 RUN npm ci --workspace test/browser
 
-WORKDIR /app/tests/browser
+WORKDIR /app/test/browser
 
 COPY test/browser ./
 

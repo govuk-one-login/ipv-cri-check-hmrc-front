@@ -6,7 +6,7 @@ COPY package.json package-lock.json .npmrc ./
 
 RUN mkdir -p test/browser
 
-COPY test/browser/package.json ./tests/browser
+COPY test/browser/package.json ./test/browser
 
 RUN npm ci --workspace test/browser
 
