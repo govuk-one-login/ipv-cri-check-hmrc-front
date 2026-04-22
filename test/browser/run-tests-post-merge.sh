@@ -12,6 +12,6 @@ export USE_LOCAL_API=false
 
 # This script must be copied to the root of the image filesystem in the post-merge dockerfile.
 # Therefore, ensure that we cd to the browser tests directory before attempting to run them.
-cd /app/tests/browser || exit 1
+cd /app/test/browser || exit 1
 
 npm run test:browser -- --tags @post-merge

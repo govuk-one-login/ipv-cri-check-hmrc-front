@@ -30,7 +30,7 @@ services:
   cucumber:
     build:
       context: ../..
-      dockerfile: tests/browser/pre-merge.Dockerfile
+      dockerfile: test/browser/pre-merge.Dockerfile
     environment:
       USE_LOCAL_API: true
       GITHUB_ACTIONS: true

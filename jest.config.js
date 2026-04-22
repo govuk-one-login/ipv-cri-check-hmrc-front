@@ -2,8 +2,8 @@ module.exports = {
   clearMocks: true,
   modulePaths: ["<rootDir>/src"],
   collectCoverageFrom: ["<rootDir>/src/**/*"],
-  testMatch: ["<rootDir>/tests/unit/**/*.test.js"],
-  setupFilesAfterEnv: ["<rootDir>/tests/unit/lib/helpers"],
+  testMatch: ["<rootDir>/test/unit/**/*.test.js"],
+  setupFilesAfterEnv: ["<rootDir>/test/unit/lib/helpers"],
   coveragePathIgnorePatterns: [
     "src/assets/.*",
     "src/app/.*/fields.js",
