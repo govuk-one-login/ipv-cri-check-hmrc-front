@@ -9,7 +9,7 @@ concurrency:
 defaults:
   run:
     shell: bash
-    working-directory: tests/docker
+    working-directory: test/docker
 
 permissions: {}
 

@@ -3,7 +3,7 @@
   "description": "Frontend for the Check HMRC Credential Issuer",
   "license": "MIT",
   "workspaces": [
-    "tests/browser"
+    "test/browser"
   ],
   "scripts": {
     "start": "node src/app.js",

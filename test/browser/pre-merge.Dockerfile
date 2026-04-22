@@ -4,14 +4,14 @@ WORKDIR /app
 
 COPY package.json package-lock.json .npmrc ./
 
-RUN mkdir -p tests/browser
+RUN mkdir -p test/browser
 
-COPY tests/browser/package.json ./tests/browser
+COPY test/browser/package.json ./tests/browser
 
-RUN npm ci --workspace tests/browser
+RUN npm ci --workspace test/browser
 
-WORKDIR /app/tests/browser
+WORKDIR /app/test/browser
 
-COPY tests/browser ./
+COPY test/browser ./
 
 CMD [ "./run-tests-pre-merge.sh" ]

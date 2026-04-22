@@ -7,15 +7,15 @@ WORKDIR /app
 
 COPY package.json package-lock.json .npmrc ./
 
-RUN mkdir -p tests/browser
+RUN mkdir -p test/browser
 
-COPY tests/browser/package.json ./tests/browser
+COPY tests/browser/package.json ./test/browser
 
-RUN npm ci --workspace tests/browser
+RUN npm ci --workspace test/browser
 
 WORKDIR /app/tests/browser
 
-COPY tests/browser ./
+COPY test/browser ./
 
 # sam-deploy-pipeline expects to be able to execute a file called run-tests.sh at the root of the filesystem
 # https://github.com/govuk-one-login/devplatform-deploy/blob/main/sam-deploy-pipeline/template.yaml
