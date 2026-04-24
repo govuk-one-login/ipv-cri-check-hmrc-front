@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 module.exports = {
+  PACKAGE_NAME: "di-ipv-cri-check-hmrc-front",
   API: {
     BASE_URL: process.env.API_BASE_URL || "http://localhost:8080",
     PATHS: {
