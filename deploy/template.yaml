@@ -89,7 +89,7 @@ Mappings:
       logLevel: "info"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
-      minECSCount: 6
+      minECSCount: 3
       maxECSCount: 60
       deviceIntelligenceEnabled: true
       may2025RebrandEnabled: true
@@ -875,7 +875,7 @@ Resources:
         MetricSpecifications:
           - PredefinedMetricPairSpecification:
               PredefinedMetricType: ECSServiceCPUUtilization
-            TargetValue: 60
+            TargetValue: 30
         Mode: ForecastOnly
         SchedulingBufferTime: 600
 
@@ -892,10 +892,10 @@ Resources:
         AdjustmentType: PercentChangeInCapacity
         Cooldown: 300
         StepAdjustments:
-          - MetricIntervalUpperBound: -20
-            MetricIntervalLowerBound: -40
+          - MetricIntervalUpperBound: -10
+            MetricIntervalLowerBound: -20
             ScalingAdjustment: -10
-          - MetricIntervalUpperBound: -40
+          - MetricIntervalUpperBound: -20
             ScalingAdjustment: -50
 
   StepScaleOutPolicy:
@@ -910,17 +910,14 @@ Resources:
       StepScalingPolicyConfiguration:
         AdjustmentType: PercentChangeInCapacity
         Cooldown: 60
-        MinAdjustmentMagnitude: 5
-        StepAdjustments:
-          - MetricIntervalUpperBound: 20
+        MinAdjustmentMagnitude: 3
+        StepAdjustments: #these bounds are tuned to 2 CPU instances because node will max one CPU
+          - MetricIntervalUpperBound: 10
             ScalingAdjustment: 100
-          - MetricIntervalLowerBound: 20
-            MetricIntervalUpperBound: 30
+          - MetricIntervalLowerBound: 10
+            MetricIntervalUpperBound: 15
             ScalingAdjustment: 200
-          - MetricIntervalLowerBound: 30
-            MetricIntervalUpperBound: 35
-            ScalingAdjustment: 300
-          - MetricIntervalLowerBound: 35
+          - MetricIntervalLowerBound: 15
             ScalingAdjustment: 500
 
   StepScaleOutAlarm:
@@ -930,7 +927,7 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !Ref StepScaleOutPolicy
-      AlarmDescription: !Sub "FrontClusterOver60PercentCPU"
+      AlarmDescription: "FrontClusterOver30PercentCPU"
       ComparisonOperator: "GreaterThanThreshold"
       DatapointsToAlarm: "2"
       Dimensions:
@@ -944,7 +941,7 @@ Resources:
       Namespace: "AWS/ECS"
       Statistic: "Average"
       Period: "60"
-      Threshold: "60"
+      Threshold: "30"
 
   StepScaleInAlarm:
     DependsOn: ECSAutoScalingTarget
@@ -953,7 +950,7 @@ Resources:
       ActionsEnabled: true
       AlarmActions:
         - !Ref StepScaleInPolicy
-      AlarmDescription: !Sub "FrontClusterUnder60PercentCPU"
+      AlarmDescription: "FrontClusterUnder30PercentCPU"
       ComparisonOperator: "LessThanThreshold"
       DatapointsToAlarm: "5"
       Dimensions:
@@ -967,7 +964,7 @@ Resources:
       Namespace: "AWS/ECS"
       Statistic: "Average"
       Period: "60"
-      Threshold: "60"
+      Threshold: "30"
 
   SessionsTable:
     Type: AWS::DynamoDB::Table
