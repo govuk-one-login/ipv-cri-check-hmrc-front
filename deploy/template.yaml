@@ -482,8 +482,7 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Essential: true
-          Image:
-            !If
+          Image: !If
             - UseContainerImageNameOverride
             - !Ref ContainerImageName
             - CONTAINER-IMAGE-PLACEHOLDER
