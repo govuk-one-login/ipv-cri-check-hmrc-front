@@ -50,6 +50,7 @@ Parameters:
     Default: "check-hmrc-cri-api-PrivateApiGatewayId"
 
   ContainerImageName:
+    Description: "A custom Image name for the ECS TaskDefinition - used for localdev"
     Type: String
     Default: ""
 
