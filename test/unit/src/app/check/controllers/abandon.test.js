@@ -15,11 +15,10 @@ describe("abandon", () => {
 
   beforeEach(() => {
     controller = new Controller({ route: "/test" });
-    const setup = createDefaultReqResNext();
-
-    global.req = setup.req;
-    global.res = setup.res;
-    global.next = setup.next;
+    const { req, res, next } = createDefaultReqResNext();
+    global.req = req;
+    global.res = res;
+    global.next = next;
   });
 
   it("should be an instance of BaseController", () => {

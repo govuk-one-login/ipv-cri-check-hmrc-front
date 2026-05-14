@@ -26,7 +26,6 @@ const mockResponse = (overrides = {}) => {
     ...overrides,
   };
 };
-/* global createDefaultReqResNext */
 export const createDefaultReqResNext = () => {
   const req = mockRequest({
     form: {

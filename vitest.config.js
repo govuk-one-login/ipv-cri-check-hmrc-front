@@ -1,23 +1,19 @@
 import { defineConfig } from "vitest/config";
 export default defineConfig({
-  tests: {
+  test: {
     globals: true,
-    environment: "",
-    setupFiles: ["<rootDir>/tests/unit/lib/helpers"],
-    include: ["<rootDir>/tests/unit/**/*.test.js"],
+    include: ["test/unit/**/*.test.js"],
     coverage: {
       provider: "v8",
       reporters: ["text", "lcov"],
       exclude: [
-        "src/assets/.*",
-        "src/app/.*/fields.js",
-        "src/app/.*/steps.js",
-        "src/app/.*/index.js",
+        "src/assets/**",
+        "src/app/**/fields.js",
+        "src/app/**/steps.js",
+        "src/app/**/index.js",
         "src/app.js",
+        "test/**",
       ],
-    },
-    snapshot: {
-      dir: "src/snapshots",
     },
   },
 });

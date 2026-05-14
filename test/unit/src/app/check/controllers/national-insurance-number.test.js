@@ -15,11 +15,10 @@ describe("national insurance number", () => {
 
   beforeEach(() => {
     controller = new Controller({ route: "/test" });
-    const setup = createDefaultReqResNext();
-
-    global.req = setup.req;
-    global.res = setup.res;
-    global.next = setup.next;
+    const { req, res, next } = createDefaultReqResNext();
+    global.req = req;
+    global.res = res;
+    global.next = next;
   });
 
   it("should be an instance of BaseController", () => {
@@ -59,12 +58,6 @@ describe("national insurance number", () => {
         expect(next).toHaveBeenCalledTimes(1);
         expect(next).toHaveBeenCalledWith();
       });
-    });
-
-    it("matches snapshots with the correct parameters", async () => {
-      await controller.saveValues(req, res, next);
-      req.axios.post = vi.fn();
-      expect({ status: 201 }).toMatchSnapshot();
     });
 
     describe("with 2xx status", () => {

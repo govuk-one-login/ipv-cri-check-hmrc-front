@@ -6,11 +6,10 @@ const {
 } = require("../../../../../../src/app/check/middleware/session-check-middleware");
 
 beforeEach(() => {
-  const setup = createDefaultReqResNext();
-
-  global.req = setup.req;
-  global.res = setup.res;
-  global.next = setup.next;
+  const { req, res, next } = createDefaultReqResNext();
+  global.req = req;
+  global.res = res;
+  global.next = next;
 });
 describe("Session Check Middleware", () => {
   it("should call next with no error", async () => {
