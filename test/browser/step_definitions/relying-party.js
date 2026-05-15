@@ -1,7 +1,7 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 
 const { RelyingPartyPage } = require("../pages");
-const { expect } = require("chai");
+const assert = require("node:assert");
 
 Given(
   "that {string} user is going through the system",
@@ -15,8 +15,8 @@ Given(
 
 Given("they have been redirected as a success", function () {
   const rpPage = new RelyingPartyPage(this.page);
-  expect(rpPage.isRelyingPartyServer()).to.be.true;
-  expect(rpPage.hasSuccessQueryParams()).to.be.true;
+  assert.strictEqual(rpPage.isRelyingPartyServer(), true);
+  assert.strictEqual(rpPage.hasSuccessQueryParams(), true);
 });
 
 Then(
@@ -24,26 +24,22 @@ Then(
   function (err) {
     const rpPage = new RelyingPartyPage(this.page);
 
-    expect(rpPage.isRelyingPartyServer()).to.be.true;
-
-    expect(rpPage.hasErrorQueryParams(err)).to.be.true;
+    assert.strictEqual(rpPage.isRelyingPartyServer(), true);
+    assert.strictEqual(rpPage.hasErrorQueryParams(err), true);
   }
 );
 
 Then(/^they should be redirected as a success$/, function () {
   const rpPage = new RelyingPartyPage(this.page);
-
-  expect(rpPage.isRelyingPartyServer()).to.be.true;
-
-  expect(rpPage.hasSuccessQueryParams()).to.be.true;
+  assert.strictEqual(rpPage.isRelyingPartyServer(), true);
+  assert.strictEqual(rpPage.hasSuccessQueryParams(), true);
 });
 
 Then(/^the error should be (.*)$/, function (error_code) {
   const rpPage = new RelyingPartyPage(this.page);
 
-  expect(rpPage.isRelyingPartyServer()).to.be.true;
-
-  expect(rpPage.isErrorCode(error_code)).to.be.true;
+  assert.strictEqual(rpPage.isRelyingPartyServer(), true);
+  assert.strictEqual(rpPage.isErrorCode(error_code), true);
 });
 
 When(/^they return to a previous page$/, async function () {

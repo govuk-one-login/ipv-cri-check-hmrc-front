@@ -1,8 +1,19 @@
+import { describe, expect, it, beforeEach } from "vitest";
+import { createDefaultReqResNext } from "../../../../lib/helpers";
+
 const {
   sessionCheckMiddleware,
 } = require("../../../../../../src/app/check/middleware/session-check-middleware");
 
 describe("Session Check Middleware", () => {
+  let req;
+  let res;
+  let next;
+
+  beforeEach(() => {
+    ({ req, res, next } = createDefaultReqResNext());
+  });
+
   it("should call next with no error", async () => {
     req.session.tokenId = "MockTokenID";
     req.session.authParams = { mock: "mock" };
@@ -18,10 +29,11 @@ describe("Session Check Middleware", () => {
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(
-      new Error("Request is missing session data")
-    );
-    expect(next).toHaveBeenCalledWith(
-      expect.objectContaining({ code: "MISSING_SESSION_DATA", status: 401 })
+      expect.objectContaining({
+        message: "Request is missing session data",
+        code: "MISSING_SESSION_DATA",
+        status: 401,
+      })
     );
   });
 
@@ -32,10 +44,11 @@ describe("Session Check Middleware", () => {
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(
-      new Error("Request is missing session data")
-    );
-    expect(next).toHaveBeenCalledWith(
-      expect.objectContaining({ code: "MISSING_SESSION_DATA", status: 401 })
+      expect.objectContaining({
+        message: "Request is missing session data",
+        code: "MISSING_SESSION_DATA",
+        status: 401,
+      })
     );
   });
 
@@ -46,10 +59,10 @@ describe("Session Check Middleware", () => {
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(
-      new Error("Request is missing session data")
-    );
-    expect(next).toHaveBeenCalledWith(
-      expect.objectContaining({ code: "MISSING_SESSION_DATA" })
+      expect.objectContaining({
+        message: "Request is missing session data",
+        code: "MISSING_SESSION_DATA",
+      })
     );
   });
 
@@ -60,10 +73,11 @@ describe("Session Check Middleware", () => {
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledWith(
-      new Error("Request is missing session data")
-    );
-    expect(next).toHaveBeenCalledWith(
-      expect.objectContaining({ code: "MISSING_SESSION_DATA", status: 401 })
+      expect.objectContaining({
+        message: "Request is missing session data",
+        code: "MISSING_SESSION_DATA",
+        status: 401,
+      })
     );
   });
 });

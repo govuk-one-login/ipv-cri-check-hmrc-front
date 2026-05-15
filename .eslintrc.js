@@ -4,10 +4,12 @@ module.exports = {
     node: true,
     es6: true,
     es2020: true,
-    jest: true,
+  },
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: "module",
   },
   globals: {
-    sinon: true,
     expect: true,
     setupDefaultMocks: "readonly",
   },
@@ -26,25 +28,4 @@ module.exports = {
       { blankLine: "any", prev: "*", next: "*" },
     ],
   },
-  overrides: [
-    {
-      files: "test/unit/**/*",
-      plugins: ["jest"],
-      extends: ["plugin:jest/style", "plugin:jest/recommended"],
-      globals: {
-        req: true,
-        res: true,
-        next: true,
-      },
-    },
-    {
-      files: "test/**/*",
-      rules: {
-        "no-unused-vars": [
-          "error",
-          { varsIgnorePattern: "^_", argsIgnorePattern: "^_" },
-        ],
-      },
-    },
-  ],
 };

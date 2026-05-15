@@ -1,5 +1,5 @@
 const { When, Then, Given } = require("@cucumber/cucumber");
-const { expect } = require("chai");
+const assert = require("node:assert");
 const { ErrorPage } = require("../pages");
 
 Given("they have started the journey", function () {});
@@ -15,8 +15,7 @@ Then("they should see the unrecoverable error page", async function () {
   this.errorPage = new ErrorPage(this.page);
 
   const errorTitle = await this.errorPage.getErrorTitle();
-
-  expect(errorTitle).to.equal(this.errorPage.getSomethingWentWrongMessage());
+  assert.strictEqual(errorTitle, this.errorPage.getSomethingWentWrongMessage());
 });
 
 When("they go to an unknown page", async function () {
@@ -27,5 +26,5 @@ When("they go to an unknown page", async function () {
 Then("they should see the Page not found error page", async function () {
   const errorPage = new ErrorPage(this.page);
   const errorPageHeader = await errorPage.getPageHeader();
-  expect(errorPageHeader).to.contain("Page not found");
+  assert.ok(errorPageHeader.includes("Page not found"));
 });

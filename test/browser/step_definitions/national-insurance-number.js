@@ -1,11 +1,10 @@
 const { Then, When } = require("@cucumber/cucumber");
 const { NinoPage } = require("../pages");
-const { expect } = require("chai");
+const assert = require("node:assert");
 
 Then(/^they should see the national insurance number page$/, async function () {
   const ninoPage = new NinoPage(this.page);
-
-  expect(ninoPage.isCurrentPage()).to.be.true;
+  assert.strictEqual(ninoPage.isCurrentPage(), true);
 });
 
 Then("they continue from national insurance number", async function () {
@@ -17,18 +16,23 @@ Then(
   "they should see the {string} validation error page",
   async function (errorType) {
     const ninoPage = new NinoPage(this.page);
-    expect(ninoPage.isCurrentPage()).to.be.true;
-    expect(ninoPage.hasErrorSummary).to.not.be.false;
+
+    assert.strictEqual(ninoPage.isCurrentPage(), true);
+    assert.ok(ninoPage.hasErrorSummary());
 
     const errorMessage = await ninoPage.hasErrorSummary().innerText();
 
     if (errorType === "nino") {
-      expect(errorMessage).to.include(
-        "Enter your National Insurance number in the correct format"
+      assert.ok(
+        errorMessage.includes(
+          "Enter your National Insurance number in the correct format"
+        )
       );
     } else if (errorType === "invalidLetter") {
-      expect(errorMessage).to.include(
-        "The National Insurance number you entered is not correct, check it and try again"
+      assert.ok(
+        errorMessage.includes(
+          "The National Insurance number you entered is not correct, check it and try again"
+        )
       );
     } else {
       throw new Error(`Unexpected error type: ${errorType}`);

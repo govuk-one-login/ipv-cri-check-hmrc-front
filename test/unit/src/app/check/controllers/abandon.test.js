@@ -1,3 +1,6 @@
+import { vi, describe, it, beforeEach, expect } from "vitest";
+import { createDefaultReqResNext } from "../../../../lib/helpers";
+
 const BaseController = require("hmpo-form-wizard").Controller;
 const Controller = require("../../../../../../src/app/check/controllers/abandon");
 
@@ -9,9 +12,13 @@ const {
 
 describe("abandon", () => {
   let controller;
+  let req;
+  let res;
+  let next;
 
   beforeEach(() => {
     controller = new Controller({ route: "/test" });
+    ({ req, res, next } = createDefaultReqResNext());
   });
 
   it("should be an instance of BaseController", () => {
@@ -23,7 +30,7 @@ describe("abandon", () => {
   describe("#saveValues", () => {
     beforeEach(() => {
       req.session.tokenId = "session-id";
-      req.axios.post = jest.fn();
+      req.axios.post = vi.fn();
       req.form.values.nationalInsuranceNumber = "AA12";
     });
 
@@ -45,7 +52,7 @@ describe("abandon", () => {
 
     describe("on API success", () => {
       it("should call next", async () => {
-        req.axios.post = jest.fn().mockResolvedValue({});
+        req.axios.post = vi.fn().mockResolvedValue({});
 
         await controller.saveValues(req, res, next);
 
@@ -57,7 +64,7 @@ describe("abandon", () => {
     describe("on API failure", () => {
       it("should call next with error", async () => {
         const error = new Error("Async error message");
-        req.axios.post = jest.fn().mockRejectedValue(error);
+        req.axios.post = vi.fn().mockRejectedValue(error);
 
         await controller.saveValues(req, res, next);
 
