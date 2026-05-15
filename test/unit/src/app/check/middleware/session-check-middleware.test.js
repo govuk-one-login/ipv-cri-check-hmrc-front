@@ -5,13 +5,15 @@ const {
   sessionCheckMiddleware,
 } = require("../../../../../../src/app/check/middleware/session-check-middleware");
 
-beforeEach(() => {
-  const { req, res, next } = createDefaultReqResNext();
-  global.req = req;
-  global.res = res;
-  global.next = next;
-});
 describe("Session Check Middleware", () => {
+  let req;
+  let res;
+  let next;
+
+  beforeEach(() => {
+    ({ req, res, next } = createDefaultReqResNext());
+  });
+
   it("should call next with no error", async () => {
     req.session.tokenId = "MockTokenID";
     req.session.authParams = { mock: "mock" };

@@ -12,10 +12,6 @@ module.exports = {
   globals: {
     expect: true,
     setupDefaultMocks: "readonly",
-    req: "writable",
-    res: "writable",
-    next: "writable",
-    createDefaultReqResNext: "readonly",
   },
   extends: ["prettier", "eslint:recommended", "plugin:prettier/recommended"],
   ignorePatterns: [
