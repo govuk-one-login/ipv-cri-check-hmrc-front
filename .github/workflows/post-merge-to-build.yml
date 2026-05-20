@@ -18,7 +18,7 @@ jobs:
           fetch-depth: "0"
 
       - name: Login to GDS Dev Dynatrace Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: khw46367.live.dynatrace.com
           username: khw46367
