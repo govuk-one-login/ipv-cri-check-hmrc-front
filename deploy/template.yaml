@@ -63,7 +63,7 @@ Parameters:
     Default: ""
 
 Conditions:
-  IsPreMergeStack: !Equals [!Ref PreMerge, "true"]
+  IsNotPreMergeStack: !Equals [!Ref PreMerge, "false"]
 
   UseContainerImageNameOverride:
     !Not [!Equals [!Ref ContainerImageNameOverride, ""]]
@@ -868,7 +868,7 @@ Resources:
 
   CloudFrontWAFv2ACLAssociation:
     Type: AWS::WAFv2::WebACLAssociation
-    Condition: IsPreMergeStack
+    Condition: IsNotPreMergeStack
     Properties:
       ResourceArn: !Ref LoadBalancer
       WebACLArn: !ImportValue cfront-origin-distrib-CloakingOriginWebACLArn
