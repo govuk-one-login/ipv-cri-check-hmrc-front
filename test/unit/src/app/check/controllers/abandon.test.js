@@ -30,29 +30,26 @@ describe("abandon", () => {
   describe("#saveValues", () => {
     beforeEach(() => {
       req.session.tokenId = "session-id";
-      req.axios.post = vi.fn();
+      vi.clearAllMocks();
       req.form.values.nationalInsuranceNumber = "AA12";
     });
 
     it("should call abandon endpoint", async () => {
       await controller.saveValues(req, res, next);
 
-      expect(req.axios.post).toHaveBeenCalledWith(
-        ABANDON,
-        {},
-        {
-          headers: {
-            "session-id": req.session.tokenId,
-            "Content-Type": "application/json",
-            "txma-audit-encoded": "dummy-txma-header",
-          },
-        }
-      );
+      expect(req.customFetch).toHaveBeenCalledWith(ABANDON, {
+        method: "POST",
+        jsonBody: {},
+        headers: {
+          "session-id": req.session.tokenId,
+          "txma-audit-encoded": "dummy-txma-header",
+        },
+      });
     });
 
     describe("on API success", () => {
       it("should call next", async () => {
-        req.axios.post = vi.fn().mockResolvedValue({});
+        req.customFetch.mockResolvedValue({});
 
         await controller.saveValues(req, res, next);
 
@@ -64,7 +61,7 @@ describe("abandon", () => {
     describe("on API failure", () => {
       it("should call next with error", async () => {
         const error = new Error("Async error message");
-        req.axios.post = vi.fn().mockRejectedValue(error);
+        req.customFetch.mockRejectedValue(error);
 
         await controller.saveValues(req, res, next);
 
