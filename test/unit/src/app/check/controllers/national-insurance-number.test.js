@@ -30,28 +30,25 @@ describe("national insurance number", () => {
   describe("#saveValues", () => {
     beforeEach(() => {
       req.session.tokenId = "session-id";
-      req.axios.post = vi.fn();
+      vi.clearAllMocks();
       req.form.values.nationalInsuranceNumber = "AA12";
     });
     it("should call check endpoint", async () => {
       await controller.saveValues(req, res, next);
 
-      expect(req.axios.post).toHaveBeenCalledWith(
-        CHECK,
-        { nino: "AA12" },
-        {
-          headers: {
-            "txma-audit-encoded": "dummy-txma-header",
-            "session-id": req.session.tokenId,
-          },
-          validateStatus: expect.any(Function),
-        }
-      );
+      expect(req.customFetch).toHaveBeenCalledWith(CHECK, {
+        method: "POST",
+        jsonBody: { nino: "AA12" },
+        headers: {
+          "txma-audit-encoded": "dummy-txma-header",
+          "session-id": req.session.tokenId,
+        },
+      });
     });
 
     describe("on API success", () => {
       it("should call next", async () => {
-        req.axios.post = vi.fn().mockResolvedValue({});
+        req.customFetch.mockResolvedValue({});
 
         await controller.saveValues(req, res, next);
 
@@ -62,7 +59,7 @@ describe("national insurance number", () => {
 
     describe("with 2xx status", () => {
       it('should set "showRetryErrorSummary" to false', async () => {
-        req.axios.post = vi.fn().mockResolvedValue({ status: 201 });
+        req.customFetch.mockResolvedValue({ status: 201 });
 
         await controller.saveValues(req, res, next);
 
@@ -73,9 +70,10 @@ describe("national insurance number", () => {
 
     describe("with 200 status and requestRetry", () => {
       it('should set "showRetryErrorSummary" to true', async () => {
-        req.axios.post = vi
-          .fn()
-          .mockResolvedValue({ status: 200, data: { requestRetry: true } });
+        req.customFetch.mockResolvedValue({
+          status: 200,
+          data: { requestRetry: true },
+        });
 
         await controller.saveValues(req, res, next);
 
@@ -83,9 +81,10 @@ describe("national insurance number", () => {
         expect(controller.hasRedirectToRetryShowing(req)).toBe(true);
       });
       it('should not set "showRetryErrorSummary" to true', async () => {
-        req.axios.post = vi
-          .fn()
-          .mockResolvedValue({ status: 200, data: { requestRetry: false } });
+        req.customFetch.mockResolvedValue({
+          status: 200,
+          data: { requestRetry: false },
+        });
 
         await controller.saveValues(req, res, next);
 
@@ -93,7 +92,7 @@ describe("national insurance number", () => {
         expect(controller.hasRedirectToRetryShowing(req)).toBe(false);
       });
       it('should not set "showRetryErrorSummary" to true when missing requestRetry', async () => {
-        req.axios.post = vi.fn().mockResolvedValue({ status: 200 });
+        req.customFetch.mockResolvedValue({ status: 200 });
 
         await controller.saveValues(req, res, next);
 
@@ -105,7 +104,7 @@ describe("national insurance number", () => {
     describe("on API failure", () => {
       it("should call next with error", async () => {
         const error = new Error("Async error message");
-        req.axios.post = vi.fn().mockRejectedValue(error);
+        req.customFetch.mockRejectedValue(error);
 
         await controller.saveValues(req, res, next);
 

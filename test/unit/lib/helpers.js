@@ -34,11 +34,7 @@ export const createDefaultReqResNext = () => {
       },
       values: {},
     },
-    axios: {
-      get: vi.fn(),
-      post: vi.fn(),
-      put: vi.fn(),
-    },
+    customFetch: vi.fn(),
     session: {
       "hmpo-wizard-previous": {},
     },
