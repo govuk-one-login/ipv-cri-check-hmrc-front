@@ -1,21 +1,19 @@
-const express = require("express");
-const steps = require("./steps");
-const fields = require("./fields");
+import express from "express";
+import wizard from "hmpo-form-wizard";
+import steps from "./steps.js";
+import fields from "./fields.js";
+import { sessionCheckMiddleware } from "./middleware/session-check-middleware.js";
 
 const router = express.Router();
-
-const {
-  sessionCheckMiddleware,
-} = require("./middleware/session-check-middleware");
 
 router.use(sessionCheckMiddleware);
 
 router.use(
-  require("hmpo-form-wizard")(steps, fields, {
+  wizard(steps, fields, {
     name: "check-hmrc",
     journeyName: "checkHmrcCRI",
     templatePath: "check",
   })
 );
 
-module.exports = router;
+export default router;

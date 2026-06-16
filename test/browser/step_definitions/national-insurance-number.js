@@ -1,6 +1,6 @@
-const { Then, When } = require("@cucumber/cucumber");
-const { NinoPage } = require("../pages");
-const assert = require("node:assert");
+import { Then, When } from "@cucumber/cucumber";
+import assert from "node:assert";
+import { NinoPage } from "../pages/index.js";
 
 Then(/^they should see the national insurance number page$/, async function () {
   const ninoPage = new NinoPage(this.page);

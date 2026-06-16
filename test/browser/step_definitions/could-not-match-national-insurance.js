@@ -1,9 +1,9 @@
-const { Then, When } = require("@cucumber/cucumber");
-const {
+import { Then, When } from "@cucumber/cucumber";
+import assert from "node:assert";
+import {
   CouldNotMatchNationalInsurancePage,
   RelyingPartyPage,
-} = require("../pages");
-const assert = require("node:assert");
+} from "../pages/index.js";
 
 When(
   "they click continue could not match national insurance number",

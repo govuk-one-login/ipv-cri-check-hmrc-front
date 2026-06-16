@@ -1,13 +1,12 @@
-const BaseController = require("hmpo-form-wizard").Controller;
+import wizard from "hmpo-form-wizard";
+import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough-headers";
+import { API } from "../../../lib/config.js";
+
+const BaseController = wizard.Controller;
 const {
-  createPersonalDataHeaders,
-} = require("@govuk-one-login/frontend-passthrough-headers");
-const {
-  API: {
-    BASE_URL,
-    PATHS: { CHECK },
-  },
-} = require("../../../lib/config");
+  BASE_URL,
+  PATHS: { CHECK },
+} = API;
 
 /* istanbul ignore next @preserve */
 const validateStatus = (status) => {
@@ -56,4 +55,4 @@ class EnterNationalInsuranceNumberController extends BaseController {
   }
 }
 
-module.exports = EnterNationalInsuranceNumberController;
+export default EnterNationalInsuranceNumberController;

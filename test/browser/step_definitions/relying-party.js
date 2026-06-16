@@ -1,7 +1,6 @@
-const { Given, When, Then } = require("@cucumber/cucumber");
-
-const { RelyingPartyPage } = require("../pages");
-const assert = require("node:assert");
+import { Given, When, Then } from "@cucumber/cucumber";
+import assert from "node:assert";
+import { RelyingPartyPage } from "../pages/index.js";
 
 Given(
   "that {string} user is going through the system",

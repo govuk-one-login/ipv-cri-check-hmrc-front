@@ -1,6 +1,6 @@
-const { isValidNino, invalidCharacters } = require("../../lib/validator");
+import { isValidNino, invalidCharacters } from "../../lib/validator.js";
 
-module.exports = {
+export default {
   nationalInsuranceNumber: {
     type: "text",
     label: {

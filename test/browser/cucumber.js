@@ -1,13 +1,7 @@
-require("dotenv").config();
+import "dotenv/config";
 
-module.exports = {
-  default: {
-    paths: ["./features/**/**.feature"],
-    require: [
-      "./support/**/*.js",
-      "./step_definitions/**/*.js",
-      "./pages/*.js",
-    ],
-    tags: "not @skip",
-  },
+export default {
+  paths: ["./features/**/**.feature"],
+  import: ["./support/**/*.js", "./step_definitions/**/*.js", "./pages/*.js"],
+  tags: "not @skip",
 };
