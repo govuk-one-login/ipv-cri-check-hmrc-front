@@ -79,7 +79,7 @@ jobs:
         uses: govuk-one-login/github-actions/sam/deploy-stack@e6b6ed890b35904e1be79f7f35ffec983fa4d9db
         with:
           template: deploy/template.yaml
-          sam-deployment-bucket: ${{ vars.DEPLOYMENT_ARTIFACTS_BUCKET }}
+          sam-deployment-bucket: ${{ secrets.DEV_ARTIFACT_BUCKET_NAME }}
           aws-role-arn: ${{ secrets.DEV_PRE_MERGE_GHA_ROLE }}
           stack-name-prefix: preview-check-hmrc-front
           cache-key: ${{ needs.build.outputs.cache-key }}
