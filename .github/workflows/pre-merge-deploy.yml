@@ -1,24 +1,48 @@
-name: Deploy pre-merge FE stack
+name: Pre-merge deploy
 
 on:
-  workflow_run:
-    workflows:
-      - Push pre-merge test Docker image
-    types:
-      - completed
+  - pull_request
 
 permissions:
   id-token: write
   contents: read
 
 concurrency:
-  group: deploy-pre-merge-${{ github.event.workflow_run.head_branch }}
+  group: pre-merge-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
+  push-image:
+    name: Push pre-merge image
+    runs-on: ubuntu-latest
+    environment: development
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    outputs:
+      image-tag: ${{ steps.tag.outputs.image-tag }}
+    steps:
+      - name: Derive image tag from branch name
+        id: tag
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        run: |
+          tag="$(printf '%s' "$BRANCH_NAME" | tr -c 'A-Za-z0-9_.-' '-')"
+          tag="${tag:0:128}"
+          echo "image-tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push pre-merge image to ECR
+        uses: govuk-one-login/github-actions/aws/ecr/build-docker-image@c8eefadf581d2087ce2af48b7060c1329cfa5251
+        with:
+          immutable-tags: false
+          aws-role-arn: ${{ secrets.DEV_PRE_MERGE_GHA_ROLE }}
+          repository: check-hmrc-front-pre-merge
+          dockerfile: Dockerfile
+          build-args: BASE=plain
+          image-version: ${{ github.sha }}
+          image-tags: ${{ steps.tag.outputs.image-tag }}
+
   build:
     name: SAM build
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: push-image
     runs-on: ubuntu-latest
     environment: development
     outputs:
@@ -27,8 +51,6 @@ jobs:
     steps:
       - name: Pull repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Build SAM application
         id: build
@@ -38,23 +60,19 @@ jobs:
 
   deploy:
     name: Deploy pre-merge stack
-    needs: build
+    needs: [push-image, build]
     runs-on: ubuntu-latest
     environment: development
     steps:
       - name: Pull repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Derive container image override from branch
         id: image
         env:
-          BRANCH_NAME: ${{ github.event.workflow_run.head_branch }}
+          IMAGE_TAG: ${{ needs.push-image.outputs.image-tag }}
         run: |
-          tag="$(printf '%s' "$BRANCH_NAME" | tr -c 'A-Za-z0-9_.-' '-')"
-          tag="${tag:0:128}"
-          echo "uri=562670266496.dkr.ecr.eu-west-2.amazonaws.com/check-hmrc-front-pre-merge:${tag}" >> "$GITHUB_OUTPUT"
+          echo "uri=562670266496.dkr.ecr.eu-west-2.amazonaws.com/check-hmrc-front-pre-merge:${IMAGE_TAG}" >> "$GITHUB_OUTPUT"
 
       - name: Deploy stack
         id: deploy
@@ -62,7 +80,7 @@ jobs:
         with:
           template: deploy/template.yaml
           sam-deployment-bucket: ${{ vars.DEPLOYMENT_ARTIFACTS_BUCKET }}
-          aws-role-arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
+          aws-role-arn: ${{ secrets.DEV_PRE_MERGE_GHA_ROLE }}
           stack-name-prefix: preview-check-hmrc-front
           cache-key: ${{ needs.build.outputs.cache-key }}
           cache-restore-keys: ${{ needs.build.outputs.cache-restore-keys }}
