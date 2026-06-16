@@ -1,6 +1,6 @@
-const { Then, When, Given } = require("@cucumber/cucumber");
-const { AbandonPage, RelyingPartyPage } = require("../pages");
-const assert = require("node:assert");
+import { Then, When, Given } from "@cucumber/cucumber";
+import assert from "node:assert";
+import { AbandonPage, RelyingPartyPage } from "../pages/index.js";
 
 Given("they choose to abandon", async function () {
   const abandonPage = new AbandonPage(this.page);

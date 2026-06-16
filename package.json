@@ -2,6 +2,7 @@
   "name": "di-ipv-cri-check-hmrc-front",
   "description": "Frontend for the Check HMRC Credential Issuer",
   "license": "MIT",
+  "type": "module",
   "workspaces": [
     "test/browser"
   ],

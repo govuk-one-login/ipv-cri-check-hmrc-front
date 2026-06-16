@@ -1,9 +1,6 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import { createDefaultReqResNext } from "../../../../lib/helpers";
-
-const {
-  sessionCheckMiddleware,
-} = require("../../../../../../src/app/check/middleware/session-check-middleware");
+import { createDefaultReqResNext } from "../../../../lib/helpers.js";
+import { sessionCheckMiddleware } from "../../../../../../src/app/check/middleware/session-check-middleware.js";
 
 describe("Session Check Middleware", () => {
   let req;

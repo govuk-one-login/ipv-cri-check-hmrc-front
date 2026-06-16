@@ -1,14 +1,13 @@
 import { vi, describe, it, beforeEach, expect } from "vitest";
-import { createDefaultReqResNext } from "../../../../lib/helpers";
+import wizard from "hmpo-form-wizard";
+import { createDefaultReqResNext } from "../../../../lib/helpers.js";
+import Controller from "../../../../../../src/app/check/controllers/abandon.js";
+import { API } from "../../../../../../src/lib/config.js";
 
-const BaseController = require("hmpo-form-wizard").Controller;
-const Controller = require("../../../../../../src/app/check/controllers/abandon");
-
+const BaseController = wizard.Controller;
 const {
-  API: {
-    PATHS: { ABANDON },
-  },
-} = require("../../../../../../src/lib/config");
+  PATHS: { ABANDON },
+} = API;
 
 describe("abandon", () => {
   let controller;

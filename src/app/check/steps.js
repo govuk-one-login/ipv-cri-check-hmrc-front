@@ -1,7 +1,7 @@
-const ninoController = require("./controllers/enter-national-insurance-number");
-const AbandonController = require("./controllers/abandon");
+import ninoController from "./controllers/enter-national-insurance-number.js";
+import AbandonController from "./controllers/abandon.js";
 
-module.exports = {
+export default {
   "/": {
     resetJourney: true,
     entryPoint: true,

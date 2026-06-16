@@ -1,11 +1,11 @@
-const isValidNino = (value) => {
+export const isValidNino = (value) => {
   const formattedValue = value.replaceAll(" ", "").toUpperCase();
 
   const formatRegex = /^[A-Z]{2}\d{6}[A-Z]$/i;
   return formatRegex.test(formattedValue);
 };
 
-const invalidCharacters = (value) => {
+export const invalidCharacters = (value) => {
   const formattedValue = value.replaceAll(" ", "").toUpperCase();
 
   const prefixRegex = /^(?:BG|GB|KN|NK|NT|TN|ZZ)/;
@@ -20,5 +20,3 @@ const invalidCharacters = (value) => {
     lastLetterRegex.test(formattedValue)
   );
 };
-
-module.exports = { isValidNino, invalidCharacters };

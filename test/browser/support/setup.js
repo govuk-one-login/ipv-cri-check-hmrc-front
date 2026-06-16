@@ -1,15 +1,13 @@
-require("dotenv").config();
-require("axios");
-
-const { chromium, firefox, webkit } = require("playwright");
-
-const {
+import "dotenv/config";
+import "axios";
+import { chromium, firefox, webkit } from "playwright";
+import {
   Before,
   BeforeAll,
   AfterAll,
   After,
   setDefaultTimeout,
-} = require("@cucumber/cucumber");
+} from "@cucumber/cucumber";
 
 // FIXME This is large due to cold starts
 setDefaultTimeout(30 * 1000);

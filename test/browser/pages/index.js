@@ -1,7 +1,5 @@
-module.exports = {
-  NinoPage: require("./nino.js"),
-  ErrorPage: require("./error.js"),
-  RelyingPartyPage: require("./relying-party.js"),
-  CouldNotMatchNationalInsurancePage: require("./could-not-match-national-insurance.js"),
-  AbandonPage: require("./abandon.js"),
-};
+export { default as NinoPage } from "./nino.js";
+export { default as ErrorPage } from "./error.js";
+export { default as RelyingPartyPage } from "./relying-party.js";
+export { default as CouldNotMatchNationalInsurancePage } from "./could-not-match-national-insurance.js";
+export { default as AbandonPage } from "./abandon.js";

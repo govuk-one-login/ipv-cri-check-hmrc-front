@@ -1,6 +1,6 @@
-const { When, Then, Given } = require("@cucumber/cucumber");
-const assert = require("node:assert");
-const { ErrorPage } = require("../pages");
+import { When, Then, Given } from "@cucumber/cucumber";
+import assert from "node:assert";
+import { ErrorPage } from "../pages/index.js";
 
 Given("they have started the journey", function () {});
 

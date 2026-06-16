@@ -1,8 +1,8 @@
-const {
+import { describe, expect, test } from "vitest";
+import {
   isValidNino,
   invalidCharacters,
-} = require("../../../../src/lib/validator");
-import { describe, expect, test } from "vitest";
+} from "../../../../src/lib/validator.js";
 
 const good_edge_case_ninos = [
   "CA283902A",

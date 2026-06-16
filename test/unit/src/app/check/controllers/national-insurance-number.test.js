@@ -1,14 +1,13 @@
 import { vi, it, beforeEach, expect, describe } from "vitest";
-import { createDefaultReqResNext } from "../../../../lib/helpers";
+import wizard from "hmpo-form-wizard";
+import { createDefaultReqResNext } from "../../../../lib/helpers.js";
+import Controller from "../../../../../../src/app/check/controllers/enter-national-insurance-number.js";
+import { API } from "../../../../../../src/lib/config.js";
 
-const BaseController = require("hmpo-form-wizard").Controller;
-const Controller = require("../../../../../../src/app/check/controllers/enter-national-insurance-number");
-
+const BaseController = wizard.Controller;
 const {
-  API: {
-    PATHS: { CHECK },
-  },
-} = require("../../../../../../src/lib/config");
+  PATHS: { CHECK },
+} = API;
 
 describe("national insurance number", () => {
   let controller;

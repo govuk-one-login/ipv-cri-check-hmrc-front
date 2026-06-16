@@ -1,13 +1,32 @@
-require("express");
-require("express-async-errors");
+import "express";
+import "express-async-errors";
 
-const path = require("path");
-const session = require("express-session");
-const { DynamoDB } = require("@aws-sdk/client-dynamodb");
-const DynamoDBStore = require("connect-dynamodb")(session);
-const frontendUi = require("@govuk-one-login/frontend-ui");
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import session from "express-session";
+import { DynamoDB } from "@aws-sdk/client-dynamodb";
+import connectDynamoDB from "connect-dynamodb";
+import * as frontendUi from "@govuk-one-login/frontend-ui";
+import commonExpress from "@govuk-one-login/di-ipv-cri-common-express";
+import addLanguageParam from "@govuk-one-login/frontend-language-toggle/build/cjs/language-param-setter.cjs";
+import { frontendVitalSignsInitFromApp } from "@govuk-one-login/frontend-vital-signs";
 
-const commonExpress = require("@govuk-one-login/di-ipv-cri-common-express");
+import { setAPIConfig, setOAuthPaths } from "./lib/settings.js";
+import {
+  API,
+  APP,
+  AWS_REGION,
+  PORT,
+  SESSION_SECRET,
+  SESSION_TABLE_NAME,
+  SESSION_TTL,
+  LOG_LEVEL,
+  OVERLOAD_PROTECTION,
+} from "./lib/config.js";
+import checkRouter from "./app/check/index.js";
+
+const DynamoDBStore = connectDynamoDB(session);
+
 const { setup } = commonExpress.bootstrap;
 const setHeaders = commonExpress.lib.headers;
 const setScenarioHeaders = commonExpress.lib.scenarioHeaders;
@@ -18,25 +37,6 @@ const { setGTM, setLanguageToggle, setDeviceIntelligence } =
   commonExpress.lib.settings;
 const { getGTM, getLanguageToggle, getDeviceIntelligence } =
   commonExpress.lib.locals;
-
-const addLanguageParam = require("@govuk-one-login/frontend-language-toggle/build/cjs/language-param-setter.cjs");
-const {
-  frontendVitalSignsInitFromApp,
-} = require("@govuk-one-login/frontend-vital-signs");
-
-const { setAPIConfig, setOAuthPaths } = require("./lib/settings");
-
-const {
-  API,
-  APP,
-  AWS_REGION,
-  PORT,
-  SESSION_SECRET,
-  SESSION_TABLE_NAME,
-  SESSION_TTL,
-  LOG_LEVEL,
-  OVERLOAD_PROTECTION,
-} = require("./lib/config.js");
 
 const loggerConfig = {
   console: true,
@@ -63,7 +63,7 @@ const sessionConfig = {
 };
 
 const { app, router } = setup({
-  config: { APP_ROOT: __dirname },
+  config: { APP_ROOT: import.meta.dirname },
   port: false, /// Disabling the bootstrap starting the server.
   host: "0.0.0.0",
   logs: loggerConfig,
@@ -77,7 +77,9 @@ const { app, router } = setup({
   views: [
     path.resolve(
       path.dirname(
-        require.resolve("@govuk-one-login/di-ipv-cri-common-express")
+        fileURLToPath(
+          import.meta.resolve("@govuk-one-login/di-ipv-cri-common-express")
+        )
       ),
       "components"
     ),
@@ -167,7 +169,7 @@ router.use(setAxiosDefaults);
 
 router.use("/oauth2", commonExpress.routes.oauth2);
 
-router.use(APP.PATHS.CHECK, require("./app/check"));
+router.use(APP.PATHS.CHECK, checkRouter);
 
 router.use(commonExpress.lib.errorHandling.redirectAsErrorToCallback);
 

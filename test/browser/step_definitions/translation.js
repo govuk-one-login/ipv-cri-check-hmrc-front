@@ -1,7 +1,7 @@
 // Steps for any background tasks we need to do pre-tests
-const { Given, When, Then } = require("@cucumber/cucumber");
-const { ErrorPage } = require("../pages");
-const assert = require("node:assert");
+import { Given, When, Then } from "@cucumber/cucumber";
+import assert from "node:assert";
+import { ErrorPage } from "../pages/index.js";
 
 Given("they start with {string}", async function (lang) {
   await setLanguageCookie(lang, this.page.url(), this.context);
