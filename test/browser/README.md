@@ -45,7 +45,7 @@ When invoking error scenarios, use a valid NINO beginning with `EE` and with the
 
 ### Running visual regression tests
 
-To run the visual regression via Docker, run the command `docker compose up visual` within the test/docker directory. This will spin up the screenshots the `-linux` suffix which runs in the workflow.
+To run the visual regression via Docker, run the command `docker compose up visual` within the test/docker directory. This will spin up the screenshots with the `-linux` suffix which runs in the workflow.
 
 If you would like to locally run the visual regression so that the snapshots are within the visual folder, run `npm run test:visual`.
 Ensure the following commands are ran too `imposter up` and `npm run build && dev`. This will produce locally generated screenshots with the `-darwin` suffix which is ignored from git.
