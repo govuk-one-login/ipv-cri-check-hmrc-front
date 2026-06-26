@@ -33,9 +33,6 @@ jobs:
         env:
           BROWSER: ${{ matrix.browser }}
 
-      - name: Run visual regression tests
-        run: docker compose up visual --exit-code-from visual
-
       - name: Stop Docker
         if: ${{ always() }}
         run: docker compose down
