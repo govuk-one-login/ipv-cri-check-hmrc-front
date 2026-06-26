@@ -51,7 +51,7 @@ services:
       RELYING_PARTY_URL: "http://localhost:8080"
       BROWSER: ${BROWSER:-chromium}
     volumes:
-      - ../../test/visual/visual-snapshots:/app/test/visual/snapshots
+      - ../../test/visual/snapshots:/app/test/visual/snapshots
     network_mode: "host"
     depends_on:
       - mocks
