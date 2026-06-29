@@ -36,3 +36,21 @@ jobs:
       - name: Stop Docker
         if: ${{ always() }}
         run: docker compose down
+
+  visual-tests:
+    name: Visual regression
+    runs-on: ubuntu-latest
+    needs: run-tests
+    steps:
+      - name: Pull repository
+        uses: actions/checkout@v4
+
+      - name: Start Docker
+        run: docker compose up web mocks --detach
+
+      - name: Run visual regression tests
+        run: docker compose up visual --exit-code-from visual
+
+      - name: Stop Docker
+        if: ${{ always() }}
+        run: docker compose down

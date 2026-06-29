@@ -4,7 +4,8 @@
   "description": "Browser tests for the frontend of the Check HMRC Credential Issuer",
   "type": "module",
   "scripts": {
-    "test:browser": "cucumber-js"
+    "test:browser": "cucumber-js",
+    "test:visual": "playwright test --config=../visual/playwright.config.js"
   },
   "author": "",
   "license": "MIT",
@@ -14,7 +15,8 @@
     "aws4-axios": "3.4.0",
     "axios": "1.16.0",
     "dotenv": "16.3.1",
-    "playwright": "1.55.1",
+    "playwright": "^1.61.0",
+    "@playwright/test": "^1.61.0",
     "wait-on": "8.0.5"
   }
 }
