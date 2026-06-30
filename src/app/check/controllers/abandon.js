@@ -17,7 +17,11 @@ class AbandonController extends BaseController {
         ...createPersonalDataHeaders(`${BASE_URL}${ABANDON}`, req),
       };
 
-      await req.axios.post(ABANDON, {}, { headers });
+      await req.customFetch(ABANDON, {
+        method: "POST",
+        jsonBody: {},
+        headers,
+      });
       super.saveValues(req, res, async () => callback());
     } catch (err) {
       if (err) {
