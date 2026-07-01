@@ -8,11 +8,6 @@ const {
   PATHS: { CHECK },
 } = API;
 
-/* istanbul ignore next @preserve */
-const validateStatus = (status) => {
-  return status >= 200 && status < 300;
-};
-
 class EnterNationalInsuranceNumberController extends BaseController {
   async saveValues(req, res, callback) {
     req.session.redirectToRetry = false;
@@ -23,22 +18,22 @@ class EnterNationalInsuranceNumberController extends BaseController {
           ...createPersonalDataHeaders(`${BASE_URL}${CHECK}`, req),
         };
 
-        const response = await req.axios.post(
-          CHECK,
-          {
+        const response = await req.customFetch(CHECK, {
+          method: "POST",
+          jsonBody: {
             nino: req.sessionModel
               .get("nationalInsuranceNumber")
               .replaceAll(" ", "")
               .toUpperCase(),
           },
-          {
-            headers,
-            validateStatus,
-          }
-        );
+          headers,
+        });
 
-        if (response.status === 200 && response.data.requestRetry === true) {
-          req.session.redirectToRetry = true;
+        if (response.status === 200) {
+          const body = await response.json();
+          if (body?.requestRetry === true) {
+            req.session.redirectToRetry = true;
+          }
         }
 
         callback();

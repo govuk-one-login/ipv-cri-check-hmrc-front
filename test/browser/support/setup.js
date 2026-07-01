@@ -1,5 +1,4 @@
 import "dotenv/config";
-import "axios";
 import { chromium, firefox, webkit } from "playwright";
 import {
   Before,

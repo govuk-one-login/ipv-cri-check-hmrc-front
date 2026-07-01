@@ -30,7 +30,7 @@ const DynamoDBStore = connectDynamoDB(session);
 const { setup } = commonExpress.bootstrap;
 const setHeaders = commonExpress.lib.headers;
 const setScenarioHeaders = commonExpress.lib.scenarioHeaders;
-const setAxiosDefaults = commonExpress.lib.axios;
+const { customFetchMiddleware } = commonExpress.lib.customFetch;
 const { setI18n } = commonExpress.lib.i18n;
 const helmetConfig = commonExpress.lib.helmet;
 const { setGTM, setLanguageToggle, setDeviceIntelligence } =
@@ -165,7 +165,7 @@ router.use(getLanguageToggle);
 router.use(frontendUi.frontendUiMiddlewareIdentityBypass);
 router.use(getDeviceIntelligence);
 router.use(setScenarioHeaders);
-router.use(setAxiosDefaults);
+router.use(customFetchMiddleware);
 
 router.use("/oauth2", commonExpress.routes.oauth2);
 
