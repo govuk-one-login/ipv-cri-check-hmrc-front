@@ -1,9 +1,7 @@
 name: DEV Post merge, deploy Docker build, ECR push, template copy to S3
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch: # Deploy Manually
+  workflow_call:
+  workflow_dispatch:
 
 jobs:
   development:

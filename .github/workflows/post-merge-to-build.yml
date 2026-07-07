@@ -1,8 +1,6 @@
 name: BUILD Post merge, deploy Docker build, ECR push, template copy to S3
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
 jobs:
   development:
     runs-on: ubuntu-latest
