@@ -52,6 +52,7 @@
     "eslint-config-prettier": "10.1.8",
     "globals": "^17.8.0",
     "nodemon": "3.1.14",
+    "prettier": "^3.9.6",
     "sass": "1.77.6",
     "uglify-js": "3.17.4",
     "vitest": "4.1.6"
