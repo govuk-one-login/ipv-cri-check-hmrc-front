@@ -24,6 +24,16 @@
           "provider": "GitHub"
         },
         {
+           "check-types": ["unit"],
+           "config": {
+             "file": ".github/workflows/scan-repo.yml",
+             "name": "Collect coverage",
+              "path": "jobs.coverage"
+            },
+            "phase": "pre-upload",
+            "provider": "GitHub"
+        },
+        {
           "check-types": [
             "component",
             "integration",
@@ -61,6 +71,20 @@
           },
           "phase": "pre-merge",
           "provider": "GitHub"
+        },
+        {
+         "check-types": [
+           "code style and linting",
+           "unit test coverage",
+           "vulnerability detection"
+          ],
+          "config": {
+            "file": ".github/workflows/scan-repo.yml",
+           "name": "SonarCloud",
+           "path": "jobs.sonarcloud"
+          },
+           "phase": "pre-upload",
+           "provider": "GitHub"
         },
         {
           "check-types": ["vulnerability detection"],
