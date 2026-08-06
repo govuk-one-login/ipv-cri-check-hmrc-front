@@ -110,7 +110,7 @@ Mappings:
       logLevel: "info"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
-      minECSCount: 3
+      minECSCount: 6
       maxECSCount: 60
       logLevel: "info"
     staging:
@@ -907,7 +907,7 @@ Resources:
         MetricSpecifications:
           - PredefinedMetricPairSpecification:
               PredefinedMetricType: ECSServiceCPUUtilization
-            TargetValue: 30
+            TargetValue: 25
         Mode: ForecastOnly
         SchedulingBufferTime: 600
 
@@ -961,14 +961,14 @@ Resources:
         - !Ref StepScaleOutPolicy
       AlarmDescription: "FrontClusterOver30PercentCPU"
       ComparisonOperator: "GreaterThanThreshold"
-      DatapointsToAlarm: "2"
+      DatapointsToAlarm: "1"
       Dimensions:
         - Name: ClusterName
           Value: !Ref EcsCluster
         - Name: ServiceName
           Value: !GetAtt EcsService.Name
       Unit: "Percent"
-      EvaluationPeriods: "2"
+      EvaluationPeriods: "1"
       MetricName: "CPUUtilization"
       Namespace: "AWS/ECS"
       Statistic: "Average"
