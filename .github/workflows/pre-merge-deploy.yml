@@ -1,7 +1,19 @@
 name: Pre-merge deploy
 
 on:
-  - pull_request
+  workflow_call:
+    inputs:
+      aws-region: { required: true, type: string }
+    outputs:
+      aws-region:
+        description: The region in which the stack was deployed
+        value: ${{ inputs.aws-region }}
+      stack-name:
+        description: The deployed stack name
+        value: ${{ jobs.deploy.outputs.stack-name }}
+      stack-outputs:
+        description: The deployed stack outputs
+        value: ${{ jobs.deploy.outputs.stack-outputs }}
 
 permissions:
   id-token: write
@@ -34,6 +46,7 @@ jobs:
         with:
           immutable-tags: false
           aws-role-arn: ${{ secrets.DEV_PRE_MERGE_GHA_ROLE }}
+          aws-region: ${{ inputs.aws-region }}
           repository: check-hmrc-front-pre-merge
           dockerfile: Dockerfile
           build-args: BASE=plain
@@ -63,6 +76,10 @@ jobs:
     needs: [push-image, build]
     runs-on: ubuntu-latest
     environment: development
+    outputs:
+      aws-region: ${{ inputs.aws-region }}
+      stack-name: ${{ steps.deploy.outputs.stack-name }}
+      stack-outputs: ${{ steps.deploy.outputs.stack-outputs }}
     steps:
       - name: Pull repository
         uses: actions/checkout@v4
