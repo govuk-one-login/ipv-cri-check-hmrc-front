@@ -13,13 +13,13 @@ Feature: Abandon NINO CRI
     When they click continue from abandon
     Then they should see abandon validation messages
 
-  @mock-api:access-denied
+  @mock-api:access-denied @deployed-stack-only
   Scenario: Choose to return to national insurance number page
     Given they choose to return to national insurance number
     When they click continue from abandon
     Then they should see the national insurance number page
 
-  @mock-api:access-denied
+  @mock-api:access-denied @deployed-stack-only
   Scenario: Stop answering questions
     Given they choose to abandon
     When they click continue from abandon

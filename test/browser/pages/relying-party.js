@@ -45,7 +45,6 @@ export default class PlaywrightDevPage {
     try {
       const startUrl = new URL("start", process.env.RELYING_PARTY_URL);
       const body = JSON.stringify({
-        aud: process.env.WEBSITE_HOST,
         ...(sharedClaims && { shared_claims: sharedClaims }),
       });
 

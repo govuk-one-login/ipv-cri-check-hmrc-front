@@ -3,7 +3,7 @@ Feature: Happy path
 
   Successful journey through the system and back to the RP
 
-  @mock-api:success @happy @post-merge
+  @mock-api:success @happy @post-merge @deployed-stack-only
   Scenario: Happy Path
     Given that "Happy Harriet" user is going through the system
     And they have started the journey
@@ -12,7 +12,7 @@ Feature: Happy path
     When they continue from national insurance number
     Then they should be redirected as a success
 
-  @mock-api:success @happy @post-merge
+  @mock-api:success @happy @post-merge @deployed-stack-only
   Scenario: Happy Path with multiple names
     Given that "Multiple Names" user is going through the system
     And they have started the journey

@@ -35,6 +35,14 @@ Set the [environment variables](./environment-variables.md) accordingly.
 npm run test:browser
 ```
 
+To run the browser tests against the imposter stubs.
+
+```
+npm run test:browser:deployed
+```
+
+To run the browser tests against the deployed frontend stack using the main backend stack. Remember to update the .env file to reflect this.
+
 ### Cucumber
 
 The browser tests are written as [Cucumber Gherkin Features](https://cucumber.io/docs/gherkin/) with the [cucumber-js](https://cucumber.io/docs/installation/javascript/) test runner integrated with [Playwright](https://playwright.dev/)

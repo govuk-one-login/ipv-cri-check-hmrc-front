@@ -31,11 +31,17 @@ services:
       context: ../..
       dockerfile: test/browser/pre-merge.Dockerfile
     environment:
-      USE_LOCAL_API: true
+      USE_LOCAL_API: ${USE_LOCAL_API:-true}
       GITHUB_ACTIONS: true
-      WEBSITE_HOST: http://localhost:5050
-      RELYING_PARTY_URL: "http://localhost:8080"
+      WEBSITE_HOST: ${WEBSITE_HOST:-http://localhost:5050}
+      RELYING_PARTY_URL: ${RELYING_PARTY_URL:-http://localhost:8080}
       BROWSER: ${BROWSER:-chromium}
+
+      AWS_REGION: ${AWS_REGION:-}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
+
     volumes:
       - ./reports:/reports
     network_mode: "host"
