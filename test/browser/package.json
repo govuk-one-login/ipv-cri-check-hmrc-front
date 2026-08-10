@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test:browser": "cucumber-js",
+    "test:browser:deployed": "cucumber-js --tags \"@deployed-stack-only\"",
     "test:visual": "playwright test --config=../visual/playwright.config.js"
   },
   "author": "",
