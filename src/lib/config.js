@@ -15,7 +15,7 @@ export const API = {
 };
 
 export const APP = {
-  BASE_URL: process.env.EXTERNAL_WEBSITE_HOST || "http://localhost:5000",
+  BASE_URL: process.env.BASE_URL || "http://localhost:5000",
   PATHS: {
     CHECK: "/",
   },

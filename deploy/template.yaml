@@ -500,7 +500,7 @@ Resources:
                   VpceId:
                     Fn::ImportValue: cri-vpc-ExecuteApiGatewayEndpointId
                   Environment: !Ref Environment
-            - Name: EXTERNAL_WEBSITE_HOST
+            - Name: BASE_URL
               Value: !GetAtt ApiGwHttpEndpoint.ApiEndpoint
             - Name: SESSION_TABLE_NAME
               Value: !Sub
