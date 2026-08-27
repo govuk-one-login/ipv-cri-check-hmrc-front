@@ -28,7 +28,7 @@ case "$BUCKET" in
   *) echo "unknown bucket: $BUCKET" >&2; exit 2 ;;
 esac
 
-PKG_PATHS=(package.json package-lock.json 'integration-tests/package.json' 'lambdas/*/package.json')
+PKG_PATHS=(package.json package-lock.json test/browser/package.json)
 
 if [[ "$BUCKET" = "safe" ]]; then
   npm audit fix --ignore-scripts --workspaces --include-workspace-root || true
