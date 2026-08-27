@@ -125,5 +125,4 @@ jobs:
           add-paths: |
             package.json
             package-lock.json
-            integration-tests/package.json
-            lambdas/*/package.json
+            test/browser/package.json
