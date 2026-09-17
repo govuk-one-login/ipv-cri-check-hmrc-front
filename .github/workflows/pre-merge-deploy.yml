@@ -63,7 +63,7 @@ jobs:
       cache-restore-keys: ${{ steps.build.outputs.cache-restore-keys }}
     steps:
       - name: Pull repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Build SAM application
         id: build
@@ -82,7 +82,7 @@ jobs:
       stack-outputs: ${{ steps.deploy.outputs.stack-outputs }}
     steps:
       - name: Pull repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Derive container image override from branch
         id: image
