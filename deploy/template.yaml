@@ -1560,14 +1560,14 @@ Resources:
             ]
           }
 
-  FrontTargetGroup5xxPercentErrors:
+  FrontTargetGroupAndELB5xxPercentErrors:
     Type: AWS::CloudWatch::Alarm
     Condition: UseCanaryDeployment
     Properties:
-      AlarmName: FrontTargetGroup5xxPercentAlarm
+      AlarmName: FrontTargetGroupAndELB5xxPercentAlarm
       AlarmDescription: >
-        The number of HTTP 5XX server error codes that originate from the
-        target group is greater than 5% of all traffic.
+        The sum of HTTP 5XX server error codes that originate from the
+        target group and the application load balancer is greater than 5% of all traffic.
       EvaluationPeriods: 2
       DatapointsToAlarm: 2
       Threshold: 5
@@ -1577,7 +1577,7 @@ Resources:
         - Id: e1
           Label: ErrorPercent
           ReturnData: true
-          Expression: (m1/m2)*100
+          Expression: ((m1+m3)/m2)*100
         - Id: m1
           ReturnData: false
           MetricStat:
@@ -1600,6 +1600,17 @@ Resources:
                   Value: !GetAtt LoadBalancer.LoadBalancerFullName
             Period: 60
             Stat: Sum
+        - Id: m3
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApplicationELB
+              MetricName: HTTPCode_ELB_5XX_Count
+              Dimensions:
+                - Name: LoadBalancer
+                  Value: !GetAtt LoadBalancer.LoadBalancerFullName
+            Period: 60
+            Stat: Sum
 
   ECSBlueGreenDeploymentStack:
     Type: AWS::CloudFormation::Stack
@@ -1611,7 +1622,7 @@ Resources:
           - UseCodeSigning
           - !Ref CodeSigningConfigArn
           - !Ref AWS::NoValue
-        CloudWatchAlarms: !Ref FrontTargetGroup5xxPercentErrors
+        CloudWatchAlarms: !Ref FrontTargetGroupAndELB5xxPercentErrors
         ContainerName: app
         ContainerPort: 8080
         DeploymentStrategy: !Ref DeploymentStrategy
