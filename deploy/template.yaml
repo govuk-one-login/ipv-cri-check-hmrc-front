@@ -420,7 +420,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub /aws/ecs/${AWS::StackName}-Front-ECS
-      RetentionInDays: 30
+      RetentionInDays: 365
 
   ECSLogsSubscriptionFilterCSLS:
     Type: AWS::Logs::SubscriptionFilter
@@ -777,7 +777,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub /aws/apigateway/${AWS::StackName}-API-GW-AccessLogs
-      RetentionInDays: 30
+      RetentionInDays: 365
 
   APIGWLogsSubscriptionFilterCSLS:
     Type: AWS::Logs::SubscriptionFilter
