@@ -114,9 +114,15 @@ Conditions:
   UseSpokeVpc: !Not
     - !Equals [!Ref SpokeVpcStackName, "none"]
 
-  UseSpokeVpcNotPreMerge: !And
+  # Used by CloudFrontWAFv2ACLAssociationTGW (currently commented out)
+  # UseSpokeVpcNotPreMerge: !And
+  #   - !Condition UseSpokeVpc
+  #   - !Condition IsNotPreMergeStack
+
+  # TEMPORARY: lets the pre-merge web ACL be attached to the spoke VPC load balancer for testing
+  CreatePreMergeWebACL: !Or
+    - !Condition IsPreMergeStack
     - !Condition UseSpokeVpc
-    - !Condition IsNotPreMergeStack
 
   DeployAlarmsSpokeVpc: !And
     - !Condition UseSpokeVpc
@@ -1082,7 +1088,7 @@ Resources:
 
   PreMergeLoadBalancerWebACL:
     Type: AWS::WAFv2::WebACL
-    Condition: IsPreMergeStack
+    Condition: CreatePreMergeWebACL
     Properties:
       Name: !Sub "${AWS::StackName}-premerge-acl"
       Scope: REGIONAL
@@ -1115,6 +1121,14 @@ Resources:
     Condition: IsPreMergeStack
     Properties:
       ResourceArn: !Ref LoadBalancer
+      WebACLArn: !GetAtt PreMergeLoadBalancerWebACL.Arn
+
+  # TEMPORARY: testing the spoke VPC load balancer with the pre-merge web ACL
+  PreMergeWAFv2ACLAssociationTGW:
+    Type: AWS::WAFv2::WebACLAssociation
+    Condition: UseSpokeVpc
+    Properties:
+      ResourceArn: !Ref LoadBalancerTGW
       WebACLArn: !GetAtt PreMergeLoadBalancerWebACL.Arn
 
   # ECS Autoscaling
