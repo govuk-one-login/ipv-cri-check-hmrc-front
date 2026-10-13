@@ -1024,12 +1024,12 @@ Resources:
       Certificates:
         - CertificateArn: !Ref SpokeLoadBalancerCertificateArn
 
-  CloudFrontWAFv2ACLAssociationTGW:
-    Type: AWS::WAFv2::WebACLAssociation
-    Condition: UseSpokeVpcNotPreMerge
-    Properties:
-      ResourceArn: !Ref LoadBalancerTGW
-      WebACLArn: !ImportValue cfront-origin-distrib-CloakingOriginWebACLArn
+#  CloudFrontWAFv2ACLAssociationTGW:
+#    Type: AWS::WAFv2::WebACLAssociation
+#    Condition: UseSpokeVpcNotPreMerge
+#    Properties:
+#      ResourceArn: !Ref LoadBalancerTGW
+#      WebACLArn: !ImportValue cfront-origin-distrib-CloakingOriginWebACLArn
 
   EcsServiceTGW:
     Type: AWS::ECS::Service
