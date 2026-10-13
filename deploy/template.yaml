@@ -886,7 +886,8 @@ Resources:
       IpProtocol: tcp
       FromPort: 443
       ToPort: 443
-      CidrIp: 0.0.0.0/0
+      SourceSecurityGroupId:
+        Fn::ImportValue: cfront-origin-distrib-VpcOriginSgId
 
   LoadBalancerSGTGWIngressHTTP:
     Type: AWS::EC2::SecurityGroupIngress
