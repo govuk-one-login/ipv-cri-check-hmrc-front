@@ -23,7 +23,7 @@ jobs:
         browser: [chromium, firefox]
     steps:
       - name: Pull repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Start Docker
         run: docker compose up web mocks --detach
@@ -43,7 +43,7 @@ jobs:
     needs: run-tests
     steps:
       - name: Pull repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Start Docker
         run: docker compose up web mocks --detach
