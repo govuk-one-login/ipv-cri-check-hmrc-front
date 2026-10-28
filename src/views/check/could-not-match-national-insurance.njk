@@ -1,6 +1,5 @@
 {% extends "base-form.njk" %}
-{% from "hmpo-radios/macro.njk" import hmpoRadios %}
-{% from "hmpo-form/macro.njk" import hmpoForm %}
+{% from "frontend-ui/build/components/submit/macro.njk" import submit %}
 
 {% set hmpoPageKey = "could-not-match-national-insurance" %}
 {% set hmpoPageContent = "could-not-match-national-insurance" %}
@@ -18,7 +17,7 @@
 {% endblock %}
 
 {% block submitButton %}
-    {{ hmpoSubmit(ctx, {
+    {{ submit(ctx, {
         id: "continue",
         text: translate("buttons.next"),
         attributes: {"data-nav": true,"data-link": "/could-not-match-national-insurance-number"}

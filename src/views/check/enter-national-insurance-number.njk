@@ -1,6 +1,6 @@
 {% extends "base-form.njk" %}
-{% from "hmpo-text/macro.njk" import hmpoText %}
-{% from "hmpo-form/macro.njk" import hmpoForm %}
+{% from "frontend-ui/build/components/html/macro.njk" import html %}
+{% from "frontend-ui/build/components/submit/macro.njk" import submit %}
 
 {% set hmpoPageKey = "enter-national-insurance-number" %}
 {% set hmpoPageContent = "enter-national-insurance-number" %}
@@ -17,12 +17,12 @@
 {% block mainContent %}
   {{ super() }}
 
-  {{ hmpoHtml(translate("abandonLink")) }}
+  {{ html(translate("abandonLink")) }}
 
 {% endblock %}
 
 {% block submitButton %}
-  {{ hmpoSubmit(ctx, {
+  {{ submit(ctx, {
     id: "continue",
     text: translate("buttons.checkAndContinue"),
     attributes: {"data-nav": true,"data-link": "/enter-national-insurance-number"}
