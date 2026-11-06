@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.1005.0",
-    "@govuk-one-login/di-ipv-cri-common-express": "17.0.1",
+    "@govuk-one-login/di-ipv-cri-common-express": "3.2.0",
     "@govuk-one-login/frontend-analytics": "4.2.0",
     "@govuk-one-login/frontend-device-intelligence": "1.1.0",
     "@govuk-one-login/frontend-passthrough-headers": "1.0.0",
@@ -44,13 +44,13 @@
     "hmpo-form-wizard": "15.0.5"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "9.39.5",
     "@vitest/coverage-v8": "5.1.0",
     "copyfiles": "2.4.1",
-    "eslint": "10.0.2",
+    "eslint": "9.39.5",
     "eslint-config-prettier": "10.1.8",
     "globals": "^17.8.0",
-    "nodemon": "3.1.14",
+    "nodemon": "3.1.11",
     "prettier": "^3.9.6",
     "sass": "1.105.1",
     "uglify-js": "3.17.4",
