@@ -113,4 +113,5 @@ jobs:
             Environment=dev
             PreMerge=true
             VpcStackName=cri-vpc
+            SpokeVpcStackName=spoke-vpc
             ContainerImageNameOverride=${{ steps.image.outputs.uri }}
