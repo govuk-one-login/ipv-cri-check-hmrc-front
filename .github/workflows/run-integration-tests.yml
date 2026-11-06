@@ -43,6 +43,15 @@ jobs:
           WEBSITE_HOST: ${{ fromJson(inputs.stack-outputs).FrontUrl }}
           RELYING_PARTY_URL: ${{ vars.RELYING_PARTY_URL }}
 
+      - name: Run tests against TGW
+        run: >
+          docker compose run --rm cucumber
+          npm run test:browser:deployed
+        env:
+          USE_LOCAL_API: false
+          WEBSITE_HOST: ${{ fromJson(inputs.stack-outputs).FrontUrlTGW }}
+          RELYING_PARTY_URL: ${{ vars.RELYING_PARTY_URL }}
+
       - name: Stop Docker
         if: ${{ always() }}
         run: docker compose down
