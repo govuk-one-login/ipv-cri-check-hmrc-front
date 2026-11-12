@@ -161,6 +161,14 @@ setGTM({
 router.use(getGTM);
 router.use(getLanguageToggle);
 router.use(frontendUi.frontendUiMiddlewareIdentityBypass);
+// Installs the `ctx` render-context accessor and the recursiveRender-wrapped
+// `translate` on res.locals. These were previously provided by hmpo-components'
+// locals middleware, which di-ipv-cri-common-express wired up automatically only
+// when hmpo-components was installed. With hmpo-components removed, frontend-ui's
+// localsMiddleware is the functionally identical replacement and must be wired up
+// explicitly so the frontend-ui form/submit/radios macros (which call ctx(...))
+// continue to render.
+router.use(frontendUi.localsMiddleware(app, app.get("nunjucks")));
 router.use(getDeviceIntelligence);
 router.use(setScenarioHeaders);
 router.use(customFetchMiddleware);

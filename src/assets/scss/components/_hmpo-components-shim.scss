@@ -1,0 +1,52 @@
+// Typography and button-spacing rules vendored from the former `hmpo-components`
+// package (assets/stylesheets/_typeography.scss at the default $hmpo-text-size:
+// "small", and _button.scss).
+//
+// These were previously pulled in via `@import ".../hmpo-components/all"`.
+// hmpo-components has been removed from this repo, and frontend-ui's `build/all.css`
+// does not provide them. They are load-bearing: the frontend-ui `html` macro renders
+// page content as bare `<p>`/`<h2>`/`<ul>` elements with no GOV.UK classes, and these
+// `@extend` rules fold those bare elements into the GOV.UK Frontend typography classes
+// (`.govuk-body`, `.govuk-heading-*`, `.govuk-link`, `.govuk-list`). Without them the
+// body paragraphs render at the browser default size instead of 19px, shrinking the
+// text and compressing the page (verified against the visual regression snapshots).
+//
+// NOTE: must be imported AFTER `govuk-frontend/dist/govuk/all` so the `.govuk-*`
+// classes being extended are defined.
+
+h1 {
+  @extend .govuk-heading-l;
+}
+h2 {
+  @extend .govuk-heading-m;
+}
+h3 {
+  @extend .govuk-heading-s;
+}
+h4 {
+  @extend .govuk-heading-s;
+}
+
+main p {
+  @extend .govuk-body;
+}
+
+main a {
+  @extend .govuk-link;
+}
+
+main ol,
+main ul {
+  @extend .govuk-list;
+}
+
+// --- hmpo-components/assets/stylesheets/_button.scss ---
+// Restores the top margin between preceding content and a submit button. Without
+// this the frontend-ui submit button sits ~1em higher on the form pages, shifting
+// everything below it and breaking the visual snapshots.
+p + .govuk-button,
+ol + .govuk-button,
+ul + .govuk-button,
+.govuk-button.govuk-button--padded {
+  margin-top: 1em;
+}
