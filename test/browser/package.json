@@ -16,7 +16,7 @@
     "aws4": "1.13.2",
     "dotenv": "16.3.1",
     "playwright": "^1.61.0",
-    "@playwright/test": "^1.61.0",
+    "@playwright/test": "^1.65.0",
     "wait-on": "8.0.5"
   }
 }
