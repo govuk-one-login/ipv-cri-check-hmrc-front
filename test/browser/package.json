@@ -14,7 +14,7 @@
     "@aws-sdk/credential-providers": "3.1005.0",
     "@cucumber/cucumber": "13.3.0",
     "aws4": "1.13.2",
-    "dotenv": "16.3.1",
+    "dotenv": "18.0.10",
     "playwright": "^1.61.0",
     "@playwright/test": "^1.61.0",
     "wait-on": "8.0.5"
