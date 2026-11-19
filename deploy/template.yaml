@@ -156,7 +156,7 @@ Mappings:
       maxECSCount: 60
       logLevel: "info"
       deploySpokeVpc: "true"
-      deploySpokeVpcCanary: "false"
+      deploySpokeVpcCanary: "true"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       minECSCount: 2
