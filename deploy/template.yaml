@@ -3311,6 +3311,8 @@ Outputs:
   LoadBalancerTGWDnsName:
     Description: The Fargate Front End spoke VPC Load Balancer DNS name
     Condition: UseSpokeVpc
+    Export:
+      Name: !Sub "${AWS::StackName}-CloudfrontDistributionOriginsDomainNameTGW"
     Value: !GetAtt LoadBalancerTGW.DNSName
 
   FrontUrlTGW:
