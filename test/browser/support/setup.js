@@ -58,7 +58,9 @@ Before(async function ({ pickle } = {}) {
 
 // Create a new test context and page per scenario
 Before(async function () {
-  this.context = await global.browser.newContext({});
+  this.context = await global.browser.newContext({
+    extraHTTPHeaders: { "aws-cf-cd-staging": "true" },
+  });
 
   this.page = await this.context.newPage();
 });
