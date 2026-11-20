@@ -172,7 +172,6 @@ Mappings:
       AccountId: 652711504416
 
 Resources:
-
   AccessLogsBucket:
     Condition: IsNotDevelopment
     Type: AWS::S3::Bucket
