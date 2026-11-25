@@ -899,8 +899,6 @@ Resources:
                   "account.gov.uk",
                   !Sub "${Environment}.account.gov.uk",
                 ]
-            - Name: MAY_2025_REBRAND_ENABLED
-              Value: true
             - Name: LOG_LEVEL
               Value:
                 !FindInMap [
@@ -908,8 +906,6 @@ Resources:
                   !Ref Environment,
                   logLevel,
                 ]
-            - Name: USE_PINO_LOGGER
-              Value: true
           Secrets:
             - Name: DT_TENANT
               ValueFrom: !Join
@@ -1013,8 +1009,6 @@ Resources:
                   "account.gov.uk",
                   !Sub "${Environment}.account.gov.uk",
                 ]
-            - Name: MAY_2025_REBRAND_ENABLED
-              Value: true
             - Name: LOG_LEVEL
               Value:
                 !FindInMap [
@@ -1022,8 +1016,6 @@ Resources:
                   !Ref Environment,
                   logLevel,
                 ]
-            - Name: USE_PINO_LOGGER
-              Value: true
           Secrets:
             - Name: DT_TENANT
               ValueFrom: !Join

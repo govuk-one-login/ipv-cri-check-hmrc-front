@@ -27,8 +27,6 @@ export const APP = {
     process.env.DEVICE_INTELLIGENCE_DOMAIN || "account.gov.uk",
 };
 
-export const LOG_LEVEL = process.env.LOG_LEVEL || "info";
-
 export const AWS_REGION = process.env.AWS_REGION || "eu-west-2";
 
 export const PORT = process.env.PORT || 5000;

@@ -19,7 +19,6 @@ services:
       PORT: 5050
       NODE_ENV: development
       DEVICE_INTELLIGENCE_DOMAIN: localhost
-      MAY_2025_REBRAND_ENABLED: true
     ports:
       - "5050:5050"
     depends_on:

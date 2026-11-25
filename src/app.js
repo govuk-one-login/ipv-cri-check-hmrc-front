@@ -32,20 +32,11 @@ import {
   SESSION_SECRET,
   SESSION_TABLE_NAME,
   SESSION_TTL,
-  LOG_LEVEL,
   OVERLOAD_PROTECTION,
 } from "./lib/config.js";
 import checkRouter from "./app/check/index.js";
 
 const DynamoDBStore = connectDynamoDB(session);
-
-const loggerConfig = {
-  console: true,
-  consoleJSON: true,
-  consoleLevel: LOG_LEVEL,
-  appLevel: LOG_LEVEL,
-  app: false,
-};
 
 const dynamodb = new DynamoDB({
   region: AWS_REGION,
@@ -67,7 +58,6 @@ const { app, router } = await appSetup({
   config: { APP_ROOT: import.meta.dirname },
   port: false, /// Disabling the bootstrap starting the server.
   host: "0.0.0.0",
-  logs: loggerConfig,
   session: sessionConfig,
   helmet: getHelmetConfig(),
   redis: SESSION_TABLE_NAME ? false : getRedisConfig(),
@@ -143,8 +133,6 @@ setOAuthPaths({ app, entryPointPath: APP.PATHS.CHECK });
 settings.setGTM({
   app,
   analyticsCookieDomain: APP.FRONTEND_DOMAIN,
-  uaEnabled: false,
-  uaContainerId: "",
   ga4Enabled: true,
   ga4ContainerId: APP.GTM.GA4_CONTAINER_ID,
   analyticsDataSensitive: false,

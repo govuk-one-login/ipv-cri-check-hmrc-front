@@ -22,4 +22,3 @@
 | DEVICE_INTELLIGENCE_DOMAIN | Domain to apply to the device intelligence cookie if device intelligence is enabled       | account.gov.uk |
 | GA4_CONTAINER_ID           | Container ID for GA4, required for analytics to work correctly                            | GTM-KD86CMZ    |
 | LOG_LEVEL                  | Determines the log level for the application                                              | request        |
-| MAY_2025_REBRAND_ENABLED   | Feature flag to enable the May 2025 GOV.UK branding changes                               | true           |
