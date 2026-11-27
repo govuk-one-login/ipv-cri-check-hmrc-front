@@ -40,7 +40,8 @@
     "express-async-errors": "3.1.1",
     "express-session": "1.18.2",
     "govuk-frontend": "5.10.2",
-    "hmpo-form-wizard": "15.0.5"
+    "hmpo-form-wizard": "15.0.5",
+    "hmpo-i18n": "^8.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
