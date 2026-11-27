@@ -4,6 +4,9 @@ import { defineConfig } from "eslint/config";
 import globals from "globals";
 
 export default defineConfig(
+  {
+    ignores: ["coverage/**/*", "dist/**/*", ".aws-sam/**/*"],
+  },
   js.configs.recommended,
   eslintConfigPrettier,
   {

@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Start Docker
-        run: docker compose up web mocks --detach
+        run: docker compose up frontend mocks --detach
 
       - name: Run Cucumber tests on ${{ matrix.browser }}
         run: docker compose up cucumber --exit-code-from cucumber
@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Start Docker
-        run: docker compose up web mocks --detach
+        run: docker compose up frontend mocks --detach
 
       - name: Run visual regression tests
         run: docker compose up visual --exit-code-from visual

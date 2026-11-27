@@ -4,4 +4,5 @@ export default {
   paths: ["./features/**/**.feature"],
   import: ["./support/**/*.js", "./step_definitions/**/*.js", "./pages/*.js"],
   tags: "not @skip",
+  format: ["pretty"],
 };
