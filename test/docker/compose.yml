@@ -1,40 +1,41 @@
+name: check-hmrc-cri-front
 services:
   mocks:
+    container_name: mocks
     image: outofcoffee/imposter:3.25.1
     volumes:
       - "../imposter:/opt/imposter/config"
-    ports:
-      - "8050:8080"
     environment:
       JAVA_TOOL_OPTIONS: "-XX:-UseContainerSupport"
-    network_mode: "host"
+      IMPOSTER_LOG_SUMMARY: TRUE
+      IMPOSTER_LOG_RESPONSE_BODY: true
 
-  web:
+  frontend:
+    container_name: frontend
     build:
       context: ../..
       dockerfile: local.Dockerfile
     environment:
       REDIS_SESSION_URL: db
-      API_BASE_URL: http://localhost:8080
+      API_BASE_URL: http://mocks:8080
       PORT: 5050
       NODE_ENV: development
       DEVICE_INTELLIGENCE_DOMAIN: localhost
-      MAY_2025_REBRAND_ENABLED: true
     ports:
       - "5050:5050"
     depends_on:
       - mocks
-    network_mode: "host"
 
   cucumber:
+    container_name: cucumber
     build:
       context: ../..
       dockerfile: test/browser/pre-merge.Dockerfile
     environment:
       USE_LOCAL_API: ${USE_LOCAL_API:-true}
       GITHUB_ACTIONS: true
-      WEBSITE_HOST: ${WEBSITE_HOST:-http://localhost:5050}
-      RELYING_PARTY_URL: ${RELYING_PARTY_URL:-http://localhost:8080}
+      WEBSITE_HOST: ${WEBSITE_HOST:-http://frontend:5050}
+      RELYING_PARTY_URL: ${RELYING_PARTY_URL:-http://ipv-core-stub:8085}
       BROWSER: ${BROWSER:-chromium}
 
       AWS_REGION: ${AWS_REGION:-}
@@ -44,33 +45,32 @@ services:
 
     volumes:
       - ./reports:/reports
-    network_mode: "host"
 
   visual:
+    container_name: visual
     build:
       context: ../..
       dockerfile: test/browser/pre-merge.Dockerfile
     environment:
       USE_LOCAL_API: true
       GITHUB_ACTIONS: true
-      WEBSITE_HOST: http://localhost:5050
-      RELYING_PARTY_URL: "http://localhost:8080"
+      WEBSITE_HOST: http://frontend:5050
+      RELYING_PARTY_URL: "http://ipv-core-stub:8085"
       BROWSER: ${BROWSER:-chromium}
     volumes:
       - ../../test/visual/snapshots:/app/test/visual/snapshots
-    network_mode: "host"
     depends_on:
       - mocks
-      - web
+      - frontend
     command: ["npm", "run", "test:visual"]
 
   ipv-core-stub:
+    container_name: ipv-core-stub
     build:
       context: ../../../ipv-stubs/di-ipv-core-stub/
       dockerfile: Dockerfile-arm64
       target: nodynatrace
       no_cache: true
-    container_name: ipv-core-stub-hmrc
     ports:
       - "8085:8085"
     environment:

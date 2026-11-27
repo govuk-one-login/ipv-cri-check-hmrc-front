@@ -3,7 +3,7 @@ credentialIssuerConfigs:
     name: HMRC Check CRI local
     jwksEndpoint: https://api.review-hc.dev.account.gov.uk/.well-known/jwks.json
     useKeyRotation: true
-    authorizeUrl: http://localhost:5000/oauth2/authorize
+    authorizeUrl: http://frontend:5000/oauth2/authorize
     tokenUrl: https://xxxxx.execute-api.eu-west-2.amazonaws.com/localdev/token
     credentialUrl: https://xxxxx.execute-api.eu-west-2.amazonaws.com/localdev/credential/issue
     audience: https://review-hc.dev.account.gov.uk

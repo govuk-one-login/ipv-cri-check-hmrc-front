@@ -1,5 +1,5 @@
 # 22-alpine amd64 (node version 22.23.4)
-ARG NODE_SHA=sha256:025b8e975a61d94e33abeafaad1255ef44e4898cf1a1b6446860009c72e6d284
+ARG NODE_SHA=sha256:0e1754758c2df4cfa3e68d59e2e1b7374bb7fd9ea6328eaaacf15cc934af8202
 FROM node@${NODE_SHA} AS builder
 
 ENV PORT=5000
