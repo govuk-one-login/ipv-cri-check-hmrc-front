@@ -1,7 +1,7 @@
-import loggerModule from "@govuk-one-login/di-ipv-cri-common-express/src/bootstrap/lib/logger.js";
+import { getLogger } from "@govuk-one-login/di-ipv-cri-common-express/lib/logger.js";
 import { PACKAGE_NAME } from "../../../lib/config.js";
 
-const logger = loggerModule.get(PACKAGE_NAME);
+const logger = getLogger(PACKAGE_NAME);
 
 export const sessionCheckMiddleware = async (req, res, next) => {
   if (!req.session?.tokenId || !req.session?.authParams) {

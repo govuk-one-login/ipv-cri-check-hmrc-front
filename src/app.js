@@ -6,8 +6,21 @@ import { fileURLToPath } from "node:url";
 import session from "express-session";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import connectDynamoDB from "connect-dynamodb";
-import * as frontendUi from "@govuk-one-login/frontend-ui";
-import commonExpress from "@govuk-one-login/di-ipv-cri-common-express";
+import {
+  getHelmetConfig,
+  frontendUiMiddlewareIdentityBypass,
+  localsMiddleware,
+  locals,
+  settings,
+} from "@govuk-one-login/frontend-ui";
+import { appSetup } from "@govuk-one-login/di-ipv-cri-common-express/bootstrap/index.js";
+import { customFetchMiddleware } from "@govuk-one-login/di-ipv-cri-common-express/lib/custom-fetch.js";
+import { setProtocolHeader } from "@govuk-one-login/di-ipv-cri-common-express/lib/headers.js";
+import { setI18n } from "@govuk-one-login/di-ipv-cri-common-express/lib/i18next/index.js";
+import { setScenarioHeader } from "@govuk-one-login/di-ipv-cri-common-express/lib/scenario-headers.js";
+import { getRedisConfig } from "@govuk-one-login/di-ipv-cri-common-express/lib/redis.js";
+import { oauth2Router } from "@govuk-one-login/di-ipv-cri-common-express/routes/oauth2/index.js";
+import { redirectAsErrorToCallback } from "@govuk-one-login/di-ipv-cri-common-express/lib/error-handling.js";
 import { frontendVitalSignsInitFromApp } from "@govuk-one-login/frontend-vital-signs";
 
 import { setAPIConfig, setOAuthPaths } from "./lib/settings.js";
@@ -25,17 +38,6 @@ import {
 import checkRouter from "./app/check/index.js";
 
 const DynamoDBStore = connectDynamoDB(session);
-
-const { setup } = commonExpress.bootstrap;
-const setHeaders = commonExpress.lib.headers;
-const setScenarioHeaders = commonExpress.lib.scenarioHeaders;
-const { customFetchMiddleware } = commonExpress.lib.customFetch;
-const { setI18n } = commonExpress.lib.i18n;
-const helmetConfig = commonExpress.lib.helmet;
-const { setGTM, setLanguageToggle, setDeviceIntelligence } =
-  commonExpress.lib.settings;
-const { getGTM, getLanguageToggle, getDeviceIntelligence } =
-  commonExpress.lib.locals;
 
 const loggerConfig = {
   console: true,
@@ -61,26 +63,22 @@ const sessionConfig = {
   ...(SESSION_TABLE_NAME && { sessionStore: dynamoDBSessionStore }),
 };
 
-const { app, router } = setup({
+const { app, router } = await appSetup({
   config: { APP_ROOT: import.meta.dirname },
   port: false, /// Disabling the bootstrap starting the server.
   host: "0.0.0.0",
   logs: loggerConfig,
   session: sessionConfig,
-  helmet: helmetConfig,
-  redis: SESSION_TABLE_NAME ? false : commonExpress.lib.redis(),
+  helmet: getHelmetConfig(),
+  redis: SESSION_TABLE_NAME ? false : getRedisConfig(),
   urls: {
     public: "/public",
   },
   publicDirs: ["../dist/public"],
   views: [
-    path.resolve(
-      path.dirname(
-        fileURLToPath(
-          import.meta.resolve("@govuk-one-login/di-ipv-cri-common-express")
-        )
-      ),
-      "components"
+    fileURLToPath(
+      import.meta
+        .resolve("@govuk-one-login/di-ipv-cri-common-express/components")
     ),
     path.resolve("node_modules/@govuk-one-login/"),
     "views",
@@ -109,7 +107,7 @@ const { app, router } = setup({
         "/stylesheets",
       ],
     });
-    app.use(setHeaders);
+    app.use(setProtocolHeader);
   },
   overloadProtection: OVERLOAD_PROTECTION,
   dev: true,
@@ -123,11 +121,11 @@ setI18n({
   },
 });
 // Common express relies on 0/1 strings
-setLanguageToggle({ app, showLanguageToggle: "1" });
+settings.setLanguageToggle({ app, showLanguageToggle: true });
 
-setDeviceIntelligence({
+settings.setDeviceIntelligence({
   app,
-  deviceIntelligenceEnabled: "true",
+  deviceIntelligenceEnabled: true,
   deviceIntelligenceDomain: APP.DEVICE_INTELLIGENCE_DOMAIN,
 });
 
@@ -142,7 +140,7 @@ setAPIConfig({
 
 setOAuthPaths({ app, entryPointPath: APP.PATHS.CHECK });
 
-setGTM({
+settings.setGTM({
   app,
   analyticsCookieDomain: APP.FRONTEND_DOMAIN,
   uaEnabled: false,
@@ -158,9 +156,9 @@ setGTM({
   ga4SelectContentEnabled: true,
 });
 
-router.use(getGTM);
-router.use(getLanguageToggle);
-router.use(frontendUi.frontendUiMiddlewareIdentityBypass);
+router.use(locals.getGTM);
+router.use(locals.getLanguageToggle);
+router.use(frontendUiMiddlewareIdentityBypass);
 // Installs the `ctx` render-context accessor and the recursiveRender-wrapped
 // `translate` on res.locals. These were previously provided by hmpo-components'
 // locals middleware, which di-ipv-cri-common-express wired up automatically only
@@ -168,16 +166,16 @@ router.use(frontendUi.frontendUiMiddlewareIdentityBypass);
 // localsMiddleware is the functionally identical replacement and must be wired up
 // explicitly so the frontend-ui form/submit/radios macros (which call ctx(...))
 // continue to render.
-router.use(frontendUi.localsMiddleware(app, app.get("nunjucks")));
-router.use(getDeviceIntelligence);
-router.use(setScenarioHeaders);
+router.use(localsMiddleware(app, app.get("nunjucks")));
+router.use(locals.getDeviceIntelligence);
+router.use(setScenarioHeader);
 router.use(customFetchMiddleware);
 
-router.use("/oauth2", commonExpress.routes.oauth2);
+router.use("/oauth2", oauth2Router);
 
 router.use(APP.PATHS.CHECK, checkRouter);
 
-router.use(commonExpress.lib.errorHandling.redirectAsErrorToCallback);
+router.use(redirectAsErrorToCallback);
 
 /* Server configuration */
 const server = app.listen(PORT);
